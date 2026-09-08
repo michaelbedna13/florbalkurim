@@ -37,9 +37,8 @@ html,body{margin:0;padding:0}
 /* Na iOS jde stránka přetáhnout za konec a pod ní prosvítá kořenový podklad.
    Proto má barvu patičky. Druhá pojistka gumový efekt rovnou vypne. */
 html{background:var(--namorni-tm);overscroll-behavior-y:none}
-body{overscroll-behavior-y:none}
 body{
-  background:var(--podklad);color:var(--text);
+  background:var(--namorni-tm);overscroll-behavior-y:none;color:var(--text);
   font-family:var(--pismo);font-size:16px;line-height:1.55;
   font-variant-numeric:tabular-nums;
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
@@ -110,7 +109,7 @@ p:last-child{margin-bottom:0}
 .rastr.svetly{background-image:radial-gradient(circle,rgba(124,182,224,.30) 1.1px,transparent 1.2px)}
 
 /* ---------- hlavička ---------- */
-.hlavicka{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.95);
+.hlavicka{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.97);
           backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--linka)}
 .hlavicka .obal{display:flex;align-items:center;gap:16px;height:var(--hlavicka-h)}
 .znacka{display:flex;align-items:center;gap:11px;text-decoration:none;flex:none}
@@ -217,7 +216,7 @@ p:last-child{margin-bottom:0}
 }
 
 /* ---------- sekce ---------- */
-.sekce{padding:clamp(54px,7vw,94px) 0;position:relative}
+.sekce{padding:clamp(54px,7vw,94px) 0;position:relative;background:var(--podklad)}
 .sekce.tesna{padding:clamp(38px,5vw,60px) 0}
 .sekce.svetla{background:var(--podklad-2)}
 .sekce.tmava{background:linear-gradient(168deg,var(--nebeska-tm) -6%,var(--namorni) 40%,var(--cerna) 100%);
