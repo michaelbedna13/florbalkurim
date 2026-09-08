@@ -155,7 +155,9 @@ document.querySelectorAll('img[data-misto]').forEach(function(o){
       tr.appendChild(bunka(datumCesky(z.datum)));
       tr.appendChild(bunka(z.cas, 'skryt-mobil'));
       tr.appendChild(bunka(z.souper));
-      tr.appendChild(bunka(z.doma ? 'doma' : 'venku', 'skryt-mobil'));
+      var kde = z.doma ? 'doma' : 'venku';
+      if(z.hala) kde += ', ' + z.hala;
+      tr.appendChild(bunka(kde, 'skryt-mobil'));
       tr.appendChild(bunka(z.vysledek || '', 'cislo'));
     });
     return seznam.length;
