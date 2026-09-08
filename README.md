@@ -28,7 +28,8 @@ ve vyhledávání.
 Všechna nedoplněná místa jsou v kódu ve značce `<span class="doplnit">`
 a v prohlížeči svítí modře. Najdeš je hledáním slova `doplnit`.
 
-- **Kategorie**: dny a časy, jméno trenéra a telefon. Jsou na dvou místech,
+- **Kategorie**: dny, časy, hala, jméno trenéra a telefon. Časy jsou předvyplněné
+  podle starého webu z roku 2024, projdi je a oprav. Jsou na dvou místech,
   v `index.html` (tři karty) a v `treninky/index.html` (čtyři i s muži).
   Věkové rozpětí se drží v atributu `data-vek="6-10"`. Ročníky se z něj počítají
   samy, viz níž.
@@ -64,6 +65,7 @@ bez diakritiky a mezer.
 | `hala.webp` | tréninky a kontakty | 4:3 |
 | `historie.webp` | o nás | 4:3 |
 | `ales-hanak.webp` `petr-macek.webp` `daniel-pysny.webp` | kontakty, portréty | 4:3, obličej v horní třetině |
+| `logo-dolp.webp` `logo-kurim.webp` `logo-jmk.webp` | kontakty, podporují nás | na výšku 150 px, průhledné pozadí |
 | `kemp1.webp` `kemp2.webp` `kemp3.webp` | kempy, pás | čtverec |
 | `kemp-velka.webp` | kempy, velká | 4:3 |
 
@@ -73,6 +75,7 @@ Rozměry, na které je zmenšit před nahráním:
 - fotky 4:3: 1400 × 1050 px, do 150 kB
 - čtvercové do pásu: 1000 × 1000 px, do 120 kB
 - portréty na kontakty: 900 × 675 px, obličej v horní třetině, do 120 kB
+- loga partnerů: výška 150 px, průhledné pozadí, do 40 kB (web si je sám odbarví do šeda)
 
 Nezmenšené fotky z foťáku mají klidně 6 MB a na mobilních datech před halou
 by se stránka načítala půl minuty.

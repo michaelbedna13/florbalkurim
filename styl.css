@@ -57,7 +57,7 @@ p:last-child{margin-bottom:0}
 .vede{font-size:18px;color:var(--text-60);max-width:52ch;line-height:1.6;margin-top:22px}
 
 /* dopočítané hodnoty (ročníky, sezóna) */
-.rocniky-auto,.sezona-auto{font-variant-numeric:tabular-nums}
+.rocniky-auto,.sezona-auto,.rok-auto{font-variant-numeric:tabular-nums}
 .doplnit{background:none;border-bottom:1px dashed rgba(78,146,196,.7);padding:0}
 
 /* ---------- šrafy a rastr z dresu ---------- */
@@ -239,7 +239,9 @@ p:last-child{margin-bottom:0}
   color:var(--text-38);letter-spacing:0;margin-top:9px;text-transform:none}
 .kat h3{margin-bottom:6px}
 .kat .rocniky{font-size:14.5px;color:var(--text-38);margin:0 0 10px}
-.kat .rozvrh{margin:0;font-size:16px;color:var(--namorni);font-weight:500}
+.kat .rozvrh{margin:0;font-size:16px;color:var(--namorni);font-weight:500;
+  display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:baseline}
+.kat .rozvrh em{font-style:normal;font-size:14px;color:var(--text-38)}
 .kat .trener{margin:7px 0 0;font-size:15px;color:var(--text-60)}
 .kat .trener a{font-weight:600;color:var(--cerna);text-decoration:none;
                box-shadow:inset 0 -3px 0 var(--nebeska)}
@@ -317,7 +319,7 @@ tr.my td{font-weight:600;color:var(--cerna)}
 
 /* ---------- karty kontaktů ---------- */
 .mrizka{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px;
-        background:var(--linka);border:2px solid var(--cerna)}
+        background:var(--cerna);border:2px solid var(--cerna)}
 .karta{position:relative;background:#fff;padding:28px 26px;overflow:hidden}
 .karta > *:not(.srafy){position:relative;z-index:2}
 .karta .srafy{z-index:1;opacity:.5}
@@ -330,6 +332,12 @@ tr.my td{font-weight:600;color:var(--cerna)}
 .karta a:hover{text-decoration:underline}
 .karta .tel{font-family:var(--nadpisy);font-weight:700;font-size:22px;color:var(--cerna);
             letter-spacing:-.01em}
+
+.loga{display:flex;flex-wrap:wrap;align-items:center;gap:28px 40px;margin-top:22px}
+.loga img{height:52px;width:auto;object-fit:contain;
+  filter:grayscale(1);opacity:.62;transition:opacity .15s,filter .15s}
+.loga img:hover{filter:grayscale(0);opacity:1}
+.loga .mistofoto{aspect-ratio:auto;width:150px;height:52px;font-size:12px;padding:6px}
 
 .udaje{font-size:15.5px;line-height:1.9;color:var(--text-60)}
 .udaje b{color:var(--cerna);font-weight:600}

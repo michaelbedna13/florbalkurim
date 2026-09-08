@@ -35,6 +35,10 @@ document.querySelectorAll('img[data-misto]').forEach(function(o){
   var d = new Date();
   var rok = d.getMonth() >= 6 ? d.getFullYear() : d.getFullYear() - 1;
 
+  document.querySelectorAll('.rok-auto').forEach(function(o){
+    o.textContent = d.getFullYear();
+  });
+
   document.querySelectorAll('.sezona-auto').forEach(function(o){
     o.textContent = rok + '/' + String((rok + 1) % 100).padStart(2, '0');
   });
@@ -54,7 +58,10 @@ document.querySelectorAll('img[data-misto]').forEach(function(o){
    Data píše dvakrát denně robot v repozitáři appky, tenhle web si je
    jen stahuje. Jeden zdroj pravdy, žádná druhá kopie stahovačů. */
 (function(){
-  var ZDROJ = 'https://raw.githubusercontent.com/michaelbedna13/florbal-kurim/main/';
+  /* JSONy leží v kořeni tohohle webu. Předponu si vezmu ze stejného místa,
+     odkud se načítá styl, aby to sedělo v kořeni i v podsložce. */
+  var odkazStylu = document.querySelector('link[rel="stylesheet"][href$="styl.css"]');
+  var ZDROJ = odkazStylu ? odkazStylu.getAttribute('href').replace(/styl\.css$/, '') : '';
 
   function bunka(text, tridy){
     var td = document.createElement('td');
