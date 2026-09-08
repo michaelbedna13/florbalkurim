@@ -56,44 +56,54 @@ p{margin:0 0 16px;max-width:64ch}
 p:last-child{margin-bottom:0}
 .vede{font-size:18px;color:var(--text-60);max-width:52ch;line-height:1.6;margin-top:22px}
 
-.doplnit{background:rgba(124,182,224,.16);box-shadow:inset 0 -1px 0 rgba(78,146,196,.55);padding:0 2px}
+/* dopočítané hodnoty (ročníky, sezóna) */
+.rocniky-auto,.sezona-auto{font-variant-numeric:tabular-nums}
+.doplnit{background:none;border-bottom:1px dashed rgba(78,146,196,.7);padding:0}
 
 /* ---------- šrafy a rastr z dresu ---------- */
 .srafy{
   position:absolute;inset:0;pointer-events:none;overflow:hidden;
   background-image:repeating-linear-gradient(114deg,
     transparent 0 18px,
-    rgba(22,55,92,.10) 18px 20px,
+    rgba(22,55,92,.07) 18px 20px,
     transparent 20px 34px,
-    rgba(124,182,224,.42) 34px 41px,
+    rgba(124,182,224,.26) 34px 41px,
     transparent 41px 62px,
-    rgba(11,21,36,.10) 62px 64px,
+    rgba(11,21,36,.07) 62px 64px,
     transparent 64px 96px,
-    rgba(124,182,224,.22) 96px 108px,
+    rgba(124,182,224,.14) 96px 108px,
     transparent 108px 150px);
-  -webkit-mask-image:linear-gradient(150deg,transparent 34%,#000 100%);
-  mask-image:linear-gradient(150deg,transparent 34%,#000 100%);
+  -webkit-mask-image:linear-gradient(150deg,transparent 18%,rgba(0,0,0,.75) 68%,transparent 100%);
+  mask-image:linear-gradient(150deg,transparent 18%,rgba(0,0,0,.75) 68%,transparent 100%);
+}
+/* Na úzkém displeji je blok vysoký a úzký, takže šikmý přechod by nechal
+   pruhy jen v rohu. Tady je vede přes celou plochu. */
+@media(max-width:900px){
+  .srafy{
+    -webkit-mask-image:linear-gradient(172deg,transparent 4%,rgba(0,0,0,.8) 46%,transparent 100%);
+    mask-image:linear-gradient(172deg,transparent 4%,rgba(0,0,0,.8) 46%,transparent 100%);
+  }
 }
 .srafy.tmave{
   background-image:repeating-linear-gradient(114deg,
     transparent 0 16px,
-    rgba(255,255,255,.16) 16px 19px,
+    rgba(255,255,255,.10) 16px 19px,
     transparent 19px 33px,
-    rgba(124,182,224,.55) 33px 40px,
+    rgba(124,182,224,.34) 33px 40px,
     transparent 40px 58px,
-    rgba(255,255,255,.30) 58px 61px,
+    rgba(255,255,255,.18) 58px 61px,
     transparent 61px 92px,
-    rgba(124,182,224,.24) 92px 104px,
+    rgba(124,182,224,.15) 92px 104px,
     transparent 104px 146px);
 }
 .rastr{
   position:absolute;inset:0;pointer-events:none;
-  background-image:radial-gradient(circle,rgba(22,55,92,.30) 1.1px,transparent 1.2px);
+  background-image:radial-gradient(circle,rgba(22,55,92,.20) 1.1px,transparent 1.2px);
   background-size:9px 9px;
   -webkit-mask-image:linear-gradient(200deg,#000 0,transparent 46%);
   mask-image:linear-gradient(200deg,#000 0,transparent 46%);
 }
-.rastr.svetly{background-image:radial-gradient(circle,rgba(124,182,224,.45) 1.1px,transparent 1.2px)}
+.rastr.svetly{background-image:radial-gradient(circle,rgba(124,182,224,.30) 1.1px,transparent 1.2px)}
 
 /* ---------- hlavička ---------- */
 .hlavicka{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.95);
@@ -144,7 +154,7 @@ p:last-child{margin-bottom:0}
 }
 .tlacitko:hover{background:var(--namorni);border-color:var(--namorni)}
 .tlacitko.svetle{background:transparent;color:var(--cerna)}
-.tlacitko.svetle:hover{background:var(--cerna);color:#fff}
+.tlacitko.svetle:hover{background:var(--namorni);border-color:var(--namorni);color:#fff}
 .tlacitko.prazdne{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
 .tlacitko.prazdne:hover{background:#fff;color:var(--cerna);border-color:#fff}
 
@@ -236,7 +246,7 @@ p:last-child{margin-bottom:0}
 .kat .odkaz{font-family:var(--nadpisy);font-weight:700;font-size:13.5px;text-transform:uppercase;
   letter-spacing:.04em;text-decoration:none;padding:13px 22px;border:2px solid var(--cerna);
   white-space:nowrap;transition:background .15s,color .15s}
-.kat .odkaz:hover{background:var(--cerna);color:#fff}
+.kat .odkaz:hover{background:var(--namorni);border-color:var(--namorni);color:#fff}
 @media(max-width:860px){
   .kat{grid-template-columns:1fr;gap:16px;padding:22px 0}
   .kat .vek{font-size:46px;display:flex;align-items:baseline;gap:14px;padding-left:16px;border-left-width:7px}
@@ -334,7 +344,7 @@ tr.my td{font-weight:600;color:var(--cerna)}
 .zaver > *:not(.srafy){position:relative;z-index:2}
 .zaver > .vyzva{background:transparent}
 
-.vyzva{color:#fff}
+.vyzva{background:var(--cerna);color:#fff}
 .vyzva .obal{padding:clamp(54px,6.5vw,86px) 22px;text-align:center}
 .vyzva h2{color:#fff;margin-bottom:0}
 .vyzva p{margin:22px auto 32px;color:rgba(255,255,255,.72);font-size:17.5px;line-height:1.6}
@@ -345,7 +355,8 @@ tr.my td{font-weight:600;color:var(--cerna)}
 .vyzva .tlacitko.prazdne:hover{background:#fff;color:var(--cerna)}
 
 /* ---------- patička ---------- */
-.paticka{background:rgba(22,55,92,.55);color:rgba(255,255,255,.74);font-size:15px}
+.paticka{background:var(--namorni-tm);color:rgba(255,255,255,.74);font-size:15px}
+.zaver > .paticka{background:rgba(22,55,92,.55)}
 .paticka .obal{padding:48px 22px 36px;
   display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:34px}
 @media(max-width:760px){.paticka .obal{grid-template-columns:1fr;gap:28px}}
