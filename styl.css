@@ -48,10 +48,10 @@ a{color:inherit}
 
 /* ---------- typografie ---------- */
 h1,h2,h3{font-family:var(--nadpisy);font-weight:700;color:var(--cerna);margin:0;
-         letter-spacing:-.015em;line-height:.98;text-transform:uppercase}
+         letter-spacing:-.015em;line-height:1.09;text-transform:uppercase}
 h1{font-size:clamp(42px,8.2vw,92px)}
 h2{font-size:clamp(30px,4.6vw,54px)}
-h3{font-weight:600;font-size:21px;letter-spacing:-.005em;line-height:1.15;text-transform:none}
+h3{font-weight:600;font-size:21px;letter-spacing:-.005em;line-height:1.2;text-transform:none}
 p{margin:0 0 16px;max-width:64ch}
 p:last-child{margin-bottom:0}
 .vede{font-size:18px;color:var(--text-60);max-width:52ch;line-height:1.6;margin-top:22px}
@@ -345,11 +345,19 @@ tr.my td{font-weight:600;color:var(--cerna)}
 .karta .tel{font-family:var(--nadpisy);font-weight:700;font-size:22px;color:var(--cerna);
             letter-spacing:-.01em}
 
-.loga{display:flex;flex-wrap:wrap;align-items:center;gap:28px 40px;margin-top:22px}
-.loga img{height:auto;max-height:54px;max-width:172px;width:auto;object-fit:contain;
-  filter:grayscale(1);opacity:.62;transition:opacity .15s,filter .15s}
+/* Loga mají hodně různé poměry stran, tak je nesrovnávám na stejnou výšku,
+   ale na podobnou optickou váhu. Proto má každé svoji. */
+.podpora{margin-top:46px;padding-top:26px;border-top:2px solid var(--cerna)}
+.podpora-nadpis{font-family:var(--nadpisy);font-weight:700;font-size:12.5px;
+  text-transform:uppercase;letter-spacing:.07em;color:var(--text-38);margin:0 0 24px}
+.loga{display:flex;flex-wrap:wrap;align-items:center;gap:22px 38px}
+.loga img{display:block;width:auto;object-fit:contain;
+  filter:grayscale(1);opacity:.55;transition:opacity .15s,filter .15s}
 .loga img:hover{filter:grayscale(0);opacity:1}
-.loga .mistofoto{aspect-ratio:auto;width:150px;height:52px;font-size:12px;padding:6px}
+.loga .l-dolp{height:40px}
+.loga .l-kurim{height:46px}
+.loga .l-jmk{height:19px}
+.loga .mistofoto{aspect-ratio:auto;width:132px;height:42px;font-size:11.5px;padding:5px}
 
 .udaje{font-size:15.5px;line-height:1.9;color:var(--text-60)}
 .udaje b{color:var(--cerna);font-weight:600}
