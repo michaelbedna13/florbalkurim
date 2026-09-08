@@ -1,1 +1,49 @@
+name: Aktualizace dat ze soutěže
 
+on:
+  schedule:
+    - cron: "0 5 * * *"
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalace knihoven
+        run: pip install requests beautifulsoup4
+
+      # Každý stahovač běží zvlášť. Když jeden spadne, ostatní doběhnou
+      # a celý běh zčervená, takže je to vidět v přehledu Actions.
+      - name: Stažení tabulky
+        continue-on-error: true
+        run: python scripts/tabulka.py
+
+      - name: Stažení statistik hráčů
+        continue-on-error: true
+        run: python scripts/hraci.py
+
+      - name: Stažení rozpisu zápasů
+        continue-on-error: true
+        run: python scripts/zapasy.py
+
+      - name: Uložení změn
+        run: |
+          git config user.name  "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A tabulka.json hraci.json zapasy.json
+          if git diff --cached --quiet; then
+            echo "Nic se nezměnilo, není co ukládat."
+          else
+            git commit -m "Aktualizace dat ze soutěže"
+            git push
+          fi
