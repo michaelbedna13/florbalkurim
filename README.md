@@ -48,8 +48,8 @@ Do `fotky/`, dokud tam nejsou, ukazuje web pruhované místo s popisem, co tam p
 | `kemp.jpg` | domů, kempy | 4:3 |
 | `g1.jpg` `g2.jpg` `g3.jpg` | domů, pás galerie | čtverec |
 | `hala.jpg` | tréninky a kontakty | 4:3 |
-| `muzi.jpg` | muži | 4:3 |
 | `historie.jpg` | o nás | 4:3 |
+| `ales-hanak.jpg` `petr-macek.jpg` `daniel-pysny.jpg` | kontakty, portréty | 4:3, obličej v horní třetině |
 | `kemp1.jpg` `kemp2.jpg` `kemp3.jpg` | kempy, pás | čtverec |
 | `kemp-velka.jpg` | kempy, velká | 4:3 |
 
@@ -80,8 +80,10 @@ přidat do všech šesti. Je to daň za to, že web nemá build.
 **Z mobilu se do podsložek nahrává blbě.** Soubory `treninky/index.html` a spol.
 patří do složek, ne do kořene.
 
-**Tabulky na stránce Muži zatím nemají data.** Čekají na napojení na `tabulka.json`
-a `hraci.json`, které už dvakrát denně píše robot v repozitáři appky.
+**Tabulky na stránce Muži zatím nemají data.** Rozpis čeká na `zapasy.json`,
+který zatím neexistuje a bude potřeba k němu dopsat stahovač. Tabulka a bodování
+čekají na `tabulka.json` a `hraci.json`, které už dvakrát denně píše robot
+v repozitáři appky.
 
 **Ročníky u kategorií zestárnou.** Každý červen je posunout, jinak to za dva roky
 dopadne jako starý web.
