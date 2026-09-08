@@ -38,10 +38,15 @@ html,body{margin:0;padding:0}
    u příslušného okraje. Proto je podklad přechodem: nahoře světlý jako
    hlavička, dole tmavý jako patička. Vidět je jen na těch krajích, obsah
    má vlastní pozadí. */
-body{
+html{
   background:linear-gradient(to bottom,
     var(--podklad) 0%, var(--podklad) 50%,
-    var(--namorni-tm) 50%, var(--namorni-tm) 100%);
+    var(--namorni-tm) 50%, var(--namorni-tm) 100%) no-repeat;
+  background-size:100% 100%;
+  overscroll-behavior-y:none;
+}
+body{
+  background:transparent;
   overscroll-behavior-y:none;color:var(--text);
   font-family:var(--pismo);font-size:16px;line-height:1.55;
   font-variant-numeric:tabular-nums;
