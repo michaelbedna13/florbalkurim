@@ -64,6 +64,14 @@ Zmenši je před nahráním, ať má každá nejvýš pár set kilobajtů.
 5. Ve Wedosu nebo kde web běží teď nezapomenout starý WordPress vypnout,
    ať neběží dva weby naráz.
 
+## Cesty k souborům
+
+Odkazy na `styl.css`, `web.js`, logo a fotky jsou **relativní** (`styl.css`
+z kořene, `../styl.css` z podsložek). Díky tomu web funguje na doméně,
+na adrese `michaelbedna13.github.io/florbalkurim/` i po otevření souboru
+z disku. Kdyby je někdo přepsal na `/styl.css`, přestane se načítat vzhled
+všude kromě ostré domény.
+
 ## Na co pozor
 
 **Menu a patička jsou v každém souboru zvlášť.** Když přidáš položku, musíš ji
