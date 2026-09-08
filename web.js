@@ -98,8 +98,13 @@ document.querySelectorAll('img[data-misto]').forEach(function(o){
   function nacti(soubor, telo, sloupcu, vykresli, prazdne){
     fetch(ZDROJ + soubor)
       .then(function(o){
-        /* 404 znamená, že soubor ještě nevznikl, ne poruchu */
-        if(o.status === 404){ hlaska(telo, prazdne, sloupcu); return null; }
+        /* Soubor ještě nevznikl. Návštěvníkovi stačí vlídná hláška,
+           do konzole ale napíšu, co konkrétně chybí, ať se to dá dohledat. */
+        if(o.status === 404){
+          console.warn('Chybí ' + soubor + '. Spusť workflow Aktualizace dat ze soutěže.');
+          hlaska(telo, 'Data se připravují, mrkněte sem za chvíli.', sloupcu);
+          return null;
+        }
         if(!o.ok) throw new Error(o.status);
         return o.json();
       })
