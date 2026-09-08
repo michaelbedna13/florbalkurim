@@ -1,0 +1,227 @@
+{
+ "aktualizovano": "2026-09-08T22:23+01:00",
+ "sezona": "2026/2027",
+ "odkaz": "https://repre.ceskyflorbal.cz/team/detail/matches/44265",
+ "zapasy": [
+  {
+   "datum": "2026-09-20",
+   "cas": "09:00",
+   "kolo": 1,
+   "souper": "VUT Brno",
+   "souper_plny": "VSK VUT Brno - SHM Újezd u BrnaB VUT",
+   "doma": false,
+   "hala": "SH Újezd u Brna",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2026-09-20",
+   "cas": "12:00",
+   "kolo": 1,
+   "souper": "Hornets",
+   "souper_plny": "Hornets Brno ZŠ Horní C ZŠ",
+   "doma": true,
+   "hala": "SH Újezd u Brna",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2026-10-31",
+   "cas": "",
+   "kolo": 5,
+   "souper": "Gullivers",
+   "souper_plny": "Sokol Brno I EMKOCase GulliversB",
+   "doma": false,
+   "hala": "SH Kuřim",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2026-10-31",
+   "cas": "",
+   "kolo": 5,
+   "souper": "Pohořelice",
+   "souper_plny": "FbC Panthers Pohořelice",
+   "doma": true,
+   "hala": "SH Kuřim",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2026-11-15",
+   "cas": "",
+   "kolo": 8,
+   "souper": "Bojanovice",
+   "souper_plny": "Orel Dolní Bojanovice + Břeclav",
+   "doma": true,
+   "hala": "Hummel Aréna Lesná",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2026-11-15",
+   "cas": "",
+   "kolo": 8,
+   "souper": "Shooters Beta",
+   "souper_plny": "Shooters Beta Brno Shooters",
+   "doma": false,
+   "hala": "Hummel Aréna Lesná",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2026-12-05",
+   "cas": "",
+   "kolo": 10,
+   "souper": "Troopers",
+   "souper_plny": "TROOPERS Delta",
+   "doma": false,
+   "hala": "Hummel Aréna Lesná",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2026-12-05",
+   "cas": "",
+   "kolo": 10,
+   "souper": "Galaxy Židenice",
+   "souper_plny": "K1 Florbal Židenice GALAXY",
+   "doma": true,
+   "hala": "Hummel Aréna Lesná",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2026-12-19",
+   "cas": "",
+   "kolo": 12,
+   "souper": "Pohořelice",
+   "souper_plny": "FbC Panthers Pohořelice",
+   "doma": false,
+   "hala": "SH Kuřim",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2026-12-19",
+   "cas": "",
+   "kolo": 12,
+   "souper": "VUT Brno",
+   "souper_plny": "VSK VUT Brno - SHM Újezd u BrnaB VUT",
+   "doma": true,
+   "hala": "SH Kuřim",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2027-01-24",
+   "cas": "",
+   "kolo": 14,
+   "souper": "Aligators",
+   "souper_plny": "Aligators F.A.T.R. Dubňany C",
+   "doma": true,
+   "hala": "SH Svitávka",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2027-01-24",
+   "cas": "",
+   "kolo": 14,
+   "souper": "Letovice",
+   "souper_plny": "TJ SOKOL LETOVICE",
+   "doma": false,
+   "hala": "SH Svitávka",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2027-02-14",
+   "cas": "",
+   "kolo": 15,
+   "souper": "Hornets",
+   "souper_plny": "Hornets Brno ZŠ Horní C ZŠ",
+   "doma": false,
+   "hala": "Hummel Aréna Lesná",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2027-02-14",
+   "cas": "",
+   "kolo": 15,
+   "souper": "Bojanovice",
+   "souper_plny": "Orel Dolní Bojanovice + Břeclav",
+   "doma": false,
+   "hala": "Hummel Aréna Lesná",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2027-03-13",
+   "cas": "",
+   "kolo": 18,
+   "souper": "Galaxy Židenice",
+   "souper_plny": "K1 Florbal Židenice GALAXY",
+   "doma": false,
+   "hala": "VUT CESA Brno 2",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2027-03-13",
+   "cas": "",
+   "kolo": 18,
+   "souper": "Aligators",
+   "souper_plny": "Aligators F.A.T.R. Dubňany C",
+   "doma": false,
+   "hala": "VUT CESA Brno 2",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2027-04-03",
+   "cas": "",
+   "kolo": 20,
+   "souper": "Gullivers",
+   "souper_plny": "Sokol Brno I EMKOCase GulliversB",
+   "doma": true,
+   "hala": "SC Želva Dubňany",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2027-04-03",
+   "cas": "",
+   "kolo": 20,
+   "souper": "Letovice",
+   "souper_plny": "TJ SOKOL LETOVICE",
+   "doma": true,
+   "hala": "SC Želva Dubňany",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2027-04-17",
+   "cas": "",
+   "kolo": 21,
+   "souper": "Troopers",
+   "souper_plny": "TROOPERS Delta",
+   "doma": true,
+   "hala": "SH Pohořelice",
+   "vysledek": null,
+   "odehrano": false
+  },
+  {
+   "datum": "2027-04-17",
+   "cas": "",
+   "kolo": 21,
+   "souper": "Shooters Beta",
+   "souper_plny": "Shooters Beta Brno Shooters",
+   "doma": true,
+   "hala": "SH Pohořelice",
+   "vysledek": null,
+   "odehrano": false
+  }
+ ]
+}
