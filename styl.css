@@ -35,8 +35,9 @@ html{scroll-behavior:smooth}
 }
 html,body{margin:0;padding:0}
 /* Na iOS jde stránka přetáhnout za konec a pod ní prosvítá kořenový podklad.
-   Proto má barvu patičky, aby se za koncem neobjevila bílá. */
-html{background:var(--namorni-tm)}
+   Proto má barvu patičky. Druhá pojistka gumový efekt rovnou vypne. */
+html{background:var(--namorni-tm);overscroll-behavior-y:none}
+body{overscroll-behavior-y:none}
 body{
   background:var(--podklad);color:var(--text);
   font-family:var(--pismo);font-size:16px;line-height:1.55;
