@@ -34,11 +34,15 @@ html{scroll-behavior:smooth}
   *{animation-duration:.001ms !important;transition-duration:.001ms !important}
 }
 html,body{margin:0;padding:0}
-/* Na iOS jde stránka přetáhnout za konec a pod ní prosvítá kořenový podklad.
-   Proto má barvu patičky. Druhá pojistka gumový efekt rovnou vypne. */
-html{background:var(--namorni-tm);overscroll-behavior-y:none}
+/* Safari obarvuje stavovou lištu i prostor za koncem stránky podle podkladu
+   u příslušného okraje. Proto je podklad přechodem: nahoře světlý jako
+   hlavička, dole tmavý jako patička. Vidět je jen na těch krajích, obsah
+   má vlastní pozadí. */
 body{
-  background:var(--namorni-tm);overscroll-behavior-y:none;color:var(--text);
+  background:linear-gradient(to bottom,
+    var(--podklad) 0%, var(--podklad) 50%,
+    var(--namorni-tm) 50%, var(--namorni-tm) 100%);
+  overscroll-behavior-y:none;color:var(--text);
   font-family:var(--pismo);font-size:16px;line-height:1.55;
   font-variant-numeric:tabular-nums;
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
