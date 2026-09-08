@@ -52,27 +52,27 @@ A jednou si ověř, že vypočtené ročníky sedí s tím, jak je dělí soutě
 
 Do `fotky/`, dokud tam nejsou, ukazuje web pruhované místo s popisem, co tam patří.
 
-Formát JPG, barevný profil sRGB. Názvy přesně podle tabulky, malými písmeny,
+Formát WebP, barevný profil sRGB. HEIC z telefonu na webu nefunguje, převeď ho. Názvy přesně podle tabulky, malými písmeny,
 bez diakritiky a mezer.
 
 | soubor | kde | poměr |
 |---|---|---|
-| `hero.jpg` | hlavička domů, přes celou šířku | široký, aspoň 1800 px |
-| `trenink.jpg` | domů, „nic se nedomlouvá dopředu" | 4:3 |
-| `kemp.jpg` | domů, kempy | 4:3 |
-| `g1.jpg` `g2.jpg` `g3.jpg` | domů, pás galerie | čtverec |
-| `hala.jpg` | tréninky a kontakty | 4:3 |
-| `historie.jpg` | o nás | 4:3 |
-| `ales-hanak.jpg` `petr-macek.jpg` `daniel-pysny.jpg` | kontakty, portréty | 4:3, obličej v horní třetině |
-| `kemp1.jpg` `kemp2.jpg` `kemp3.jpg` | kempy, pás | čtverec |
-| `kemp-velka.jpg` | kempy, velká | 4:3 |
+| `hero.webp` | hlavička domů, přes celou šířku | široký, aspoň 1800 px |
+| `trenink.webp` | domů, „nic se nedomlouvá dopředu" | 4:3 |
+| `kemp.webp` | domů, kempy | 4:3 |
+| `g1.webp` `g2.webp` `g3.webp` | domů, pás galerie | čtverec |
+| `hala.webp` | tréninky a kontakty | 4:3 |
+| `historie.webp` | o nás | 4:3 |
+| `ales-hanak.webp` `petr-macek.webp` `daniel-pysny.webp` | kontakty, portréty | 4:3, obličej v horní třetině |
+| `kemp1.webp` `kemp2.webp` `kemp3.webp` | kempy, pás | čtverec |
+| `kemp-velka.webp` | kempy, velká | 4:3 |
 
 Rozměry, na které je zmenšit před nahráním:
 
-- široká `hero.jpg`: 2000 × 1200 px, do 400 kB
-- fotky 4:3: 1400 × 1050 px, do 250 kB
-- čtvercové do pásu: 1000 × 1000 px, do 200 kB
-- portréty na kontakty: 900 × 675 px, obličej v horní třetině, do 200 kB
+- široká `hero.webp`: 2000 × 1200 px, do 250 kB
+- fotky 4:3: 1400 × 1050 px, do 150 kB
+- čtvercové do pásu: 1000 × 1000 px, do 120 kB
+- portréty na kontakty: 900 × 675 px, obličej v horní třetině, do 120 kB
 
 Nezmenšené fotky z foťáku mají klidně 6 MB a na mobilních datech před halou
 by se stránka načítala půl minuty.
