@@ -34,6 +34,9 @@ html{scroll-behavior:smooth}
   *{animation-duration:.001ms !important;transition-duration:.001ms !important}
 }
 html,body{margin:0;padding:0}
+/* Na iOS jde stránka přetáhnout za konec a pod ní prosvítá kořenový podklad.
+   Proto má barvu patičky, aby se za koncem neobjevila bílá. */
+html{background:var(--namorni-tm)}
 body{
   background:var(--podklad);color:var(--text);
   font-family:var(--pismo);font-size:16px;line-height:1.55;
