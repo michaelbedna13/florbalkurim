@@ -1,19 +1,8 @@
 {
- "aktualizovano": "2026-09-20T10:33+01:00",
+ "aktualizovano": "2026-09-20T23:17+01:00",
  "sezona": "2026/2027",
  "odkaz": "https://repre.ceskyflorbal.cz/team/detail/matches/44265",
  "zapasy": [
-  {
-   "datum": "2026-09-20",
-   "cas": "12:00",
-   "kolo": 1,
-   "souper": "Hornets",
-   "souper_plny": "Hornets Brno ZŠ Horní C ZŠ",
-   "doma": true,
-   "hala": "SH Újezd u Brna",
-   "vysledek": null,
-   "odehrano": false
-  },
   {
    "datum": "2026-09-20",
    "cas": "",
@@ -23,6 +12,17 @@
    "doma": false,
    "hala": "odehráno",
    "vysledek": "2:3",
+   "odehrano": true
+  },
+  {
+   "datum": "2026-09-20",
+   "cas": "",
+   "kolo": 1,
+   "souper": "Hornets",
+   "souper_plny": "Hornets Brno ZŠ Horní C ZŠ",
+   "doma": true,
+   "hala": "odehráno",
+   "vysledek": "2:8",
    "odehrano": true
   },
   {
