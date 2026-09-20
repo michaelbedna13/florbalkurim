@@ -1,19 +1,8 @@
 {
- "aktualizovano": "2026-09-19T23:15+01:00",
+ "aktualizovano": "2026-09-20T10:33+01:00",
  "sezona": "2026/2027",
  "odkaz": "https://repre.ceskyflorbal.cz/team/detail/matches/44265",
  "zapasy": [
-  {
-   "datum": "2026-09-20",
-   "cas": "09:00",
-   "kolo": 1,
-   "souper": "VUT Brno",
-   "souper_plny": "VSK VUT Brno - SHM Újezd u BrnaB VUT",
-   "doma": false,
-   "hala": "SH Újezd u Brna",
-   "vysledek": null,
-   "odehrano": false
-  },
   {
    "datum": "2026-09-20",
    "cas": "12:00",
@@ -24,6 +13,17 @@
    "hala": "SH Újezd u Brna",
    "vysledek": null,
    "odehrano": false
+  },
+  {
+   "datum": "2026-09-20",
+   "cas": "",
+   "kolo": 1,
+   "souper": "VUT Brno",
+   "souper_plny": "VSK VUT Brno - SHM Újezd u BrnaB VUT",
+   "doma": false,
+   "hala": "odehráno",
+   "vysledek": "2:3",
+   "odehrano": true
   },
   {
    "datum": "2026-10-31",

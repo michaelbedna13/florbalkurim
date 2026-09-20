@@ -1,5 +1,5 @@
 {
- "aktualizovano": "2026-09-19T23:15+01:00",
+ "aktualizovano": "2026-09-20T10:33+01:00",
  "soutez": "Jihomoravská liga mužů",
  "odkaz": "https://repre.ceskyflorbal.cz/competition/detail/overview/6JM6?divisionId=5598&competitionFisId=4653",
  "tymy": [
@@ -39,6 +39,23 @@
   },
   {
    "poradi": 3,
+   "nazev": "Florbal Kuřim",
+   "kratky": "Kuřim",
+   "zkratka": "KUR",
+   "logo": "https://repre.ceskyflorbal.cz/imgmin/data/fis/document/clubs_786_logo-1920340615.jpg/w32h32ft1786964238.png",
+   "nas": true,
+   "zapasy": 1,
+   "vyhry": 1,
+   "vyhry_p": 0,
+   "prohry_p": 0,
+   "prohry": 0,
+   "body": 3,
+   "branky_vstrelene": 3,
+   "branky_obdrzene": 2,
+   "rozdil": 1
+  },
+  {
+   "poradi": 4,
    "nazev": "Sokol Brno I EMKOCase GulliversB",
    "kratky": "Gullivers",
    "zkratka": "GUL",
@@ -55,29 +72,12 @@
    "rozdil": 0
   },
   {
-   "poradi": 4,
+   "poradi": 5,
    "nazev": "Aligators F.A.T.R. Dubňany C",
    "kratky": "Aligators",
    "zkratka": "ALG",
    "logo": "https://repre.ceskyflorbal.cz/imgmin/data/fis/document/clubs_739_logo-1867771649.png/w32h32ft1745568060.png",
    "nas": false,
-   "zapasy": 0,
-   "vyhry": 0,
-   "vyhry_p": 0,
-   "prohry_p": 0,
-   "prohry": 0,
-   "body": 0,
-   "branky_vstrelene": 0,
-   "branky_obdrzene": 0,
-   "rozdil": 0
-  },
-  {
-   "poradi": 5,
-   "nazev": "Florbal Kuřim",
-   "kratky": "Kuřim",
-   "zkratka": "KUR",
-   "logo": "https://repre.ceskyflorbal.cz/imgmin/data/fis/document/clubs_786_logo-1920340615.jpg/w32h32ft1786964238.png",
-   "nas": true,
    "zapasy": 0,
    "vyhry": 0,
    "vyhry_p": 0,
@@ -146,15 +146,15 @@
    "zkratka": "VUT",
    "logo": "https://repre.ceskyflorbal.cz/imgmin/data/fis/document/clubs_154_logo-4035368671.png/w32h32ft1651678840.png",
    "nas": false,
-   "zapasy": 0,
+   "zapasy": 1,
    "vyhry": 0,
    "vyhry_p": 0,
    "prohry_p": 0,
-   "prohry": 0,
+   "prohry": 1,
    "body": 0,
-   "branky_vstrelene": 0,
-   "branky_obdrzene": 0,
-   "rozdil": 0
+   "branky_vstrelene": 2,
+   "branky_obdrzene": 3,
+   "rozdil": -1
   },
   {
    "poradi": 10,

@@ -1,6 +1,175 @@
 {
- "aktualizovano": "2026-09-19T23:15+01:00",
+ "aktualizovano": "2026-09-20T10:33+01:00",
  "odkaz": "https://repre.ceskyflorbal.cz/team/detail/statistics/44265",
- "hraci": [],
- "brankari": []
+ "hraci": [
+  {
+   "jmeno": "Filip Svoboda",
+   "klic": "filip svoboda",
+   "post": "",
+   "zapasy": 1,
+   "branky": 1,
+   "asistence": 1,
+   "body": 2,
+   "trestne": 0,
+   "strely": 1,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Ivo Liškutín",
+   "klic": "ivo liskutin",
+   "post": "",
+   "zapasy": 1,
+   "branky": 1,
+   "asistence": 0,
+   "body": 1,
+   "trestne": 0,
+   "strely": 1,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Jáchym Navrátil",
+   "klic": "jachym navratil",
+   "post": "",
+   "zapasy": 1,
+   "branky": 1,
+   "asistence": 0,
+   "body": 1,
+   "trestne": 0,
+   "strely": 1,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Adam Vlasák",
+   "klic": "adam vlasak",
+   "post": "",
+   "zapasy": 1,
+   "branky": 0,
+   "asistence": 0,
+   "body": 0,
+   "trestne": 0,
+   "strely": 0,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Daniel Pyšný",
+   "klic": "daniel pysny",
+   "post": "",
+   "zapasy": 1,
+   "branky": 0,
+   "asistence": 0,
+   "body": 0,
+   "trestne": 0,
+   "strely": 0,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Jan Bednář",
+   "klic": "bednar jan",
+   "post": "",
+   "zapasy": 1,
+   "branky": 0,
+   "asistence": 0,
+   "body": 0,
+   "trestne": 0,
+   "strely": 0,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Jan Liškutín",
+   "klic": "jan liskutin",
+   "post": "",
+   "zapasy": 1,
+   "branky": 0,
+   "asistence": 0,
+   "body": 0,
+   "trestne": 0,
+   "strely": 0,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Michael Bednář",
+   "klic": "bednar michael",
+   "post": "",
+   "zapasy": 1,
+   "branky": 0,
+   "asistence": 0,
+   "body": 0,
+   "trestne": 0,
+   "strely": 0,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Michal Šoustar",
+   "klic": "michal soustar",
+   "post": "",
+   "zapasy": 1,
+   "branky": 0,
+   "asistence": 0,
+   "body": 0,
+   "trestne": 0,
+   "strely": 0,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Roman Klepárník",
+   "klic": "kleparnik roman",
+   "post": "",
+   "zapasy": 1,
+   "branky": 0,
+   "asistence": 0,
+   "body": 0,
+   "trestne": 0,
+   "strely": 0,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Vojtěch Bednář",
+   "klic": "bednar vojtech",
+   "post": "",
+   "zapasy": 1,
+   "branky": 0,
+   "asistence": 0,
+   "body": 0,
+   "trestne": 0,
+   "strely": 0,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Václav Šťastný",
+   "klic": "stastny vaclav",
+   "post": "",
+   "zapasy": 1,
+   "branky": 0,
+   "asistence": 0,
+   "body": 0,
+   "trestne": 0,
+   "strely": 0,
+   "plusminus": 0
+  },
+  {
+   "jmeno": "Šimon Tománek",
+   "klic": "simon tomanek",
+   "post": "O",
+   "zapasy": 1,
+   "branky": 0,
+   "asistence": 0,
+   "body": 0,
+   "trestne": 2,
+   "strely": 0,
+   "plusminus": 0
+  }
+ ],
+ "brankari": [
+  {
+   "jmeno": "Petr Jendřejas",
+   "klic": "jendrejas petr",
+   "zapasy": 1,
+   "odchytane": 1,
+   "minuty": 45,
+   "obdrzene": 2,
+   "prumer_obdrzenych": 2,
+   "cista_konta": 0,
+   "vyhry": 1
+  }
+ ]
 }
