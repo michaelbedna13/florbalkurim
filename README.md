@@ -160,3 +160,7 @@ uloží do soukromé složky na Disku a pošle e-mail vedoucímu kempu a potvrze
 Adresa skriptu je jediný řádek nahoře v `prihlaska.js` (proměnná SKRIPT).
 Kam chodí upozornění, se mění nahoře ve skriptu v NASTAVENI.upozorneni.
 Po kempu se ve skriptu ručně spustí funkce smazatZdravotniUdajePoKempu.
+
+Pozor, časy tréninků jsou i v přihlášce (výběr „Na které tréninky chodí"
+v `kempy-a-tabory/prihlaska/index.html`). Když se změní rozvrh, oprav je
+na Tréninkách, na domovské stránce i tady.
