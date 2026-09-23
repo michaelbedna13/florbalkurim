@@ -127,3 +127,12 @@ Vychází z dresů, ne z klubových barev nasypaných na plochu.
 obojí z Google Fonts. Kdybys je chtěl mít doma kvůli GDPR (načítání z Googlu je
 u nás sporné), stáhni si `.woff2` a nahraď odkaz v hlavičce vlastním `@font-face`.
 Je to šest řádků a udělá se to jednou pro všech šest souborů.
+
+
+## Mládež a Orelská liga
+
+Stránka `mladez/` čte `orel.json`, který píše `scripts/orel.py` spolu s ostatními
+stahovači (workflow `.github/workflows/main.yml`). Kalendář ligy ukazuje jen
+neodehrané turnaje, odehrané z webu samy zmizí. Tabulka divize se objeví až po
+prvním turnaji a její sloupce se přebírají tak, jak je liga vypíše.
+Kategorie a divize jsou nahoře ve skriptu v seznamu KATEGORIE.

@@ -173,3 +173,108 @@ document.querySelectorAll('img[data-misto]').forEach(function(o){
     return seznam.length;
   }, 'Rozpis zveřejní soutěž před začátkem sezóny.');
 })();
+
+/* ---------- stránka Mládež: turnaje a tabulky z Orelské ligy ----------
+   Data píše robot do orel.json. Sloupce tabulky se berou tak, jak je
+   liga vypíše, takže se nic nerozbije, když je někdy přejmenuje. */
+(function(){
+  if(!document.querySelector('[id^="turnaje-"]')) return;
+
+  var odkazStylu = document.querySelector('link[rel="stylesheet"][href$="styl.css"]');
+  var ZDROJ = odkazStylu ? odkazStylu.getAttribute('href').replace(/styl\.css$/, '') : '';
+
+  function bunka(radek, text, trida){
+    var td = radek.insertCell();
+    td.textContent = text;
+    if(trida) td.className = trida;
+    return td;
+  }
+  function hlaska(telo, text, sloupcu){
+    telo.innerHTML = '';
+    var td = telo.insertRow().insertCell();
+    td.colSpan = sloupcu; td.style.textAlign = 'center'; td.style.padding = '26px';
+    td.textContent = text;
+  }
+  function datum(iso){
+    var d = iso.split('-');
+    return Number(d[2]) + '. ' + Number(d[1]) + '. ' + d[0];
+  }
+  // sloupce s čísly zarovnám doprava, stejně jako u mužů
+  function jeCislo(text){ return /^[\d\s.:+\-]+$/.test(text) && text.trim() !== ''; }
+
+  fetch(ZDROJ + 'orel.json')
+    .then(function(o){
+      if(o.status === 404){ console.warn('Chybí orel.json. Spusť workflow Aktualizace dat ze soutěže.'); return null; }
+      if(!o.ok) throw new Error(o.status);
+      return o.json();
+    })
+    .then(function(data){
+      Object.keys({'mladsi-zaci':1,'dorostenci':1}).forEach(function(klic){
+        var turnaje = document.getElementById('turnaje-' + klic);
+        var telo = document.getElementById('tabulka-' + klic);
+        var hlava = document.getElementById('hlava-' + klic);
+        if(!turnaje || !telo) return;
+
+        var k = data && data.kategorie && data.kategorie[klic];
+        if(!k){
+          hlaska(turnaje, 'Data se připravují, mrkněte sem za chvíli.', 3);
+          hlaska(telo, 'Data se připravují, mrkněte sem za chvíli.', 1);
+          return;
+        }
+
+        // turnaje
+        if(!k.turnaje || !k.turnaje.length){
+          hlaska(turnaje, 'Další turnaje zatím nejsou vypsané.', 3);
+        } else {
+          turnaje.innerHTML = '';
+          k.turnaje.forEach(function(t){
+            var r = turnaje.insertRow();
+            if(t.v_kurimi) r.className = 'my';
+            var d = bunka(r, '');
+            var a = document.createElement('a');
+            a.href = t.odkaz; a.target = '_blank'; a.rel = 'noopener';
+            a.textContent = datum(t.datum);
+            d.appendChild(a);
+            bunka(r, t.poradatel);
+            bunka(r, t.hala, 'skryt-mobil');
+          });
+        }
+
+        // tabulka
+        var tab = k.tabulka;
+        if(!tab || !tab.radky || !tab.radky.length){
+          if(hlava) hlava.innerHTML = '';
+          hlaska(telo, 'Tabulka bude po prvním odehraném turnaji.', 1);
+          return;
+        }
+        // sloupce, které se na mobil nevejdou: všechny kromě pořadí, týmu a posledního
+        var posledni = tab.sloupce.length - 1;
+        function tridaSloupce(i, text){
+          var t = [];
+          if(i > 1 && i < posledni) t.push('skryt-mobil');
+          if(jeCislo(text)) t.push('cislo');
+          return t.join(' ');
+        }
+        hlava.innerHTML = '';
+        var hr = hlava.insertRow();
+        tab.sloupce.forEach(function(s, i){
+          var th = document.createElement('th');
+          th.textContent = s;
+          var vzorek = tab.radky[0][i] || '';
+          th.className = tridaSloupce(i, vzorek);
+          hr.appendChild(th);
+        });
+        telo.innerHTML = '';
+        tab.radky.forEach(function(radek, ri){
+          var r = telo.insertRow();
+          if(ri === tab.nas) r.className = 'my';
+          radek.forEach(function(text, i){ bunka(r, text, tridaSloupce(i, text)); });
+        });
+      });
+    })
+    .catch(function(){
+      document.querySelectorAll('[id^="turnaje-"],[id^="tabulka-"]').forEach(function(t){
+        hlaska(t, 'Data se teď nepodařilo načíst. Zkuste to za chvíli.', 3);
+      });
+    });
+})();
