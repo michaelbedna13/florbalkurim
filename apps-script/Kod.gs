@@ -11,6 +11,10 @@
  */
 
 var NASTAVENI = {
+  // ID Google tabulky, kam se přihlášky zapisují. Je v adrese tabulky mezi /d/ a /edit.
+  // Když skript otevřeš přímo z tabulky (Rozšíření, Apps Script), může zůstat prázdné.
+  tabulka: '',
+
   // kam chodí upozornění o nové přihlášce, víc adres odděl čárkou
   upozorneni: 'florbalkurim@gmail.com',
   // jméno odesílatele v e-mailech
@@ -111,8 +115,15 @@ function odpoved(obj) {
    Tabulka a Disk
    ============================================================ */
 
-function listPrihlasek() {
+function sesit() {
+  if (NASTAVENI.tabulka) return SpreadsheetApp.openById(NASTAVENI.tabulka);
   var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) throw new Error('Skript neví, kam zapisovat. Vyplň nahoře v NASTAVENI řádek tabulka.');
+  return ss;
+}
+
+function listPrihlasek() {
+  var ss = sesit();
   var list = ss.getSheetByName(NASTAVENI.list);
   if (!list) {
     list = ss.insertSheet(NASTAVENI.list);
@@ -148,7 +159,7 @@ function posliVedoucimu(d, odkazKarticky) {
   var obsah =
     odstavec('Přišla nová přihláška na letní kemp. Na rodiče stačí odpovědět na tento e-mail.') +
     tabulka(radky) +
-    odstavec('<a href="' + SpreadsheetApp.getActiveSpreadsheet().getUrl() +
+    odstavec('<a href="' + sesit().getUrl() +
              '" style="color:#16375C;font-weight:bold">Otevřít tabulku přihlášek</a>');
 
   MailApp.sendEmail({

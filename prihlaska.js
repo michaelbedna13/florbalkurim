@@ -3,7 +3,7 @@
    tabulky, kartičku uloží na Disk a pošle e-maily vedoucímu kempu a rodiči. */
 (function(){
   // Adresa nasazeného skriptu (končí na /exec). Jiná se nikde nenastavuje.
-  var SKRIPT = 'SEM_VLOZ_ADRESU_SKRIPTU';
+  var SKRIPT = 'https://script.google.com/macros/s/AKfycbyiNv2QSK1_SgR4qm2qsyObMeKH29Cp6s7z1urrrabJ2aKvMgmG0ekvg_9KDNHN1hI6/exec';
 
   var formular = document.getElementById('prihlaska');
   if(!formular) return;
