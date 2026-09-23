@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kempy a tábory | Florbal Kuřim</title>
+<meta name="description" content="Letní florbalový kemp pro děti v Kuřimi. Otevřený i dětem, které florbal nikdy nehrály.">
+<link rel="canonical" href="https://florbalkurim.cz/kempy-a-tabory/prihlaska/">
+<meta property="og:title" content="Kempy a tábory | Florbal Kuřim">
+<meta property="og:description" content="Letní florbalový kemp pro děti v Kuřimi. Otevřený i dětem, které florbal nikdy nehrály.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://florbalkurim.cz/kempy-a-tabory/prihlaska/">
+<link rel="icon" href="../../logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styl.css">
+<meta name="robots" content="noindex">
+</head>
+<body>
+
+<header class="hlavicka">
+  <div class="obal">
+    <a class="znacka" href="../../">
+      <img src="../../logo.svg" alt=""><span>Florbal Kuřim</span>
+    </a>
+    <button class="prepinac" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span></button>
+    <nav class="menu" id="menu">
+      <a href="../../">Domů</a>
+      <a href="../../treninky/">Tréninky</a>
+      <a href="../../muzi/">Muži</a>
+      <a href="../../kempy-a-tabory/" aria-current="page">Kempy</a>
+      <a href="../../o-nas/">O nás</a>
+      <a href="../../kontakty/">Kontakty</a>
+      <a class="ven" href="https://www.flickr.com/photos/201096101@N02/albums" target="_blank" rel="noopener">Galerie</a>
+    </nav>
+  </div>
+</header>
+<div class="lem"></div>
+
+<section class="sekce tesna">
+  <div class="obal">
+    <a class="zpet" href="../">Zpět na kempy</a>
+    <span class="stitek"><span>Léto 2027</span></span>
+    <h1>Přihláška na kemp</h1>
+    <p class="vede">Kemp je pro děti od šesti do třinácti let, které k nám chodí na tréninky,
+       jejich sourozence a výjimečně kamarády. Cena 4 500 Kč, přihlášky do 28. 2. 2027.</p>
+  </div>
+</section>
+
+<section class="sekce svetla">
+  <div class="obal">
+
+    <div class="hlaseni" id="odeslano">
+      <h2>Přihláška je odeslaná</h2>
+      <p>Děkujeme. Na e-mail, který jste vyplnili, vám přišlo potvrzení.
+         Ozveme se s dalšími informacemi a platebními údaji.</p>
+      <p><a class="tlacitko" href="../">Zpět na kempy</a></p>
+    </div>
+
+    <div class="hlaseni" id="uzavreno">
+      <h2>Přihlášky jsou uzavřené</h2>
+      <p>Termín pro přihlášky na letošní kemp už uplynul. Pokud máte dotaz,
+         napište nám.</p>
+      <p><a class="tlacitko" href="../../kontakty/">Kontakty</a></p>
+    </div>
+
+    <form class="formular" id="prihlaska" method="POST" enctype="multipart/form-data"
+          action="https://formsubmit.co/alhanak@atlas.cz">
+
+      <!-- nastavení služby FormSubmit -->
+      <input type="hidden" name="_subject" value="Nová přihláška na kemp">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="">
+      <input type="hidden" name="_autoresponse" value="Dobrý den, přihláška na letní kemp Florbalu Kuřim k nám dorazila. Ozveme se s dalšími informacemi a platebními údaji. Florbal Kuřim">
+      <input type="text" name="_honey" class="past" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <fieldset>
+        <legend>Dítě</legend>
+        <div class="pole siroke">
+          <label for="f-dite">Jméno a příjmení</label>
+          <input id="f-dite" name="Jméno dítěte" required autocomplete="off">
+        </div>
+        <div class="pole">
+          <label for="f-narozeni">Datum narození</label>
+          <input id="f-narozeni" type="date" required>
+          <input type="hidden" name="Datum narození" value="">
+        </div>
+        <div class="pole">
+          <label for="f-trenink">Který trénink navštěvuje</label>
+          <select id="f-trenink" name="Trénink" required>
+            <option value="">Vyberte</option>
+            <option>Přípravka a elévové</option>
+            <option>Mladší žáci</option>
+            <option>Dorostenci a starší žáci</option>
+            <option>Nechodí, je to sourozenec</option>
+            <option>Nechodí, je to kamarád</option>
+          </select>
+        </div>
+        <div class="pole siroke">
+          <label for="f-bydliste">Bydliště</label>
+          <input id="f-bydliste" name="Bydliště" required autocomplete="street-address"
+                 placeholder="Ulice a číslo, obec">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Rodič</legend>
+        <div class="pole siroke">
+          <label for="f-rodic">Jméno a příjmení</label>
+          <input id="f-rodic" name="Jméno rodiče" required autocomplete="name">
+        </div>
+        <div class="pole">
+          <label for="f-email">E-mail</label>
+          <input id="f-email" name="email" type="email" required autocomplete="email">
+        </div>
+        <div class="pole">
+          <label for="f-telefon">Telefon</label>
+          <input id="f-telefon" name="Telefon" type="tel" required autocomplete="tel"
+                 placeholder="777 123 456">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Zdraví a bezpečnost</legend>
+        <div class="pole siroke">
+          <label for="f-alergie">Alergie a zdravotní omezení</label>
+          <textarea id="f-alergie" name="Alergie a zdravotní omezení" rows="3"
+                    placeholder="Když žádné nejsou, napište „žádné“"></textarea>
+        </div>
+        <div class="pole siroke">
+          <label for="f-leky">Léky, které bude během kempu užívat</label>
+          <textarea id="f-leky" name="Léky během kempu" rows="2"
+                    placeholder="Název, dávka a kdy je užívá"></textarea>
+        </div>
+        <div class="pole">
+          <span class="popisek">Plavec</span>
+          <div class="volby">
+            <label><input type="radio" name="Plavec" value="plavec" required><span>Plavec</span></label>
+            <label><input type="radio" name="Plavec" value="neplavec"><span>Neplavec</span></label>
+          </div>
+        </div>
+        <div class="pole">
+          <span class="popisek">Může odcházet domů samo</span>
+          <div class="volby">
+            <label><input type="radio" name="Odchází samo" value="ano" required><span>Ano</span></label>
+            <label><input type="radio" name="Odchází samo" value="ne"><span>Ne</span></label>
+          </div>
+        </div>
+        <div class="pole siroke">
+          <label for="f-karticka">Kartička zdravotní pojišťovny</label>
+          <input id="f-karticka" name="Kartička pojišťovny" type="file" accept="image/*,.pdf">
+          <p class="napoveda">Fotka nebo sken, nejvýš 5 MB. Nepovinné, kartičku můžete přinést i na kemp.</p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Souhlas se zpracováním osobních údajů</legend>
+
+        <details class="gdpr">
+          <summary>Celé znění souhlasu</summary>
+          <p>Jako zákonný zástupce dítěte uděluji Spolku Florbal Kuřim, se sídlem Hybešova 1988/36,
+             664 34 Kuřim, IČO 22873040, souhlas se zpracováním osobních údajů dítěte v rozsahu
+             zaškrtnutých bodů níže.</p>
+          <p><b>Informace o zdravotní pojišťovně</b>, a to pro účely evidence tohoto údaje pro případ úrazu
+             a potřeby ošetření dítěte. Tento osobní údaj se zpracovává po dobu trvání letního florbalového kempu.</p>
+          <p><b>Fotografie a videozáznamy</b>, a to pro účely pořizování záznamů z akcí organizace pro účely
+             evidence, archivace a propagace organizace a jejích akcí, včetně zveřejnění těchto fotografií
+             a videozáznamů na webových stránkách, sociálních sítích, v propagačních materiálech, na nástěnkách,
+             v místním a regionálním tisku. Tyto osobní údaje mohou být zpracovávány a zveřejňovány po dobu
+             5 let po ukončení letního kempu, následně budou uloženy výhradně pro účely archivace, vědeckého
+             a historického výzkumu a pro statistické účely (včetně případného zařazení do kroniky, ročenky apod.).</p>
+          <p>Jsem si vědom toho, že udělení souhlasu je dobrovolné a mohu jej kdykoliv odvolat.
+             Současně potvrzuji, že mi byly předány informace o všech činnostech zpracování osobních údajů,
+             především informace o účelech, rozsahu a době zpracování osobních údajů, o právním důvodu
+             zpracování, jakož i o příjemcích zpracovávaných osobních údajů v souladu se čl. 13 nařízení
+             č. 2016/679, obecným nařízením o ochraně osobních údajů, v platném a účinném znění.</p>
+          <p>Dále beru na vědomí, že mám právo požadovat po organizaci přístup ke zpracovávaným osobním údajům,
+             uplatnit právo na přenositelnost osobních údajů, opravu, výmaz, omezení zpracování osobních údajů
+             či námitku proti zpracování, mám-li za to, že zpracování není zákonné, případně mám právo podat
+             stížnost k Úřadu na ochranu osobních údajů.</p>
+        </details>
+
+        <label class="zaskrt"><input type="checkbox" data-souhlas="Souhlas: zdravotní pojišťovna">
+          <span>Souhlasím se zpracováním informace o zdravotní pojišťovně pro případ úrazu, po dobu kempu.</span></label>
+        <label class="zaskrt"><input type="checkbox" data-souhlas="Souhlas: fotografie a video">
+          <span>Souhlasím s pořizováním a zveřejňováním fotografií a videí z kempu.</span></label>
+        <label class="zaskrt"><input type="checkbox" required>
+          <span>Potvrzuji, že jsem se seznámil s celým zněním souhlasu a s informacemi o zpracování osobních údajů.</span></label>
+
+        <input type="hidden" name="Souhlas: zdravotní pojišťovna" value="NE">
+        <input type="hidden" name="Souhlas: fotografie a video" value="NE">
+        <input type="hidden" name="Odesláno" value="">
+      </fieldset>
+
+      <div class="odeslat">
+        <button class="tlacitko" type="submit">Odeslat přihlášku</button>
+        <p class="napoveda">Přihláška přijde e-mailem vedoucímu kempu, vám dorazí potvrzení.</p>
+      </div>
+    </form>
+
+  </div>
+</section>
+<div class="zaver">
+  <div class="srafy tmave"></div>
+  
+  <footer class="paticka">
+    <div class="obal">
+      <div>
+        <div class="znacka-p"><img src="../../logo.svg" alt=""><span>Florbal Kuřim</span></div>
+        <p style="margin:0;color:rgba(255,255,255,.6)">Spolek Florbal Kuřim, z. s.<br>
+           Hybešova 1988/36, 664 34 Kuřim<br>IČO 22873040</p>
+      </div>
+      <div>
+        <h3>Klub</h3>
+        <a href="../../treninky/">Tréninky</a>
+        <a href="../../muzi/">Muži</a>
+        <a href="../../kempy-a-tabory/">Kempy a tábory</a>
+        <a href="../../o-nas/">O nás</a>
+      </div>
+      <div>
+        <h3>Kde nás najdete</h3>
+        <a href="../../kontakty/">Kontakty</a>
+        <a href="https://www.flickr.com/photos/201096101@N02/albums" target="_blank" rel="noopener">Galerie na Flickru</a>
+        <a href="https://hlavnespokorou.cz" target="_blank" rel="noopener">Appka pro muže</a>
+      </div>
+    </div>
+    <div class="dole"><div class="obal">© <span class="rok-auto"></span> Florbal Kuřim, z. s.<br>Sportovní hala Kuřim, Sportovní 5.</div></div>
+  </footer>
+</div>
+
+<script src="../../web.js"></script>
+<script src="../../prihlaska.js"></script>
+</body>
+</html>
