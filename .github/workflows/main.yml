@@ -20,7 +20,7 @@ jobs:
           python-version: "3.12"
 
       - name: Instalace knihoven
-        run: pip install requests beautifulsoup4
+        run: pip install requests beautifulsoup4 pillow
 
       # Každý stahovač běží zvlášť. Když jeden spadne, ostatní doběhnou
       # a celý běh zčervená, takže je to vidět v přehledu Actions.
@@ -40,11 +40,19 @@ jobs:
         continue-on-error: true
         run: python scripts/orel.py
 
+      - name: Výběr fotek ze Zoneramy
+        continue-on-error: true
+        run: python scripts/galerie.py
+
       - name: Uložení změn
         run: |
           git config user.name  "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add -A tabulka.json hraci.json zapasy.json orel.json
+          # přidám jen to, co opravdu vzniklo, jinak by jeden spadlý stahovač
+          # zablokoval uložení dat i ze všech ostatních
+          for f in tabulka.json hraci.json zapasy.json orel.json galerie.json fotky/galerie; do
+            if [ -e "$f" ]; then git add -A "$f"; fi
+          done
           if git diff --cached --quiet; then
             echo "Nic se nezměnilo, není co ukládat."
           else
