@@ -1,58 +1,114 @@
 {
- "aktualizovano": "2026-09-23T10:41+01:00",
- "album": {
-  "nazev": "Letn&#237; kemp 2025",
-  "odkaz": "https://eu.zonerama.com/FlorbalKurim/Album/16476705"
- },
+ "aktualizovano": "2026-09-23T23:50+01:00",
  "galerie": "https://FlorbalKurim.zonerama.com",
+ "album": {
+  "nazev": "Letn&#237; kemp 2026",
+  "odkaz": "https://eu.zonerama.com/FlorbalKurim/Album/16481909"
+ },
  "fotky": [
   {
-   "soubor": "fotky/galerie/670997060.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670997060"
+   "soubor": "fotky/galerie/671074045.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074045"
   },
   {
-   "soubor": "fotky/galerie/670997053.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670997053"
+   "soubor": "fotky/galerie/671074094.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074094"
   },
   {
-   "soubor": "fotky/galerie/670997037.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670997037"
+   "soubor": "fotky/galerie/671074040.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074040"
   },
   {
-   "soubor": "fotky/galerie/670997029.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670997029"
+   "soubor": "fotky/galerie/671074079.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074079"
   },
   {
-   "soubor": "fotky/galerie/670997009.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670997009"
+   "soubor": "fotky/galerie/671074073.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074073"
   },
   {
-   "soubor": "fotky/galerie/670997002.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670997002"
+   "soubor": "fotky/galerie/671074063.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074063"
   },
   {
-   "soubor": "fotky/galerie/670996993.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670996993"
+   "soubor": "fotky/galerie/671074059.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074059"
   },
   {
-   "soubor": "fotky/galerie/670996982.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670996982"
+   "soubor": "fotky/galerie/671074029.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074029"
   },
   {
-   "soubor": "fotky/galerie/670996971.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670996971"
+   "soubor": "fotky/galerie/671074022.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074022"
   },
   {
-   "soubor": "fotky/galerie/670996962.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670996962"
+   "soubor": "fotky/galerie/671074008.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074008"
   },
   {
-   "soubor": "fotky/galerie/670996954.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670996954"
+   "soubor": "fotky/galerie/671074002.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074002"
   },
   {
-   "soubor": "fotky/galerie/670996945.webp",
-   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16476705/670996945"
+   "soubor": "fotky/galerie/671073990.webp",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671073990"
   }
- ]
+ ],
+ "kemp": {
+  "album": {
+   "nazev": "Letn&#237; kemp 2026",
+   "odkaz": "https://eu.zonerama.com/FlorbalKurim/Album/16481909"
+  },
+  "fotky": [
+   {
+    "soubor": "fotky/galerie/671074045.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074045"
+   },
+   {
+    "soubor": "fotky/galerie/671074094.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074094"
+   },
+   {
+    "soubor": "fotky/galerie/671074040.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074040"
+   },
+   {
+    "soubor": "fotky/galerie/671074079.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074079"
+   },
+   {
+    "soubor": "fotky/galerie/671074073.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074073"
+   },
+   {
+    "soubor": "fotky/galerie/671074063.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074063"
+   },
+   {
+    "soubor": "fotky/galerie/671074059.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074059"
+   },
+   {
+    "soubor": "fotky/galerie/671074029.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074029"
+   },
+   {
+    "soubor": "fotky/galerie/671074022.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074022"
+   },
+   {
+    "soubor": "fotky/galerie/671074008.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074008"
+   },
+   {
+    "soubor": "fotky/galerie/671074002.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671074002"
+   },
+   {
+    "soubor": "fotky/galerie/671073990.webp",
+    "odkaz": "https://eu.zonerama.com/FlorbalKurim/Photo/16481909/671073990"
+   }
+  ]
+ }
 }
