@@ -548,3 +548,6 @@ tr.my td{font-weight:600;color:var(--cerna)}
 
 .hlava-karusel .mezititulek{margin:0 0 18px;align-self:flex-end}
 .hlava-karusel .mezititulek + .karusel-sipky{margin-bottom:16px}
+
+.formular .chyba-odeslani{grid-column:1/-1;margin:0 0 16px;color:#B3261E;font-weight:600;max-width:none}
+.formular .chyba-odeslani:empty{display:none}

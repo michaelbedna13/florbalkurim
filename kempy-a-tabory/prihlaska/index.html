@@ -68,14 +68,8 @@
     </div>
 
     <form class="formular" id="prihlaska" method="POST" enctype="multipart/form-data"
-          action="https://formsubmit.co/florbalkurimcz@seznam.cz">
+          action="#">
 
-      <!-- nastavení služby FormSubmit -->
-      <input type="hidden" name="_subject" value="Nová přihláška na kemp">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="">
-      <input type="hidden" name="_autoresponse" value="Dobrý den, přihláška na letní kemp Florbalu Kuřim k nám dorazila. Ozveme se s dalšími informacemi a platebními údaji. Florbal Kuřim">
       <input type="text" name="_honey" class="past" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <fieldset>
@@ -200,9 +194,10 @@
         <input type="hidden" name="Odesláno" value="">
       </fieldset>
 
+      <p class="chyba-odeslani" id="chyba-odeslani" role="alert"></p>
       <div class="odeslat">
         <button class="tlacitko" type="submit">Odeslat přihlášku</button>
-        <p class="napoveda">Přihláška přijde e-mailem vedoucímu kempu, vám dorazí potvrzení.</p>
+        <p class="napoveda">Přihláška přijde vedoucímu kempu, vám dorazí potvrzení e-mailem.</p>
       </div>
     </form>
 

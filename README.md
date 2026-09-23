@@ -148,3 +148,15 @@ návštěvě nic nenačítá ze Zoneramy.
 Které fotky se ukážou: když na Zoneramě existuje veřejné album s názvem
 „Na web", bere se jen z něj. Jinak se vezme dvanáct fotek rovnoměrně
 z nejnovějšího alba. Dokud robot nic nestáhne, ukazuje karusel g1 až g3.
+
+
+## Přihláška na kemp
+
+Formulář `kempy-a-tabory/prihlaska/` odesílá data skriptu v Google Apps Script
+na účtu florbalkurim@gmail.com. Kód skriptu je pro přehled v `apps-script/Kod.gs`,
+běží ale v Googlu, ne tady. Skript přihlášku zapíše do Google tabulky, kartičku
+uloží do soukromé složky na Disku a pošle e-mail vedoucímu kempu a potvrzení rodiči.
+
+Adresa skriptu je jediný řádek nahoře v `prihlaska.js` (proměnná SKRIPT).
+Kam chodí upozornění, se mění nahoře ve skriptu v NASTAVENI.upozorneni.
+Po kempu se ve skriptu ručně spustí funkce smazatZdravotniUdajePoKempu.
