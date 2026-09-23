@@ -36,11 +36,15 @@ jobs:
         continue-on-error: true
         run: python scripts/zapasy.py
 
+      - name: Stažení Orelské ligy (mládež)
+        continue-on-error: true
+        run: python scripts/orel.py
+
       - name: Uložení změn
         run: |
           git config user.name  "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add -A tabulka.json hraci.json zapasy.json
+          git add -A tabulka.json hraci.json zapasy.json orel.json
           if git diff --cached --quiet; then
             echo "Nic se nezměnilo, není co ukládat."
           else
