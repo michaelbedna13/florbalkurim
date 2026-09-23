@@ -500,3 +500,20 @@ tr.my td{font-weight:600;color:var(--cerna)}
 .tabulka-obal td a{color:inherit;font-weight:600;text-decoration:none;
   box-shadow:inset 0 -2px 0 var(--nebeska)}
 .sekce.tmava .tabulka-obal td a{box-shadow:inset 0 -2px 0 rgba(124,182,224,.7)}
+
+/* ---------- právní texty ---------- */
+.pravni > *{max-width:760px}
+.pravni h2{font-size:clamp(20px,2.4vw,24px);line-height:1.2;margin:44px 0 0}
+.pravni h2:first-child{margin-top:0}
+.pravni h2 + p,.pravni h2 + ul{margin-top:16px}
+.pravni p{line-height:1.65}
+.pravni .seznam{margin:14px 0 16px}
+.pravni .seznam li{font-size:16px}
+.pravni a{color:var(--namorni);font-weight:500}
+.pravni .platnost{margin-top:44px;padding-top:18px;border-top:2px solid var(--cerna);
+  font-size:14.5px;color:var(--text-60)}
+.paticka .dole a{display:inline;color:rgba(255,255,255,.7);margin:0}
+.paticka .dole a:hover{color:#fff}
+
+.formular .odkaz-zasady{grid-column:1/-1;margin-top:-6px}
+.formular .odkaz-zasady a{color:var(--namorni);font-weight:600}

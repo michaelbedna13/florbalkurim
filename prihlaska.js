@@ -20,6 +20,23 @@
   formular.querySelector('[name="_next"]').value =
     location.origin + location.pathname + '?odeslano=1';
 
+  // Souhlas se zdravotními údaji je povinný, jen když rodič nějaké vyplní.
+  // Souhlas s pojišťovnou, jen když přiloží kartičku.
+  var alergie = document.getElementById('f-alergie');
+  var leky = document.getElementById('f-leky');
+  var karticka = document.getElementById('f-karticka');
+  var sZdravi = document.getElementById('s-zdravi');
+  var sPojistovna = document.getElementById('s-pojistovna');
+  var NIC = /^\s*(žádn|zadn|nemá|nema|ne\b|nic|-|–|x\s*$)/i;
+  function vyplneno(pole){ var v = pole.value.trim(); return v !== '' && !NIC.test(v); }
+  function prizpusob(){
+    sZdravi.required = vyplneno(alergie) || vyplneno(leky);
+    sPojistovna.required = karticka.files.length > 0;
+  }
+  [alergie, leky].forEach(function(p){ p.addEventListener('input', prizpusob); });
+  karticka.addEventListener('change', prizpusob);
+  prizpusob();
+
   formular.addEventListener('submit', function(e){
     var soubor = formular.querySelector('input[type="file"]');
     if(soubor.files[0] && soubor.files[0].size > MAX_SOUBOR){
