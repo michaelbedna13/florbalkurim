@@ -1,0 +1,395 @@
+{
+ "aktualizovano": "2026-09-23T10:41+01:00",
+ "kategorie": {
+  "mladsi-zaci": {
+   "nazev": "Mladší žáci",
+   "turnaje": [
+    {
+     "id": "866",
+     "datum": "2026-10-11",
+     "poradatel": "",
+     "hala": "",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=866"
+    },
+    {
+     "id": "845",
+     "datum": "2026-10-11",
+     "poradatel": "",
+     "hala": "",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=845"
+    },
+    {
+     "id": "838",
+     "datum": "2026-10-11",
+     "poradatel": "",
+     "hala": "",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=838"
+    },
+    {
+     "id": "824",
+     "datum": "2026-10-17",
+     "poradatel": "FBO Orel Boskovice",
+     "hala": "SH Svitávka",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=824"
+    },
+    {
+     "id": "825",
+     "datum": "2026-11-14",
+     "poradatel": "Orel Brno-Řečkovice",
+     "hala": "SH Kuřim",
+     "v_kurimi": true,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=825"
+    },
+    {
+     "id": "826",
+     "datum": "2026-12-13",
+     "poradatel": "Orel Bořitov",
+     "hala": "Městská sportovní hala Kunštát",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=826"
+    },
+    {
+     "id": "827",
+     "datum": "2027-01-24",
+     "poradatel": "Orel Brno-Bohunice",
+     "hala": "SH Lesná",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=827"
+    },
+    {
+     "id": "828",
+     "datum": "2027-03-06",
+     "poradatel": "TJ Sokol Adamov",
+     "hala": "TJ Sokol Adamov",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=828"
+    },
+    {
+     "id": "829",
+     "datum": "2027-03-20",
+     "poradatel": "Orel Nové Město na Moravě",
+     "hala": "SH NMnM",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=829"
+    },
+    {
+     "id": "830",
+     "datum": "2027-04-10",
+     "poradatel": "Orel Kuřim",
+     "hala": "SH Kuřim",
+     "v_kurimi": true,
+     "poradame": true,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=830"
+    }
+   ],
+   "tabulka": {
+    "sloupce": [
+     "#",
+     "Tým",
+     "B",
+     "Z",
+     "V",
+     "VN",
+     "PN",
+     "P",
+     "BV",
+     "BO",
+     "Forma"
+    ],
+    "radky": [
+     [
+      "1.",
+      "Orel Bořitov",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "2.",
+      "Orel Kuřim",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "3.",
+      "Orel Brno-Bohunice",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "4.",
+      "FBO Orel Boskovice",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "5.",
+      "Orel Nové Město na Moravě",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "6.",
+      "TJ Sokol Adamov",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "7.",
+      "Orel Brno-Řečkovice",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ]
+    ],
+    "nas": 1
+   },
+   "odkaz_kalendar": "https://www.orelskafl.cz/web/index.php?r=site%2Fcalendar&f_category=3&f_division=3",
+   "odkaz_tabulka": "https://www.orelskafl.cz/web/index.php?r=site%2Fseason-table&category_id=3&division_id=3"
+  },
+  "dorostenci": {
+   "nazev": "Dorostenci",
+   "turnaje": [
+    {
+     "id": "866",
+     "datum": "2026-10-11",
+     "poradatel": "",
+     "hala": "",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=866"
+    },
+    {
+     "id": "845",
+     "datum": "2026-10-11",
+     "poradatel": "",
+     "hala": "",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=845"
+    },
+    {
+     "id": "838",
+     "datum": "2026-10-11",
+     "poradatel": "",
+     "hala": "",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=838"
+    },
+    {
+     "id": "856",
+     "datum": "2026-10-17",
+     "poradatel": "Orel Nové Město na Moravě",
+     "hala": "SH NMnM",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=856"
+    },
+    {
+     "id": "824",
+     "datum": "2026-10-17",
+     "poradatel": "",
+     "hala": "",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=824"
+    },
+    {
+     "id": "857",
+     "datum": "2026-12-12",
+     "poradatel": "FBO Orel Boskovice",
+     "hala": "SH Svitávka",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=857"
+    },
+    {
+     "id": "858",
+     "datum": "2027-01-24",
+     "poradatel": "Orel Bořitov",
+     "hala": "Městská sportovní hala Kunštát",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=858"
+    },
+    {
+     "id": "859",
+     "datum": "2027-03-06",
+     "poradatel": "TJ Sokol Střelice",
+     "hala": "ZŠ Střelice",
+     "v_kurimi": false,
+     "poradame": false,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=859"
+    },
+    {
+     "id": "860",
+     "datum": "2027-04-10",
+     "poradatel": "Orel Kuřim",
+     "hala": "SH Kuřim",
+     "v_kurimi": true,
+     "poradame": true,
+     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=860"
+    }
+   ],
+   "tabulka": {
+    "sloupce": [
+     "#",
+     "Tým",
+     "B",
+     "Z",
+     "V",
+     "VN",
+     "PN",
+     "P",
+     "BV",
+     "BO",
+     "Forma"
+    ],
+    "radky": [
+     [
+      "1.",
+      "Orel Blansko",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "2.",
+      "TJ Sokol Střelice",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "3.",
+      "Orel Kuřim",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "4.",
+      "FBO Orel Boskovice",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "5.",
+      "Orel Nové Město na Moravě",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ],
+     [
+      "6.",
+      "Orel Bořitov",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      ""
+     ]
+    ],
+    "nas": 2
+   },
+   "odkaz_kalendar": "https://www.orelskafl.cz/web/index.php?r=site%2Fcalendar&f_category=5&f_division=3",
+   "odkaz_tabulka": "https://www.orelskafl.cz/web/index.php?r=site%2Fseason-table&category_id=5&division_id=3"
+  }
+ }
+}
