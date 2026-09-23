@@ -136,3 +136,15 @@ stahovači (workflow `.github/workflows/main.yml`). Kalendář ligy ukazuje jen
 neodehrané turnaje, odehrané z webu samy zmizí. Tabulka divize se objeví až po
 prvním turnaji a její sloupce se přebírají tak, jak je liga vypíše.
 Kategorie a divize jsou nahoře ve skriptu v seznamu KATEGORIE.
+
+
+## Fotogalerie a karusel
+
+Alba jsou na Zoneramě: https://FlorbalKurim.zonerama.com
+Karusel na úvodní stránce plní `scripts/galerie.py`. Fotky si stáhne, zmenší
+a uloží do `fotky/galerie/`, seznam zapíše do `galerie.json`. Web tak při
+návštěvě nic nenačítá ze Zoneramy.
+
+Které fotky se ukážou: když na Zoneramě existuje veřejné album s názvem
+„Na web", bere se jen z něj. Jinak se vezme dvanáct fotek rovnoměrně
+z nejnovějšího alba. Dokud robot nic nestáhne, ukazuje karusel g1 až g3.

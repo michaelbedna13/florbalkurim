@@ -278,3 +278,70 @@ document.querySelectorAll('img[data-misto]').forEach(function(o){
       });
     });
 })();
+
+/* ---------- karusel fotek na úvodní stránce ----------
+   Fotky vybírá robot ze Zoneramy do galerie.json. Dokud soubor není,
+   zůstanou v karuselu tři fotky, které jsou přímo v HTML. */
+(function(){
+  var pas = document.getElementById('karusel');
+  if(!pas) return;
+  var sipky = document.querySelectorAll('.karusel-sipka');
+
+  function krok(){
+    var s = pas.querySelector('.karusel-snimek');
+    return s ? s.getBoundingClientRect().width + 14 : pas.clientWidth;
+  }
+  function stavSipek(){
+    if(!sipky.length) return;
+    sipky[0].disabled = pas.scrollLeft < 8;
+    sipky[1].disabled = pas.scrollLeft + pas.clientWidth > pas.scrollWidth - 8;
+  }
+  sipky.forEach(function(b){
+    b.addEventListener('click', function(){
+      zastav();
+      pas.scrollBy({left: krok() * Number(b.dataset.smer), behavior: 'smooth'});
+    });
+  });
+  pas.addEventListener('scroll', stavSipek, {passive: true});
+  window.addEventListener('resize', stavSipek);
+
+  // pomalé samovolné posouvání; jakmile se člověk karuselu dotkne, přestane
+  var casovac = null;
+  var klid = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function dalsi(){
+    if(pas.scrollLeft + pas.clientWidth > pas.scrollWidth - 8) pas.scrollTo({left: 0, behavior: 'smooth'});
+    else pas.scrollBy({left: krok(), behavior: 'smooth'});
+  }
+  function spust(){ if(!klid && !casovac) casovac = setInterval(dalsi, 5000); }
+  function zastav(){ clearInterval(casovac); casovac = null; spust = function(){}; }
+  ['pointerdown','wheel','keydown','touchstart'].forEach(function(u){
+    pas.addEventListener(u, zastav, {passive: true});
+  });
+  pas.addEventListener('mouseenter', function(){ clearInterval(casovac); casovac = null; });
+  pas.addEventListener('mouseleave', function(){ spust(); });
+
+  var odkazStylu = document.querySelector('link[rel="stylesheet"][href$="styl.css"]');
+  var ZDROJ = odkazStylu ? odkazStylu.getAttribute('href').replace(/styl\.css$/, '') : '';
+
+  fetch(ZDROJ + 'galerie.json')
+    .then(function(o){ return o.ok ? o.json() : null; })
+    .then(function(data){
+      if(data && data.fotky && data.fotky.length){
+        pas.innerHTML = '';
+        data.fotky.forEach(function(f){
+          var a = document.createElement('a');
+          a.className = 'karusel-snimek ram';
+          a.href = f.odkaz; a.target = '_blank'; a.rel = 'noopener';
+          var img = document.createElement('img');
+          img.src = ZDROJ + f.soubor;
+          img.alt = 'Fotka z alba ' + (data.album && data.album.nazev ? data.album.nazev : 'Florbal Kuřim');
+          img.loading = 'lazy';
+          a.appendChild(img);
+          pas.appendChild(a);
+        });
+      }
+      stavSipek();
+      spust();
+    })
+    .catch(function(){ stavSipek(); spust(); });
+})();

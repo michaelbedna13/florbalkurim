@@ -517,3 +517,31 @@ tr.my td{font-weight:600;color:var(--cerna)}
 
 .formular .odkaz-zasady{grid-column:1/-1;margin-top:-6px}
 .formular .odkaz-zasady a{color:var(--namorni);font-weight:600}
+
+/* ---------- karusel fotek ----------
+   Obyčejné posouvání do strany s přichytáváním, na mobilu prstem,
+   na počítači šipkami. Snímky mají stejně useknutý roh jako ostatní fotky. */
+.hlava-karusel{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.hlava-karusel .hlava-sekce{margin-bottom:34px}
+.karusel-sipky{display:flex;gap:8px;margin-bottom:38px;flex:none}
+.karusel-sipka{width:52px;height:52px;border:2px solid var(--cerna);background:transparent;
+  color:var(--cerna);font-size:22px;line-height:1;cursor:pointer;
+  transition:background .15s,color .15s,border-color .15s}
+.karusel-sipka:hover{background:var(--namorni);border-color:var(--namorni);color:#fff}
+.karusel-sipka:disabled{opacity:.3;cursor:default;background:transparent;color:var(--cerna);
+  border-color:var(--cerna)}
+.karusel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  margin:0 -22px;padding:0 22px;scroll-padding:0 22px}
+.karusel::-webkit-scrollbar{display:none}
+.karusel:focus-visible{outline:3px solid var(--nebeska-tm);outline-offset:4px}
+.karusel-snimek{flex:0 0 calc((100% - 28px) / 3);scroll-snap-align:start;display:block}
+.karusel-snimek img{aspect-ratio:4/3;transition:transform .4s}
+.karusel-snimek:hover img{transform:scale(1.03)}
+.karusel-snimek .mistofoto{aspect-ratio:4/3}
+@media(max-width:900px){.karusel-snimek{flex-basis:calc((100% - 14px) / 1.6)}}
+@media(max-width:600px){
+  .karusel-snimek{flex-basis:84%}
+  .karusel-sipky{display:none}
+}
+@media (prefers-reduced-motion:reduce){.karusel{scroll-behavior:auto}}
