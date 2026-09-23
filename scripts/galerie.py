@@ -12,6 +12,8 @@ KTERÉ FOTKY SE UKÁŽOU
  * Když na Zoneramě existuje veřejné album s názvem "Na web", vezmou se
    fotky jen z něj. Tak máte plnou kontrolu, které děti jsou na webu vidět.
  * Když takové album není, vezme se rovnoměrný výběr z nejnovějšího alba.
+ * Pro stránku Kempy se zvlášť vybírá z nejnovějšího alba, které má
+   v názvu slovo „kemp“.
 
 Poznámky ke stránkám Zoneramy:
  * Odkazy na fotky mají tvar /FlorbalKurim/Photo/<album>/<fotka>.
@@ -102,15 +104,24 @@ def vyber():
     if vlastni:
         album = vlastni
         fotky = fotky_alba(stranky[album], album)[:POCET * 2]
-        print(f"Beru album „{nazvy[album]}“, je určené pro web.")
+        print(f"Úvodní stránka: album „{nazvy[album]}“, je určené pro web.")
     else:
         album = alba[0]
         fotky = rovnomerne(fotky_alba(stranky[album], album), POCET)
-        print(f"Album „Na web“ není, beru výběr z nejnovějšího alba „{nazvy[album]}“.")
-
+        print(f"Úvodní stránka: album „Na web“ není, beru výběr z nejnovějšího „{nazvy[album]}“.")
     if not fotky:
         raise SystemExit(f"V albu {album} jsem nenašel žádné fotky.")
-    return album, nazvy[album], fotky
+
+    # stránka Kempy: nejnovější album, které má v názvu „kemp“
+    kemp = next((a for a in alba
+                 if "kemp" in nazvy[a].lower() and nazvy[a].strip().lower() != ALBUM_PRO_WEB), None)
+    kemp_fotky = rovnomerne(fotky_alba(stranky[kemp], kemp), POCET) if kemp else []
+    if kemp:
+        print(f"Stránka Kempy: výběr z alba „{nazvy[kemp]}“.")
+    else:
+        print("Stránka Kempy: album s „kemp“ v názvu není, ukáže se výběr z úvodní stránky.")
+
+    return (album, nazvy[album], fotky), (kemp, nazvy.get(kemp), kemp_fotky)
 
 
 def uloz_fotku(foto_id):
@@ -125,37 +136,47 @@ def uloz_fotku(foto_id):
     return cil
 
 
-def main():
-    os.makedirs(SLOZKA, exist_ok=True)
-    album, nazev, fotky = vyber()
-
+def stahni_sadu(album, fotky):
     ulozene = []
     for f in fotky:
         try:
             ulozene.append(uloz_fotku(f))
         except Exception as e:
             print(f"   fotku {f} se nepodařilo stáhnout: {e}")
-    if not ulozene:
-        raise SystemExit("Nepodařilo se stáhnout ani jednu fotku, galerie.json nechávám beze změny.")
+    return [{"soubor": c.replace(os.sep, "/"),
+             "odkaz": f"{ZAKLAD}/{UCET}/Photo/{album}/{os.path.basename(c)[:-5]}"}
+            for c in ulozene]
 
-    # staré fotky, které už ve výběru nejsou, smažu, ať web nebobtná
+
+def main():
+    os.makedirs(SLOZKA, exist_ok=True)
+    (album, nazev, fotky), (kemp, kemp_nazev, kemp_fotky) = vyber()
+
+    hlavni = stahni_sadu(album, fotky)
+    if not hlavni:
+        raise SystemExit("Nepodařilo se stáhnout ani jednu fotku, galerie.json nechávám beze změny.")
+    kempove = stahni_sadu(kemp, kemp_fotky) if kemp else []
+
+    # staré fotky, které už v žádném výběru nejsou, smažu, ať web nebobtná
+    potreba = {f["soubor"] for f in hlavni + kempove}
     for soubor in os.listdir(SLOZKA):
-        cesta = os.path.join(SLOZKA, soubor)
-        if cesta not in ulozene:
-            os.remove(cesta)
+        cesta = f"{SLOZKA}/{soubor}"
+        if cesta not in potreba:
+            os.remove(os.path.join(SLOZKA, soubor))
 
     praha = timezone(timedelta(hours=1))
     data = {
         "aktualizovano": datetime.now(praha).isoformat(timespec="minutes"),
-        "album": {"nazev": nazev, "odkaz": f"{ZAKLAD}/{UCET}/Album/{album}"},
         "galerie": VEREJNA_GALERIE,
-        "fotky": [{"soubor": c.replace(os.sep, "/"),
-                   "odkaz": f"{ZAKLAD}/{UCET}/Photo/{album}/{os.path.basename(c)[:-5]}"}
-                  for c in ulozene],
+        "album": {"nazev": nazev, "odkaz": f"{ZAKLAD}/{UCET}/Album/{album}"},
+        "fotky": hlavni,
+        "kemp": ({"album": {"nazev": kemp_nazev, "odkaz": f"{ZAKLAD}/{UCET}/Album/{kemp}"},
+                  "fotky": kempove} if kempove else None),
     }
+    ulozene = hlavni + kempove
     with open(VYSTUP, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
-    print(f"Uloženo {len(ulozene)} fotek z alba „{nazev}“ do {SLOZKA}/ a {VYSTUP}.")
+    print(f"Uloženo {len(hlavni)} fotek pro úvodní stránku a {len(kempove)} pro Kempy.")
     return 0
 
 

@@ -279,69 +279,84 @@ document.querySelectorAll('img[data-misto]').forEach(function(o){
     });
 })();
 
-/* ---------- karusel fotek na úvodní stránce ----------
-   Fotky vybírá robot ze Zoneramy do galerie.json. Dokud soubor není,
-   zůstanou v karuselu tři fotky, které jsou přímo v HTML. */
+/* ---------- karusely fotek (úvodní stránka a Kempy) ----------
+   Fotky vybírá robot ze Zoneramy do galerie.json. Každý karusel má
+   v data-sada, kterou sadu chce: "hlavni" nebo "kemp". Dokud soubor
+   není, zůstanou v karuselu fotky, které jsou přímo v HTML. */
 (function(){
-  var pas = document.getElementById('karusel');
-  if(!pas) return;
-  var sipky = document.querySelectorAll('.karusel-sipka');
-
-  function krok(){
-    var s = pas.querySelector('.karusel-snimek');
-    return s ? s.getBoundingClientRect().width + 14 : pas.clientWidth;
-  }
-  function stavSipek(){
-    if(!sipky.length) return;
-    sipky[0].disabled = pas.scrollLeft < 8;
-    sipky[1].disabled = pas.scrollLeft + pas.clientWidth > pas.scrollWidth - 8;
-  }
-  sipky.forEach(function(b){
-    b.addEventListener('click', function(){
-      zastav();
-      pas.scrollBy({left: krok() * Number(b.dataset.smer), behavior: 'smooth'});
-    });
-  });
-  pas.addEventListener('scroll', stavSipek, {passive: true});
-  window.addEventListener('resize', stavSipek);
-
-  // pomalé samovolné posouvání; jakmile se člověk karuselu dotkne, přestane
-  var casovac = null;
+  var karusely = document.querySelectorAll('.karusel');
+  if(!karusely.length) return;
   var klid = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function dalsi(){
-    if(pas.scrollLeft + pas.clientWidth > pas.scrollWidth - 8) pas.scrollTo({left: 0, behavior: 'smooth'});
-    else pas.scrollBy({left: krok(), behavior: 'smooth'});
+
+  function zaved(pas){
+    var sipky = document.querySelectorAll('.karusel-sipka[aria-controls="' + pas.id + '"]');
+    var casovac = null, zastaveno = false;
+
+    function krok(){
+      var s = pas.querySelector('.karusel-snimek');
+      return s ? s.getBoundingClientRect().width + 14 : pas.clientWidth;
+    }
+    function stavSipek(){
+      if(!sipky.length) return;
+      sipky[0].disabled = pas.scrollLeft < 8;
+      sipky[1].disabled = pas.scrollLeft + pas.clientWidth > pas.scrollWidth - 8;
+    }
+    function dalsi(){
+      if(pas.scrollLeft + pas.clientWidth > pas.scrollWidth - 8) pas.scrollTo({left: 0, behavior: 'smooth'});
+      else pas.scrollBy({left: krok(), behavior: 'smooth'});
+    }
+    function spust(){ if(!klid && !zastaveno && !casovac) casovac = setInterval(dalsi, 5000); }
+    function pauza(){ clearInterval(casovac); casovac = null; }
+    function zastav(){ zastaveno = true; pauza(); }
+
+    sipky.forEach(function(b){
+      b.addEventListener('click', function(){
+        zastav();
+        pas.scrollBy({left: krok() * Number(b.dataset.smer), behavior: 'smooth'});
+      });
+    });
+    ['pointerdown','wheel','keydown','touchstart'].forEach(function(u){
+      pas.addEventListener(u, zastav, {passive: true});
+    });
+    pas.addEventListener('mouseenter', pauza);
+    pas.addEventListener('mouseleave', spust);
+    pas.addEventListener('scroll', stavSipek, {passive: true});
+    window.addEventListener('resize', stavSipek);
+
+    return {pas: pas, stavSipek: stavSipek, spust: spust};
   }
-  function spust(){ if(!klid && !casovac) casovac = setInterval(dalsi, 5000); }
-  function zastav(){ clearInterval(casovac); casovac = null; spust = function(){}; }
-  ['pointerdown','wheel','keydown','touchstart'].forEach(function(u){
-    pas.addEventListener(u, zastav, {passive: true});
-  });
-  pas.addEventListener('mouseenter', function(){ clearInterval(casovac); casovac = null; });
-  pas.addEventListener('mouseleave', function(){ spust(); });
+
+  var zavedene = Array.prototype.map.call(karusely, zaved);
 
   var odkazStylu = document.querySelector('link[rel="stylesheet"][href$="styl.css"]');
   var ZDROJ = odkazStylu ? odkazStylu.getAttribute('href').replace(/styl\.css$/, '') : '';
 
+  function napln(pas, sada){
+    pas.innerHTML = '';
+    sada.fotky.forEach(function(f){
+      var a = document.createElement('a');
+      a.className = 'karusel-snimek ram';
+      a.href = f.odkaz; a.target = '_blank'; a.rel = 'noopener';
+      var img = document.createElement('img');
+      img.src = ZDROJ + f.soubor;
+      img.alt = 'Fotka z alba ' + (sada.album && sada.album.nazev ? sada.album.nazev : 'Florbal Kuřim');
+      img.loading = 'lazy';
+      a.appendChild(img);
+      pas.appendChild(a);
+    });
+  }
+
   fetch(ZDROJ + 'galerie.json')
     .then(function(o){ return o.ok ? o.json() : null; })
     .then(function(data){
-      if(data && data.fotky && data.fotky.length){
-        pas.innerHTML = '';
-        data.fotky.forEach(function(f){
-          var a = document.createElement('a');
-          a.className = 'karusel-snimek ram';
-          a.href = f.odkaz; a.target = '_blank'; a.rel = 'noopener';
-          var img = document.createElement('img');
-          img.src = ZDROJ + f.soubor;
-          img.alt = 'Fotka z alba ' + (data.album && data.album.nazev ? data.album.nazev : 'Florbal Kuřim');
-          img.loading = 'lazy';
-          a.appendChild(img);
-          pas.appendChild(a);
-        });
-      }
-      stavSipek();
-      spust();
+      zavedene.forEach(function(k){
+        if(data && data.fotky && data.fotky.length){
+          var hlavni = {album: data.album, fotky: data.fotky};
+          var sada = (k.pas.dataset.sada === 'kemp' && data.kemp && data.kemp.fotky.length) ? data.kemp : hlavni;
+          napln(k.pas, sada);
+        }
+        k.stavSipek(); k.spust();
+      });
     })
-    .catch(function(){ stavSipek(); spust(); });
+    .catch(function(){ zavedene.forEach(function(k){ k.stavSipek(); k.spust(); }); });
 })();

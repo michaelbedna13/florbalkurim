@@ -545,3 +545,6 @@ tr.my td{font-weight:600;color:var(--cerna)}
   .karusel-sipky{display:none}
 }
 @media (prefers-reduced-motion:reduce){.karusel{scroll-behavior:auto}}
+
+.hlava-karusel .mezititulek{margin:0 0 18px;align-self:flex-end}
+.hlava-karusel .mezititulek + .karusel-sipky{margin-bottom:16px}
