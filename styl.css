@@ -502,7 +502,7 @@ tr.my td{font-weight:600;color:var(--cerna)}
 /* ---------- přihláška na kemp ----------
    Karta uprostřed tmavé sekce. Jednotný rytmus: popisek 8 px nad polem,
    24 px mezi poli, sekce oddělené linkou a 40 px vzduchu. */
-.sekce.tmava.sekce-formular{padding-top:clamp(40px,5vw,64px)}
+.sekce.tmava.sekce-formular{padding-top:clamp(40px,5vw,64px);scroll-margin-top:var(--hlavicka-h)}
 .formular-karta{background:#fff;max-width:760px;margin:0 auto;padding:clamp(24px,4.5vw,52px);
   box-shadow:0 24px 60px -30px rgba(0,0,0,.6);
   clip-path:polygon(0 0,100% 0,100% calc(100% - 26px),calc(100% - 26px) 100%,0 100%)}
@@ -610,19 +610,46 @@ tr.my td{font-weight:600;color:var(--cerna)}
 .formular .chybne .volby span,.formular .chybne .cip span{border-color:#E5A39D}
 .formular .zaskrt.chybne input{outline:2px solid #B3261E;outline-offset:2px}
 
+.sekce.tmava .formular-karta h2,.sekce.tmava .formular-karta h3{color:var(--cerna)}
+
+/* děti: každé ve vlastním rámečku, pod nimi tlačítko na další */
+.formular .siroke{grid-column:1/-1}
+.formular .deti{display:flex;flex-direction:column;gap:22px}
+.formular .dite{border:1.5px solid var(--linka);padding:24px 24px 28px;scroll-margin-top:calc(var(--hlavicka-h) + 20px)}
+.formular .dite-hlava{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--linka)}
+.sekce.tmava .formular .dite-nazev{margin:0;font-family:var(--nadpisy);font-weight:700;font-size:17px;
+  text-transform:uppercase;letter-spacing:.02em;color:var(--cerna)}
+.formular .odebrat-dite{font:600 14px var(--pismo);color:#B3261E;background:none;border:0;
+  padding:6px 0;cursor:pointer;text-decoration:underline}
+.formular .dite-pole{display:grid;grid-template-columns:1fr 1fr;gap:26px 20px}
+.formular .pridat-dite{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+.formular .pridat-dite .tlacitko{padding:13px 22px}
+
 /* odeslání */
 .formular .chyba-odeslani{margin:36px 0 0;color:#B3261E;font-weight:600;max-width:none}
 .formular .chyba-odeslani:empty{display:none}
+.formular{scroll-margin-top:calc(var(--hlavicka-h) + 24px)}
 .formular .odeslat{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;
   margin-top:36px;padding-top:28px;border-top:2px solid var(--cerna)}
 .formular .chyba-odeslani:not(:empty) + .odeslat{margin-top:14px}
 .formular button[disabled]{opacity:.6;cursor:wait}
 .formular .past{position:absolute;left:-9999px}
 
-.hlaseni{display:none}
+/* karty s potvrzením a uzávěrkou leží v tmavé sekci, písmo jim nastavuji zvlášť */
+.hlaseni{display:none;scroll-margin-top:calc(var(--hlavicka-h) + 24px)}
 .hlaseni.ukazat{display:block}
-.hlaseni h2{margin-bottom:0}
-.hlaseni h2 + p{margin-top:18px}
+.sekce.tmava .hlaseni h2{margin:0;color:var(--cerna);font-size:clamp(26px,3.4vw,34px)}
+.sekce.tmava .hlaseni h2 + p{margin-top:20px}
+.sekce.tmava .hlaseni p{color:var(--text);font-size:16.5px;line-height:1.6;margin:0 0 12px}
+.hlaseni p b{color:var(--cerna)}
+.sekce.tmava .hlaseni .napoveda{font-size:14px;color:var(--text-60)}
+.hlaseni:focus{outline:none}
+.hotovo-ikona{display:grid;place-items:center;width:56px;height:56px;margin-bottom:22px;
+  background:var(--nebeska);color:var(--cerna);font:700 30px/1 var(--nadpisy);transform:skewX(-10deg)}
+.tlacitka-hlaseni{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.formular-karta .tlacitko.svetle{color:var(--cerna);border-color:var(--cerna)}
+.formular-karta .tlacitko.svetle:hover{color:#fff}
 
 @media(max-width:640px){
   .formular-karta{margin:0 -6px;padding:26px 20px 34px}
@@ -634,4 +661,7 @@ tr.my td{font-weight:600;color:var(--cerna)}
     background-position:calc(100% - 15px) 52%,calc(100% - 9px) 52%}
   .formular .zaskrt{font-size:14.5px}
   .formular .odeslat .tlacitko{width:100%}
+  .formular .dite{border:0;border-top:2px solid var(--cerna);padding:18px 0 0}
+  .formular .dite-pole{grid-template-columns:1fr;gap:26px}
+  .formular .pridat-dite .tlacitko{width:100%}
 }

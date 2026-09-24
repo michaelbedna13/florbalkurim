@@ -64,34 +64,44 @@ function doPost(e) {
     if (new Date() > NASTAVENI.kemp.uzaverka) {
       return odpoved({ ok: false, chyba: 'Přihlášky jsou už uzavřené.' });
     }
-    for (var i = 0; i < POVINNE.length; i++) {
-      if (!String(d[POVINNE[i]] || '').trim()) {
-        return odpoved({ ok: false, chyba: 'Chybí pole: ' + POVINNE[i] });
+
+    // Nový web posílá děti v poli deti. Stará podoba s jedním dítětem
+    // (údaje přímo v přihlášce) funguje dál.
+    var deti = Array.isArray(d.deti) && d.deti.length ? d.deti : [d];
+    var zaznamy = deti.map(function (dite) {
+      var z = {};
+      Object.keys(d).forEach(function (k) { if (k !== 'deti') z[k] = d[k]; });
+      Object.keys(dite).forEach(function (k) { z[k] = dite[k]; });
+      return z;
+    });
+
+    for (var j = 0; j < zaznamy.length; j++) {
+      for (var i = 0; i < POVINNE.length; i++) {
+        if (!String(zaznamy[j][POVINNE[i]] || '').trim()) {
+          return odpoved({ ok: false, chyba: 'Chybí pole: ' + POVINNE[i] });
+        }
       }
     }
 
     zamek.waitLock(20000);
-
-    // kartička pojišťovny do soukromé složky na Disku
-    var odkazKarticky = '';
-    if (d.karticka && d.karticka.data) {
-      var nazev = (d['Jméno dítěte'] + ' ' + (d['Datum narození'] || '')).replace(/[^\wÀ-ž .-]/g, '').trim();
-      var koncovka = /pdf/i.test(d.karticka.typ) ? '.pdf' : '.jpg';
-      var soubor = slozka().createFile(
-        Utilities.newBlob(Utilities.base64Decode(d.karticka.data), d.karticka.typ, nazev + koncovka));
-      odkazKarticky = soubor.getUrl();
-    }
-    d['Kartička pojišťovny'] = odkazKarticky;
-
     var list = listPrihlasek();
-    list.appendRow(SLOUPCE.map(function (s) { return bezVzorce(d[s]); }));
-
+    zaznamy.forEach(function (z) {
+      // kartička pojišťovny do soukromé složky na Disku
+      z['Kartička pojišťovny'] = '';
+      if (z.karticka && z.karticka.data) {
+        var nazev = (z['Jméno dítěte'] + ' ' + (z['Datum narození'] || '')).replace(/[^\wÀ-ž .-]/g, '').trim();
+        var koncovka = /pdf/i.test(z.karticka.typ) ? '.pdf' : '.jpg';
+        z['Kartička pojišťovny'] = slozka().createFile(
+          Utilities.newBlob(Utilities.base64Decode(z.karticka.data), z.karticka.typ, nazev + koncovka)).getUrl();
+      }
+      list.appendRow(SLOUPCE.map(function (sl) { return bezVzorce(z[sl]); }));
+    });
     zamek.releaseLock();
 
-    posliVedoucimu(d, odkazKarticky);
-    posliRodici(d);
+    posliVedoucimu(zaznamy);
+    posliRodici(zaznamy);
 
-    return odpoved({ ok: true });
+    return odpoved({ ok: true, deti: zaznamy.length });
   } catch (err) {
     console.error(err);
     return odpoved({ ok: false, chyba: 'Přihlášku se nepodařilo uložit.' });
@@ -151,47 +161,70 @@ function bezVzorce(v) {
    E-maily
    ============================================================ */
 
-function posliVedoucimu(d, odkazKarticky) {
-  var radky = SLOUPCE.filter(function (s) { return s !== 'Kartička pojišťovny'; })
-    .map(function (s) { return [nazevPole(s), d[s] || '']; });
-  if (odkazKarticky) radky.push(['Kartička pojišťovny', '<a href="' + odkazKarticky + '" style="color:#16375C">otevřít na Disku</a>']);
+var POLE_RODIC = ['Jméno rodiče', 'email', 'Telefon', 'Bydliště', 'Odesláno'];
+var POLE_DITE = ['Datum narození', 'Trénink', 'Alergie a zdravotní omezení', 'Léky během kempu',
+                 'Plavec', 'Odchází samo'];
+var POLE_SOUHLASY = ['Souhlas: zdravotní pojišťovna', 'Souhlas: fotografie a video', 'Souhlas: zdravotní údaje'];
 
-  var obsah =
-    odstavec('Přišla nová přihláška na letní kemp. Na rodiče stačí odpovědět na tento e-mail.') +
-    tabulka(radky) +
-    odstavec('<a href="' + sesit().getUrl() +
-             '" style="color:#16375C;font-weight:bold">Otevřít tabulku přihlášek</a>');
+function mezititulek(text) {
+  return '<h2 style="margin:26px 0 10px;font:bold 15px/1.3 Arial,Helvetica,sans-serif;' +
+    'text-transform:uppercase;letter-spacing:.04em;color:#0B1524">' + hlidat(text) + '</h2>';
+}
+
+function jmena(zaznamy) {
+  return zaznamy.map(function (z) { return z['Jméno dítěte']; }).join(', ');
+}
+
+function posliVedoucimu(zaznamy) {
+  var p = zaznamy[0];
+  var obsah = odstavec('Přišla nová přihláška na letní kemp' +
+    (zaznamy.length > 1 ? ', počet dětí: ' + zaznamy.length : '') +
+    '. Na rodiče stačí odpovědět na tento e-mail.');
+  obsah += mezititulek('Rodič') + tabulka(POLE_RODIC.map(function (s) { return [nazevPole(s), p[s] || '']; }));
+  zaznamy.forEach(function (z, i) {
+    var radky = POLE_DITE.map(function (s) { return [nazevPole(s), z[s] || '']; });
+    radky.push(['Kartička pojišťovny', z['Kartička pojišťovny']
+      ? '<a href="' + z['Kartička pojišťovny'] + '" style="color:#16375C">otevřít na Disku</a>' : 'nepřiložena']);
+    obsah += mezititulek((zaznamy.length > 1 ? 'Dítě ' + (i + 1) + ': ' : 'Dítě: ') + z['Jméno dítěte']) + tabulka(radky);
+  });
+  obsah += mezititulek('Souhlasy') + tabulka(POLE_SOUHLASY.map(function (s) { return [nazevPole(s), p[s] || '']; }));
+  obsah += odstavec('<a href="' + sesit().getUrl() +
+    '" style="color:#16375C;font-weight:bold">Otevřít tabulku přihlášek</a>');
 
   MailApp.sendEmail({
     to: NASTAVENI.upozorneni,
-    subject: 'Nová přihláška na kemp: ' + d['Jméno dítěte'],
+    subject: 'Nová přihláška na kemp: ' + jmena(zaznamy),
     name: NASTAVENI.odesilatel,
-    replyTo: d.email,
+    replyTo: p.email,
     htmlBody: sablona('Nová přihláška na kemp', obsah)
   });
 }
 
-function posliRodici(d) {
+function posliRodici(zaznamy) {
   // Zdravotní údaje do potvrzení záměrně nevypisuji, e-mail je nejméně bezpečné místo.
-  var radky = [
-    ['Dítě', d['Jméno dítěte']],
-    ['Datum narození', d['Datum narození']],
-    ['Trénink', d['Trénink']],
-    ['Rodič', d['Jméno rodiče'] + ', ' + d['Telefon']],
-    ['Souhlas s fotkami a videem', d['Souhlas: fotografie a video']]
-  ];
-  var k = NASTAVENI.kemp;
+  var p = zaznamy[0], k = NASTAVENI.kemp;
   var obsah =
     odstavec('Dobrý den,') +
     odstavec('děkujeme, přihláška na letní kemp Florbalu Kuřim k nám dorazila. ' +
-             'Ozveme se vám s dalšími informacemi a platebními údaji.') +
-    tabulka(radky) +
-    odstavec('<b>Kemp proběhne ' + k.termin + ', ' + k.cas + '.</b><br>Cena ' + k.cena + '.') +
+             'Ozveme se vám s dalšími informacemi a platebními údaji.');
+  zaznamy.forEach(function (z, i) {
+    obsah += mezititulek(zaznamy.length > 1 ? 'Dítě ' + (i + 1) : 'Dítě') + tabulka([
+      ['Jméno', z['Jméno dítěte']],
+      ['Datum narození', z['Datum narození']],
+      ['Trénink', z['Trénink']]
+    ]);
+  });
+  obsah += tabulka([
+    ['Rodič', p['Jméno rodiče'] + ', ' + p['Telefon']],
+    ['Souhlas s fotkami a videem', p['Souhlas: fotografie a video']]
+  ]) +
+    odstavec('<b>Kemp proběhne ' + k.termin + ', ' + k.cas + '.</b><br>Cena ' + k.cena +
+             (zaznamy.length > 1 ? ' za každé dítě.' : '.')) +
     odstavec('Kdyby bylo v přihlášce něco špatně, stačí odpovědět na tento e-mail.') +
     odstavec('Florbal Kuřim');
 
   MailApp.sendEmail({
-    to: d.email,
+    to: p.email,
     subject: 'Přihláška na kemp Florbal Kuřim je přijatá',
     name: NASTAVENI.odesilatel,
     replyTo: NASTAVENI.odpovedi,
@@ -271,13 +304,23 @@ function smazatZdravotniUdajePoKempu() {
 
 /** Pro vyzkoušení e-mailů bez vyplňování formuláře. Pošle obě zprávy na adresu upozornění. */
 function zkusitEmaily() {
-  var d = {
-    'Jméno dítěte': 'Jan Zkušební', 'Datum narození': '14. 5. 2016', 'Trénink': 'Mladší žáci',
-    'Bydliště': 'Tyršova 1, Kuřim', 'Jméno rodiče': 'Petra Zkušební', email: NASTAVENI.upozorneni,
-    'Telefon': '777 123 456', 'Alergie a zdravotní omezení': 'pyl', 'Léky během kempu': '',
-    'Plavec': 'plavec', 'Odchází samo': 'ne', 'Souhlas: zdravotní pojišťovna': 'NE',
-    'Souhlas: fotografie a video': 'ANO', 'Souhlas: zdravotní údaje': 'ANO', 'Odesláno': 'zkouška'
+  var rodic = {
+    'Jméno rodiče': 'Petra Zkušební', email: NASTAVENI.upozorneni, 'Telefon': '777 123 456',
+    'Bydliště': 'Tyršova 1, Kuřim', 'Odesláno': 'zkouška',
+    'Souhlas: zdravotní pojišťovna': 'ANO', 'Souhlas: fotografie a video': 'ANO', 'Souhlas: zdravotní údaje': 'ANO'
   };
-  posliVedoucimu(d, '');
-  posliRodici(d);
+  var deti = [
+    { 'Jméno dítěte': 'Jan Zkušební', 'Datum narození': '14. 5. 2016',
+      'Trénink': 'Mladší žáci, pátek 16:30–17:30, SH Kuřim', 'Alergie a zdravotní omezení': 'pyl',
+      'Léky během kempu': 'žádné', 'Plavec': 'plavec', 'Odchází samo': 'ne', 'Kartička pojišťovny': '' },
+    { 'Jméno dítěte': 'Eva Zkušební', 'Datum narození': '3. 2. 2019',
+      'Trénink': 'Přípravka a elévové, pátek 15:30–16:30, SH Kuřim', 'Alergie a zdravotní omezení': 'žádné',
+      'Léky během kempu': 'žádné', 'Plavec': 'neplavec', 'Odchází samo': 'ne', 'Kartička pojišťovny': '' }
+  ];
+  var zaznamy = deti.map(function (d) {
+    var z = {}; Object.keys(rodic).forEach(function (k) { z[k] = rodic[k]; });
+    Object.keys(d).forEach(function (k) { z[k] = d[k]; }); return z;
+  });
+  posliVedoucimu(zaznamy);
+  posliRodici(zaznamy);
 }

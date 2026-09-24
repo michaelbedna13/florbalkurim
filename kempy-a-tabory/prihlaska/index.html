@@ -44,7 +44,7 @@
     <a class="zpet" href="../">Zpět na kempy</a>
     <span class="stitek"><span>26.–30. 7. 2027</span></span>
     <h1>Přihláška na kemp</h1>
-    <p class="vede">Kemp proběhne 26.–30. 7. 2027, každý den od 8:00 do 16:00. Je pro děti od šesti do třinácti let, které k nám chodí na tréninky, a jejich sourozence. Cena 4 500 Kč, přihlášky do 28. 2. 2027.</p>
+    <p class="vede">Kemp proběhne 26.–30. 7. 2027, každý den od 8:00 do 16:00. Je pro děti od šesti do třinácti let, které k nám chodí na tréninky, a jejich sourozence. Cena 4 500 Kč, přihlášky do 28. 2. 2027.</p>
   </div>
 </section>
 
@@ -53,11 +53,15 @@
   <div class="rastr svetly"></div>
   <div class="obal">
 
-    <div class="formular-karta hlaseni" id="odeslano">
+    <div class="formular-karta hlaseni" id="odeslano" tabindex="-1">
+      <div class="hotovo-ikona" aria-hidden="true">✓</div>
       <h2>Přihláška je odeslaná</h2>
-      <p>Děkujeme. Na e-mail, který jste vyplnili, vám přišlo potvrzení.
-         Ozveme se s dalšími informacemi a platebními údaji.</p>
-      <p><a class="tlacitko" href="../">Zpět na kempy</a></p>
+      <p id="odeslano-text">Děkujeme, přihláška k nám dorazila a na váš e-mail odešlo potvrzení.</p>
+      <p>Ozveme se s dalšími informacemi a platebními údaji.</p>
+      <p class="napoveda">Když potvrzení do pár minut nenajdete, mrkněte do spamu nebo do záložky Promoakce.</p>
+      <div class="tlacitka-hlaseni">
+        <a class="tlacitko" href="../">Zpět na kempy</a>
+      </div>
     </div>
 
     <div class="formular-karta hlaseni" id="uzavreno">
@@ -66,71 +70,110 @@
       <p><a class="tlacitko" href="../../kontakty/">Kontakty</a></p>
     </div>
 
+    <template id="sablona-dite">
+      <div class="dite" data-dite>
+        <div class="dite-hlava">
+          <h3 class="dite-nazev">Dítě <span data-poradi>1</span></h3>
+          <button type="button" class="odebrat-dite" data-odebrat>Odebrat</button>
+        </div>
+        <div class="dite-pole">
+          <div class="pole siroke">
+            <label for="d__N__-jmeno">Jméno a příjmení<span class="povinne" aria-hidden="true">*</span></label>
+            <input id="d__N__-jmeno" data-k="Jméno dítěte" required autocomplete="off"
+                   data-chyba="Napište jméno a příjmení dítěte.">
+          </div>
+          <div class="pole siroke">
+            <span class="popisek" id="d__N__-p-narozeni">Datum narození<span class="povinne" aria-hidden="true">*</span></span>
+            <div class="datum" role="group" aria-labelledby="d__N__-p-narozeni">
+              <select data-k="den" aria-label="Den"><option value="">Den</option></select>
+              <select data-k="mesic" aria-label="Měsíc"><option value="">Měsíc</option></select>
+              <select data-k="rok" aria-label="Rok"><option value="">Rok</option></select>
+            </div>
+            <p class="upozorneni" data-vek role="status"></p>
+          </div>
+          <div class="pole siroke">
+            <span class="popisek" id="d__N__-p-trenink">Na které tréninky chodí<span class="povinne" aria-hidden="true">*</span></span>
+            <p class="napoveda">Můžete vybrat víc.</p>
+            <div class="treninky-volby" role="group" aria-labelledby="d__N__-p-trenink"
+                 data-chyba="Vyberte aspoň jeden trénink, nebo že na tréninky nechodí.">
+                <div class="skupina">
+                  <span class="skupina-nazev">Přípravka a elévové</span>
+                  <div class="cipy">
+                    <label class="cip"><input type="checkbox" value="Přípravka a elévové, čtvrtek 17:00–18:00, ZŠ Tyršova"><span>Čtvrtek 17:00–18:00 <small>ZŠ Tyršova</small></span></label>
+                    <label class="cip"><input type="checkbox" value="Přípravka a elévové, pátek 15:30–16:30, SH Kuřim"><span>Pátek 15:30–16:30 <small>SH Kuřim</small></span></label>
+                  </div>
+                </div>
+                <div class="skupina">
+                  <span class="skupina-nazev">Mladší žáci</span>
+                  <div class="cipy">
+                    <label class="cip"><input type="checkbox" value="Mladší žáci, čtvrtek 18:00–19:00, ZŠ Tyršova"><span>Čtvrtek 18:00–19:00 <small>ZŠ Tyršova</small></span></label>
+                    <label class="cip"><input type="checkbox" value="Mladší žáci, pátek 16:30–17:30, SH Kuřim"><span>Pátek 16:30–17:30 <small>SH Kuřim</small></span></label>
+                  </div>
+                </div>
+                <div class="skupina">
+                  <span class="skupina-nazev">Dorostenci a starší žáci</span>
+                  <div class="cipy">
+                    <label class="cip"><input type="checkbox" value="Dorostenci a starší žáci, pondělí 19:00–20:00, SH Kuřim"><span>Pondělí 19:00–20:00 <small>SH Kuřim</small></span></label>
+                    <label class="cip"><input type="checkbox" value="Dorostenci a starší žáci, pátek 17:30–18:30, SH Kuřim"><span>Pátek 17:30–18:30 <small>SH Kuřim</small></span></label>
+                  </div>
+                </div>
+                <div class="skupina">
+                  <span class="skupina-nazev">Nechodí</span>
+                  <div class="cipy">
+                    <label class="cip"><input type="checkbox" value="Nechodí na tréninky, je to sourozenec" data-vylucny><span>Sourozenec</span></label>
+                    <label class="cip"><input type="checkbox" value="Nechodí na tréninky, je to kamarád" data-vylucny><span>Kamarád</span></label>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="pole siroke">
+            <label for="d__N__-alergie">Alergie a zdravotní omezení<span class="povinne" aria-hidden="true">*</span></label>
+            <textarea id="d__N__-alergie" data-k="Alergie a zdravotní omezení" rows="3" required
+                      placeholder="Když žádné nemá, napište „žádné“"
+                      data-chyba="Vyplňte prosím. Když žádné nemá, napište „žádné“."></textarea>
+          </div>
+          <div class="pole siroke">
+            <label for="d__N__-leky">Léky, které bude během kempu užívat<span class="povinne" aria-hidden="true">*</span></label>
+            <textarea id="d__N__-leky" data-k="Léky během kempu" rows="2" required
+                      placeholder="Název, dávka a kdy je užívá. Když žádné, napište „žádné“"
+                      data-chyba="Vyplňte prosím. Když žádné neužívá, napište „žádné“."></textarea>
+          </div>
+          <div class="pole">
+            <span class="popisek">Umí plavat<span class="povinne" aria-hidden="true">*</span></span>
+            <div class="volby" data-k="Plavec" data-chyba="Vyberte jednu možnost.">
+              <label><input type="radio" name="plavec-__N__" value="plavec"><span>Plavec</span></label>
+              <label><input type="radio" name="plavec-__N__" value="neplavec"><span>Neplavec</span></label>
+            </div>
+          </div>
+          <div class="pole">
+            <span class="popisek">Může odcházet domů samo<span class="povinne" aria-hidden="true">*</span></span>
+            <div class="volby" data-k="Odchází samo" data-chyba="Vyberte jednu možnost.">
+              <label><input type="radio" name="odchod-__N__" value="ano"><span>Ano</span></label>
+              <label><input type="radio" name="odchod-__N__" value="ne"><span>Ne</span></label>
+            </div>
+          </div>
+          <div class="pole siroke">
+            <span class="popisek">Kartička zdravotní pojišťovny<span class="povinne" aria-hidden="true">*</span></span>
+            <label class="nahrat" for="d__N__-karticka">
+              <input id="d__N__-karticka" data-k="karticka" type="file" accept="image/*,.pdf">
+              <span class="nahrat-ikona" aria-hidden="true">+</span>
+              <span class="nahrat-text"><b>Vyfotit nebo nahrát kartičku</b><small>fotka z mobilu nebo PDF</small></span>
+            </label>
+            <div class="nahrano" data-nahrano>
+              <img alt="" data-nahled>
+              <span data-nazev></span>
+              <button type="button" class="odebrat" data-odebrat-karticku>Odebrat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+
     <form class="formular formular-karta" id="prihlaska" action="#" method="POST" novalidate>
       <input type="text" name="_honey" class="past" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <fieldset>
-        <legend><span class="krok">1</span>Dítě</legend>
-        <div class="pole siroke">
-          <label for="f-dite">Jméno a příjmení<span class="povinne" aria-hidden="true">*</span></label>
-          <input id="f-dite" name="Jméno dítěte" required autocomplete="off"
-                 data-chyba="Napište jméno a příjmení dítěte.">
-        </div>
-        <div class="pole siroke">
-          <span class="popisek" id="p-narozeni">Datum narození<span class="povinne" aria-hidden="true">*</span></span>
-          <div class="datum" role="group" aria-labelledby="p-narozeni">
-            <select id="f-den" required aria-label="Den"><option value="">Den</option></select>
-            <select id="f-mesic" required aria-label="Měsíc"><option value="">Měsíc</option></select>
-            <select id="f-rok" required aria-label="Rok"><option value="">Rok</option></select>
-          </div>
-          <input type="hidden" name="Datum narození" value="">
-          <p class="upozorneni" id="vek-upozorneni" role="status"></p>
-        </div>
-        <div class="pole siroke">
-          <label for="f-bydliste">Bydliště<span class="povinne" aria-hidden="true">*</span></label>
-          <input id="f-bydliste" name="Bydliště" required autocomplete="street-address"
-                 placeholder="Ulice a číslo, obec" data-chyba="Napište bydliště.">
-        </div>
-        <div class="pole siroke">
-          <span class="popisek" id="p-trenink">Na které tréninky chodí<span class="povinne" aria-hidden="true">*</span></span>
-          <p class="napoveda">Můžete vybrat víc.</p>
-          <div class="treninky-volby" role="group" aria-labelledby="p-trenink"
-               data-chyba="Vyberte aspoň jeden trénink, nebo že na tréninky nechodí.">
-            <div class="skupina">
-              <span class="skupina-nazev">Přípravka a elévové</span>
-              <div class="cipy">
-                <label class="cip"><input type="checkbox" value="Přípravka a elévové, čtvrtek 17:00–18:00, ZŠ Tyršova"><span>Čtvrtek 17:00–18:00 <small>ZŠ Tyršova</small></span></label>
-                <label class="cip"><input type="checkbox" value="Přípravka a elévové, pátek 15:30–16:30, SH Kuřim"><span>Pátek 15:30–16:30 <small>SH Kuřim</small></span></label>
-              </div>
-            </div>
-            <div class="skupina">
-              <span class="skupina-nazev">Mladší žáci</span>
-              <div class="cipy">
-                <label class="cip"><input type="checkbox" value="Mladší žáci, čtvrtek 18:00–19:00, ZŠ Tyršova"><span>Čtvrtek 18:00–19:00 <small>ZŠ Tyršova</small></span></label>
-                <label class="cip"><input type="checkbox" value="Mladší žáci, pátek 16:30–17:30, SH Kuřim"><span>Pátek 16:30–17:30 <small>SH Kuřim</small></span></label>
-              </div>
-            </div>
-            <div class="skupina">
-              <span class="skupina-nazev">Dorostenci a starší žáci</span>
-              <div class="cipy">
-                <label class="cip"><input type="checkbox" value="Dorostenci a starší žáci, pondělí 19:00–20:00, SH Kuřim"><span>Pondělí 19:00–20:00 <small>SH Kuřim</small></span></label>
-                <label class="cip"><input type="checkbox" value="Dorostenci a starší žáci, pátek 17:30–18:30, SH Kuřim"><span>Pátek 17:30–18:30 <small>SH Kuřim</small></span></label>
-              </div>
-            </div>
-            <div class="skupina">
-              <span class="skupina-nazev">Nechodí</span>
-              <div class="cipy">
-                <label class="cip"><input type="checkbox" value="Nechodí na tréninky, je to sourozenec" data-vylucny><span>Sourozenec</span></label>
-                <label class="cip"><input type="checkbox" value="Nechodí na tréninky, je to kamarád" data-vylucny><span>Kamarád</span></label>
-              </div>
-            </div>
-          </div>
-          <input type="hidden" name="Trénink" value="">
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend><span class="krok">2</span>Rodič</legend>
+        <legend><span class="krok">1</span>Rodič</legend>
         <div class="pole siroke">
           <label for="f-rodic">Jméno a příjmení<span class="povinne" aria-hidden="true">*</span></label>
           <input id="f-rodic" name="Jméno rodiče" required autocomplete="name"
@@ -148,51 +191,24 @@
                  placeholder="777 123 456" pattern="[+0-9 ]{9,}"
                  data-chyba="Napište telefon, aspoň devět číslic.">
         </div>
-      </fieldset>
-
-      <fieldset>
-        <legend><span class="krok">3</span>Zdraví a bezpečnost</legend>
         <div class="pole siroke">
-          <label for="f-alergie">Alergie a zdravotní omezení</label>
-          <textarea id="f-alergie" name="Alergie a zdravotní omezení" rows="3"
-                    placeholder="Když žádné nejsou, nechte prázdné"></textarea>
-        </div>
-        <div class="pole siroke">
-          <label for="f-leky">Léky, které bude během kempu užívat</label>
-          <textarea id="f-leky" name="Léky během kempu" rows="2"
-                    placeholder="Název, dávka a kdy je užívá"></textarea>
-        </div>
-        <div class="pole">
-          <span class="popisek">Umí plavat<span class="povinne" aria-hidden="true">*</span></span>
-          <div class="volby" data-chyba="Vyberte jednu možnost.">
-            <label><input type="radio" name="Plavec" value="plavec" required><span>Plavec</span></label>
-            <label><input type="radio" name="Plavec" value="neplavec"><span>Neplavec</span></label>
-          </div>
-        </div>
-        <div class="pole">
-          <span class="popisek">Může odcházet domů samo<span class="povinne" aria-hidden="true">*</span></span>
-          <div class="volby" data-chyba="Vyberte jednu možnost.">
-            <label><input type="radio" name="Odchází samo" value="ano" required><span>Ano</span></label>
-            <label><input type="radio" name="Odchází samo" value="ne"><span>Ne</span></label>
-          </div>
-        </div>
-        <div class="pole siroke">
-          <span class="popisek">Kartička zdravotní pojišťovny</span>
-          <label class="nahrat" for="f-karticka">
-            <input id="f-karticka" type="file" accept="image/*,.pdf">
-            <span class="nahrat-ikona" aria-hidden="true">+</span>
-            <span class="nahrat-text"><b>Vyfotit nebo nahrát kartičku</b><small>fotka nebo PDF, kartičku můžete přinést i na kemp</small></span>
-          </label>
-          <div class="nahrano" id="nahrano">
-            <img id="nahrano-nahled" alt="">
-            <span id="nahrano-nazev"></span>
-            <button type="button" class="odebrat" id="nahrano-odebrat">Odebrat</button>
-          </div>
+          <label for="f-bydliste">Bydliště<span class="povinne" aria-hidden="true">*</span></label>
+          <input id="f-bydliste" name="Bydliště" required autocomplete="street-address"
+                 placeholder="Ulice a číslo, obec" data-chyba="Napište bydliště.">
         </div>
       </fieldset>
 
       <fieldset>
-        <legend><span class="krok">4</span>Souhlasy</legend>
+        <legend><span class="krok">2</span>Děti</legend>
+        <div class="deti siroke" id="deti"></div>
+        <div class="pridat-dite siroke">
+          <button type="button" class="tlacitko svetle" id="pridat-dite">+ Přidat další dítě</button>
+          <p class="napoveda">Sourozence přihlásíte najednou v jedné přihlášce.</p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="krok">3</span>Souhlasy</legend>
         <details class="gdpr">
           <summary>Celé znění souhlasu</summary>
           <p>Jako zákonný zástupce dítěte uděluji Spolku Florbal Kuřim, se sídlem Hybešova 1988/36,
@@ -219,16 +235,15 @@
         <p class="napoveda odkaz-zasady">Jak s údaji zacházíme, najdete v
           <a href="../../ochrana-osobnich-udaju/">zásadách ochrany osobních údajů</a>.</p>
 
-        <label class="zaskrt"><input type="checkbox" id="s-pojistovna" data-souhlas="Souhlas: zdravotní pojišťovna"
-          data-chyba="Kartičku jste přiložili, potřebujeme k ní váš souhlas.">
-          <span>Souhlasím se zpracováním informace o zdravotní pojišťovně pro případ úrazu, po dobu kempu.
-            <small>Povinné, když přikládáte kartičku.</small></span></label>
-        <label class="zaskrt"><input type="checkbox" id="s-zdravi" data-souhlas="Souhlas: zdravotní údaje"
-          data-chyba="Vyplnili jste zdravotní údaje, potřebujeme k nim váš souhlas.">
-          <span>Souhlasím se zpracováním zdravotních údajů dítěte (alergie, zdravotní omezení, léky), aby o něj vedoucí kempu mohli bezpečně pečovat. Po kempu se smažou.
-            <small>Povinné, když vyplníte zdravotní údaje.</small></span></label>
+        <label class="zaskrt"><input type="checkbox" id="s-pojistovna" required data-souhlas="Souhlas: zdravotní pojišťovna"
+          data-chyba="Bez tohoto souhlasu kartičku nemůžeme přijmout.">
+          <span>Souhlasím se zpracováním informace o zdravotní pojišťovně pro případ úrazu, po dobu kempu.<span class="povinne" aria-hidden="true">*</span></span></label>
+        <label class="zaskrt"><input type="checkbox" id="s-zdravi" required data-souhlas="Souhlas: zdravotní údaje"
+          data-chyba="Bez tohoto souhlasu nemůžeme přihlášku přijmout.">
+          <span>Souhlasím se zpracováním zdravotních údajů přihlášených dětí (alergie, zdravotní omezení, léky), aby o ně vedoucí kempu mohli bezpečně pečovat. Po kempu se smažou.<span class="povinne" aria-hidden="true">*</span></span></label>
         <label class="zaskrt"><input type="checkbox" data-souhlas="Souhlas: fotografie a video">
-          <span>Souhlasím s pořizováním a zveřejňováním fotografií a videí z kempu.</span></label>
+          <span>Souhlasím s pořizováním a zveřejňováním fotografií a videí z kempu.
+            <small>Dobrovolné, přihlásit se dá i bez něj.</small></span></label>
         <label class="zaskrt"><input type="checkbox" id="s-potvrzeni" required
           data-chyba="Bez tohoto potvrzení přihlášku nemůžeme přijmout.">
           <span>Potvrzuji, že jsem se seznámil s celým zněním souhlasu a s informacemi o zpracování osobních údajů.<span class="povinne" aria-hidden="true">*</span></span></label>
