@@ -92,7 +92,8 @@ function doPost(e) {
     var list = listPrihlasek();
     zaznamy.forEach(function (z) {
       // kartička pojišťovny do soukromé složky na Disku
-      z['Kartička pojišťovny'] = '';
+      // bez souboru zůstane, co poslal web, typicky „přinese na kemp“
+      z['Kartička pojišťovny'] = z['Kartička pojišťovny'] || '';
       if (z.karticka && z.karticka.data) {
         var nazev = (z['Jméno dítěte'] + ' ' + (z['Datum narození'] || '')).replace(/[^\wÀ-ž .-]/g, '').trim();
         var koncovka = /pdf/i.test(z.karticka.typ) ? '.pdf' : '.jpg';
@@ -188,8 +189,9 @@ function posliVedoucimu(zaznamy) {
   obsah += mezititulek('Rodič') + tabulka(POLE_RODIC.map(function (s) { return [nazevPole(s), p[s] || '']; }));
   zaznamy.forEach(function (z, i) {
     var radky = POLE_DITE.map(function (s) { return [nazevPole(s), z[s] || '']; });
-    radky.push(['Kartička pojišťovny', z['Kartička pojišťovny']
-      ? '<a href="' + z['Kartička pojišťovny'] + '" style="color:#16375C">otevřít na Disku</a>' : 'nepřiložena']);
+    var k = z['Kartička pojišťovny'] || '';
+    radky.push(['Kartička pojišťovny', /^https?:/.test(k)
+      ? '<a href="' + k + '" style="color:#16375C">otevřít na Disku</a>' : (k || 'nepřiložena')]);
     obsah += mezititulek((zaznamy.length > 1 ? 'Dítě ' + (i + 1) + ': ' : 'Dítě: ') + z['Jméno dítěte']) + tabulka(radky);
   });
   obsah += mezititulek('Souhlasy') + tabulka(POLE_SOUHLASY.map(function (s) { return [nazevPole(s), p[s] || '']; }));

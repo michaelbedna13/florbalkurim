@@ -160,15 +160,21 @@
           </div>
           <div class="pole siroke">
             <span class="popisek">Kartička zdravotní pojišťovny<span class="povinne" aria-hidden="true">*</span></span>
-            <label class="nahrat" for="d__N__-karticka">
-              <input id="d__N__-karticka" data-k="karticka" type="file" accept="image/*,.pdf">
-              <span class="nahrat-ikona" aria-hidden="true">+</span>
-              <span class="nahrat-text"><b>Vyfotit nebo nahrát kartičku</b><small>fotka z mobilu nebo PDF</small></span>
-            </label>
-            <div class="nahrano" data-nahrano>
-              <img alt="" data-nahled>
-              <span data-nazev></span>
-              <button type="button" class="odebrat" data-odebrat-karticku>Odebrat</button>
+            <div class="volby" data-karticka-volba data-chyba="Vyberte, jestli kartičku nahrajete teď, nebo ji přinesete na kemp.">
+              <label><input type="radio" name="karticka-__N__" value="ano"><span>Nahraju teď</span></label>
+              <label><input type="radio" name="karticka-__N__" value="ne"><span>Přinesu na kemp</span></label>
+            </div>
+            <div class="karticka-nahrani">
+              <label class="nahrat" for="d__N__-karticka">
+                <input id="d__N__-karticka" data-k="karticka" type="file" accept="image/*,.pdf">
+                <span class="nahrat-ikona" aria-hidden="true">+</span>
+                <span class="nahrat-text"><b>Vyfotit nebo nahrát kartičku</b><small>fotka z mobilu nebo PDF</small></span>
+              </label>
+              <div class="nahrano" data-nahrano>
+                <img alt="" data-nahled>
+                <span data-nazev></span>
+                <button type="button" class="odebrat" data-odebrat-karticku>Odebrat</button>
+              </div>
             </div>
           </div>
         </div>

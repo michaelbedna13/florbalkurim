@@ -139,6 +139,12 @@
       vycisti(karticka);
     }
     karticka.addEventListener('change', ukazKarticku);
+    var kartVolba = blok.querySelector('[data-karticka-volba]'), kartNahrani = blok.querySelector('.karticka-nahrani');
+    kartVolba.addEventListener('change', function(){
+      var ted = kartVolba.querySelector('input:checked').value === 'ano';
+      kartNahrani.classList.toggle('ukazat', ted);
+      if(!ted){ karticka.value = ''; ukazKarticku(); vycisti(karticka); }
+    });
     blok.querySelector('[data-odebrat-karticku]').addEventListener('click', function(){
       karticka.value = ''; ukazKarticku();
     });
@@ -199,8 +205,11 @@
       var prvni = blok.querySelector('.treninky-volby input');
       over(prvni, vybraneTreninky(blok).length, blok.querySelector('.treninky-volby').dataset.chyba);
       var k = blok.querySelector('[data-k="karticka"]'), f = k.files[0];
-      over(k, f && (/^image\//.test(f.type) || f.size <= MAX_SOUBOR),
-           f ? 'Soubor je moc velký, nejvýš 5 MB.' : 'Přiložte fotku nebo sken kartičky pojišťovny.');
+      var ted = blok.querySelector('[data-karticka-volba] input:checked');
+      if(ted && ted.value === 'ano'){
+        over(k, f && (/^image\//.test(f.type) || f.size <= MAX_SOUBOR),
+             f ? 'Soubor je moc velký, nejvýš 5 MB.' : 'Přiložte fotku nebo sken kartičky, nebo zvolte, že ji přinesete.');
+      }
     });
     return chyby;
   }
@@ -292,16 +301,21 @@
         'Alergie a zdravotní omezení': hodnotaVolby(blok, 'Alergie a zdravotní omezení'),
         'Léky během kempu': hodnotaVolby(blok, 'Léky během kempu'),
         'Plavec': blok.querySelector('[data-k="Plavec"] input:checked').value,
-        'Odchází samo': blok.querySelector('[data-k="Odchází samo"] input:checked').value
+        'Odchází samo': blok.querySelector('[data-k="Odchází samo"] input:checked').value,
+        'Kartička pojišťovny': blok.querySelector('[data-karticka-volba] input:checked').value === 'ano'
+          ? '' : 'přinese na kemp'
       };
     });
 
     tlacitko.disabled = true;
     tlacitko.textContent = 'Odesílám…';
 
-    Promise.all(bloky.map(function(blok){ return nactiSoubor(blok.querySelector('[data-k="karticka"]').files[0]); }))
+    Promise.all(bloky.map(function(blok){
+        var f = blok.querySelector('[data-k="karticka"]').files[0];
+        return f ? nactiSoubor(f) : null;
+      }))
       .then(function(soubory){
-        soubory.forEach(function(s, i){ seznam[i].karticka = s; });
+        soubory.forEach(function(s, i){ if(s) seznam[i].karticka = s; });
         data.deti = seznam;
         // obyčejný text jako typ obsahu, jinak by prohlížeč před odesláním posílal zbytečný dotaz navíc
         return fetch(SKRIPT, {method: 'POST', body: JSON.stringify(data)});
@@ -313,7 +327,8 @@
         ukaz('odeslano');
       })
       .catch(function(err){
-        chybaOdeslani.textContent = (typeof err === 'string' ? err : 'Přihlášku se nepodařilo odeslat.') +
+        var zprava = typeof err === 'string' ? err : 'Přihlášku se nepodařilo odeslat';
+        chybaOdeslani.textContent = zprava.replace(/[.\s]*$/, '.') +
           ' Když to nepůjde ani napodruhé, napište nám na florbalkurim@gmail.com.';
         tlacitko.disabled = false;
         tlacitko.textContent = 'Odeslat přihlášku';

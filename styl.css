@@ -632,6 +632,10 @@ tr.my td{font-weight:600;color:var(--cerna)}
 
 .formular .souhlas-foto{margin-top:6px}
 
+/* nahrání kartičky se ukáže až po volbě „nahraju teď“ */
+.formular .karticka-nahrani{display:none;flex-direction:column;gap:8px;margin-top:6px}
+.formular .karticka-nahrani.ukazat{display:flex}
+
 /* odeslání */
 .formular .chyba-odeslani{margin:36px 0 0;color:#B3261E;font-weight:600;max-width:none}
 .formular .chyba-odeslani:empty{display:none}
