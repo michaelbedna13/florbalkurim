@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /apps-script/
+Disallow: /scripts/
+
+Sitemap: https://florbalkurim.cz/sitemap.xml

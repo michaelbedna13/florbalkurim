@@ -32,8 +32,8 @@ var NASTAVENI = {
     uzaverka: new Date('2027-02-28T23:59:59+01:00')
   },
 
-  web: 'https://michaelbedna13.github.io/florbalkurim/',
-  logo: 'https://michaelbedna13.github.io/florbalkurim/logo.svg'
+  web: 'https://florbalkurim.cz/',
+  logo: 'https://florbalkurim.cz/logo.svg'
 };
 
 // Pořadí sloupců v tabulce. Názvy odpovídají polím ve formuláři na webu.
