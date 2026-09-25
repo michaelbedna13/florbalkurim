@@ -626,6 +626,12 @@ tr.my td{font-weight:600;color:var(--cerna)}
 .formular .pridat-dite{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
 .formular .pridat-dite .tlacitko{padding:13px 22px}
 
+/* popis alergií a léků se ukáže až po volbě „má“ */
+.formular textarea.doplneni{display:none;margin-top:6px}
+.formular textarea.doplneni.ukazat{display:block}
+
+.formular .souhlas-foto{margin-top:6px}
+
 /* odeslání */
 .formular .chyba-odeslani{margin:36px 0 0;color:#B3261E;font-weight:600;max-width:none}
 .formular .chyba-odeslani:empty{display:none}

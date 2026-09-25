@@ -45,7 +45,8 @@ var SLOUPCE = [
   'Souhlas: zdravotní pojišťovna', 'Souhlas: fotografie a video', 'Souhlas: zdravotní údaje'
 ];
 var POVINNE = ['Jméno dítěte', 'Datum narození', 'Trénink', 'Bydliště',
-               'Jméno rodiče', 'email', 'Telefon', 'Plavec', 'Odchází samo'];
+               'Jméno rodiče', 'email', 'Telefon', 'Plavec', 'Odchází samo',
+               'Alergie a zdravotní omezení', 'Léky během kempu', 'Souhlas: fotografie a video'];
 var ZDRAVOTNI = ['Alergie a zdravotní omezení', 'Léky během kempu'];
 
 
@@ -67,6 +68,10 @@ function doPost(e) {
 
     // Nový web posílá děti v poli deti. Stará podoba s jedním dítětem
     // (údaje přímo v přihlášce) funguje dál.
+    // Čas odeslání bere server Googlu, ne prohlížeč rodiče. Je to záznam,
+    // na který se dá spolehnout i jako na doklad.
+    d['Odesláno'] = Utilities.formatDate(new Date(), 'Europe/Prague', 'd. M. yyyy H:mm:ss');
+
     var deti = Array.isArray(d.deti) && d.deti.length ? d.deti : [d];
     var zaznamy = deti.map(function (dite) {
       var z = {};
@@ -302,6 +307,22 @@ function smazatZdravotniUdajePoKempu() {
   console.log('Zdravotní údaje a kartičky jsou smazané.');
 }
 
+/**
+ * Spusť jednou ručně. Zamkne list s přihláškami tak, že ho smí upravovat jen
+ * tenhle klubový účet. Ostatní, se kterými tabulku sdílíte, ji jen čtou.
+ * Skript zapisuje dál, běží pod stejným účtem.
+ * Každou změnu i tak eviduje Google v historii verzí (Soubor, Historie verzí).
+ */
+function zamknoutTabulku() {
+  var list = listPrihlasek();
+  var ochrana = list.protect().setDescription('Přihlášky na kemp: upravovat smí jen klubový účet');
+  var ja = Session.getEffectiveUser();
+  ochrana.addEditor(ja);
+  ochrana.removeEditors(ochrana.getEditors());
+  if (ochrana.canDomainEdit()) ochrana.setDomainEdit(false);
+  console.log('List je zamčený, upravovat ho smí jen ' + ja.getEmail() + '.');
+}
+
 /** Pro vyzkoušení e-mailů bez vyplňování formuláře. Pošle obě zprávy na adresu upozornění. */
 function zkusitEmaily() {
   var rodic = {
@@ -312,10 +333,10 @@ function zkusitEmaily() {
   var deti = [
     { 'Jméno dítěte': 'Jan Zkušební', 'Datum narození': '14. 5. 2016',
       'Trénink': 'Mladší žáci, pátek 16:30–17:30, SH Kuřim', 'Alergie a zdravotní omezení': 'pyl',
-      'Léky během kempu': 'žádné', 'Plavec': 'plavec', 'Odchází samo': 'ne', 'Kartička pojišťovny': '' },
+      'Léky během kempu': 'Neužívá žádné', 'Plavec': 'plavec', 'Odchází samo': 'ne', 'Kartička pojišťovny': '' },
     { 'Jméno dítěte': 'Eva Zkušební', 'Datum narození': '3. 2. 2019',
-      'Trénink': 'Přípravka a elévové, pátek 15:30–16:30, SH Kuřim', 'Alergie a zdravotní omezení': 'žádné',
-      'Léky během kempu': 'žádné', 'Plavec': 'neplavec', 'Odchází samo': 'ne', 'Kartička pojišťovny': '' }
+      'Trénink': 'Přípravka a elévové, pátek 15:30–16:30, SH Kuřim', 'Alergie a zdravotní omezení': 'Nemá žádné',
+      'Léky během kempu': 'Neužívá žádné', 'Plavec': 'neplavec', 'Odchází samo': 'ne', 'Kartička pojišťovny': '' }
   ];
   var zaznamy = deti.map(function (d) {
     var z = {}; Object.keys(rodic).forEach(function (k) { z[k] = rodic[k]; });

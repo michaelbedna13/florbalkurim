@@ -61,6 +61,12 @@
     if(m < 0 || (m === 0 && ZACATEK_KEMPU.getDate() < d.getDate())) v--;
     return v;
   }
+  // „Nemá žádné“ se zapíše výslovně, jinak text, který rodič napsal
+  function hodnotaVolby(blok, pole){
+    var v = blok.querySelector('.volby[data-volba="' + pole + '"] input:checked');
+    var t = blok.querySelector('textarea[data-k="' + pole + '"]');
+    return v && v.value === 'ano' ? t.value.trim() : t.dataset.ne;
+  }
   function vybraneTreninky(blok){
     return Array.prototype.map.call(blok.querySelectorAll('.treninky-volby input:checked'),
       function(i){ return i.value; });
@@ -105,6 +111,18 @@
         });
       }
       if(vybraneTreninky(blok).length) vycisti(t);
+    });
+
+    // alergie a léky: povinná volba, popis jen když „má“
+    blok.querySelectorAll('.volby[data-volba]').forEach(function(v){
+      var text = v.parentNode.querySelector('textarea.doplneni');
+      v.addEventListener('change', function(){
+        var ma = v.querySelector('input:checked').value === 'ano';
+        text.classList.toggle('ukazat', ma);
+        text.required = ma;
+        if(ma) setTimeout(function(){ text.focus(); }, 50);
+        else { text.value = ''; }
+      });
     });
 
     // kartička: náhled a odebrání
@@ -163,8 +181,16 @@
       if(el.type === 'hidden' || el.classList.contains('past') || !el.hasAttribute('required')) return;
       over(el, el.checkValidity(), el.dataset.chyba || 'Tohle pole je potřeba vyplnit.');
     });
+    formular.querySelectorAll('[data-souhlas-volba]').forEach(function(v){
+      over(v.querySelector('input'), v.querySelector('input:checked'), v.dataset.chyba);
+    });
     // každé dítě
     deti.querySelectorAll('[data-dite]').forEach(function(blok){
+      // volby nejdřív: u alergií a léků sdílí místo na hlášku s popisem,
+      // a chybějící popis po zvolení „má“ musí mít poslední slovo
+      blok.querySelectorAll('.volby').forEach(function(v){
+        over(v.querySelector('input'), v.querySelector('input:checked'), v.dataset.chyba);
+      });
       blok.querySelectorAll('input[required], textarea[required]').forEach(function(el){
         over(el, el.checkValidity(), el.dataset.chyba || 'Tohle pole je potřeba vyplnit.');
       });
@@ -172,9 +198,6 @@
       over(den, d, d === false ? 'Takové datum neexistuje, zkontrolujte den a měsíc.' : 'Vyberte den, měsíc i rok narození.');
       var prvni = blok.querySelector('.treninky-volby input');
       over(prvni, vybraneTreninky(blok).length, blok.querySelector('.treninky-volby').dataset.chyba);
-      blok.querySelectorAll('.volby').forEach(function(v){
-        over(v.querySelector('input'), v.querySelector('input:checked'), v.dataset.chyba);
-      });
       var k = blok.querySelector('[data-k="karticka"]'), f = k.files[0];
       over(k, f && (/^image\//.test(f.type) || f.size <= MAX_SOUBOR),
            f ? 'Soubor je moc velký, nejvýš 5 MB.' : 'Přiložte fotku nebo sken kartičky pojišťovny.');
@@ -252,6 +275,9 @@
     formular.querySelectorAll('[data-souhlas]').forEach(function(z){
       data[z.dataset.souhlas] = z.checked ? 'ANO' : 'NE';
     });
+    formular.querySelectorAll('[data-souhlas-volba]').forEach(function(v){
+      data[v.dataset.souhlasVolba] = v.querySelector('input:checked').value;
+    });
     var nyni = new Date();
     data['Odesláno'] = nyni.getDate() + '. ' + (nyni.getMonth() + 1) + '. ' + nyni.getFullYear() + ' ' +
                        nyni.getHours() + ':' + String(nyni.getMinutes()).padStart(2, '0');
@@ -263,8 +289,8 @@
         'Jméno dítěte': blok.querySelector('[data-k="Jméno dítěte"]').value.trim(),
         'Datum narození': d.getDate() + '. ' + (d.getMonth() + 1) + '. ' + d.getFullYear(),
         'Trénink': vybraneTreninky(blok).join('; '),
-        'Alergie a zdravotní omezení': blok.querySelector('[data-k="Alergie a zdravotní omezení"]').value,
-        'Léky během kempu': blok.querySelector('[data-k="Léky během kempu"]').value,
+        'Alergie a zdravotní omezení': hodnotaVolby(blok, 'Alergie a zdravotní omezení'),
+        'Léky během kempu': hodnotaVolby(blok, 'Léky během kempu'),
         'Plavec': blok.querySelector('[data-k="Plavec"] input:checked').value,
         'Odchází samo': blok.querySelector('[data-k="Odchází samo"] input:checked').value
       };

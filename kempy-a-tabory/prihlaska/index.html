@@ -127,16 +127,22 @@
             </div>
           </div>
           <div class="pole siroke">
-            <label for="d__N__-alergie">Alergie a zdravotní omezení<span class="povinne" aria-hidden="true">*</span></label>
-            <textarea id="d__N__-alergie" data-k="Alergie a zdravotní omezení" rows="3" required
-                      placeholder="Když žádné nemá, napište „žádné“"
-                      data-chyba="Vyplňte prosím. Když žádné nemá, napište „žádné“."></textarea>
+            <span class="popisek">Alergie a zdravotní omezení<span class="povinne" aria-hidden="true">*</span></span>
+            <div class="volby" data-volba="Alergie a zdravotní omezení" data-chyba="Vyberte, jestli má nějaké alergie nebo zdravotní omezení.">
+              <label><input type="radio" name="alergie-__N__" value="ne"><span>Nemá žádné</span></label>
+              <label><input type="radio" name="alergie-__N__" value="ano"><span>Má</span></label>
+            </div>
+            <textarea data-k="Alergie a zdravotní omezení" data-ne="Nemá žádné" rows="3" class="doplneni"
+                      placeholder="Jaké alergie nebo omezení má a co je potřeba vědět" data-chyba="Napište, jaké alergie nebo omezení má."></textarea>
           </div>
           <div class="pole siroke">
-            <label for="d__N__-leky">Léky, které bude během kempu užívat<span class="povinne" aria-hidden="true">*</span></label>
-            <textarea id="d__N__-leky" data-k="Léky během kempu" rows="2" required
-                      placeholder="Název, dávka a kdy je užívá. Když žádné, napište „žádné“"
-                      data-chyba="Vyplňte prosím. Když žádné neužívá, napište „žádné“."></textarea>
+            <span class="popisek">Léky během kempu<span class="povinne" aria-hidden="true">*</span></span>
+            <div class="volby" data-volba="Léky během kempu" data-chyba="Vyberte, jestli bude během kempu užívat nějaké léky.">
+              <label><input type="radio" name="leky-__N__" value="ne"><span>Neužívá žádné</span></label>
+              <label><input type="radio" name="leky-__N__" value="ano"><span>Užívá</span></label>
+            </div>
+            <textarea data-k="Léky během kempu" data-ne="Neužívá žádné" rows="2" class="doplneni"
+                      placeholder="Název léku, dávka a kdy ho užívá" data-chyba="Napište, jaké léky a kdy je užívá."></textarea>
           </div>
           <div class="pole">
             <span class="popisek">Umí plavat<span class="povinne" aria-hidden="true">*</span></span>
@@ -241,9 +247,14 @@
         <label class="zaskrt"><input type="checkbox" id="s-zdravi" required data-souhlas="Souhlas: zdravotní údaje"
           data-chyba="Bez tohoto souhlasu nemůžeme přihlášku přijmout.">
           <span>Souhlasím se zpracováním zdravotních údajů přihlášených dětí (alergie, zdravotní omezení, léky), aby o ně vedoucí kempu mohli bezpečně pečovat. Po kempu se smažou.<span class="povinne" aria-hidden="true">*</span></span></label>
-        <label class="zaskrt"><input type="checkbox" data-souhlas="Souhlas: fotografie a video">
-          <span>Souhlasím s pořizováním a zveřejňováním fotografií a videí z kempu.
-            <small>Dobrovolné, přihlásit se dá i bez něj.</small></span></label>
+        <div class="pole siroke souhlas-foto">
+          <span class="popisek">Fotografie a videa z kempu<span class="povinne" aria-hidden="true">*</span></span>
+          <p class="napoveda">Souhlas s pořizováním a zveřejňováním fotografií a videí z kempu je dobrovolný, vyberte prosím jednu možnost.</p>
+          <div class="volby" data-souhlas-volba="Souhlas: fotografie a video" data-chyba="Vyberte, jestli s fotografiemi souhlasíte.">
+            <label><input type="radio" name="souhlas-foto" value="ANO"><span>Souhlasím</span></label>
+            <label><input type="radio" name="souhlas-foto" value="NE"><span>Nesouhlasím</span></label>
+          </div>
+        </div>
         <label class="zaskrt"><input type="checkbox" id="s-potvrzeni" required
           data-chyba="Bez tohoto potvrzení přihlášku nemůžeme přijmout.">
           <span>Potvrzuji, že jsem se seznámil s celým zněním souhlasu a s informacemi o zpracování osobních údajů.<span class="povinne" aria-hidden="true">*</span></span></label>
