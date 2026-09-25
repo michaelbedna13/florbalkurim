@@ -276,8 +276,10 @@
       return;
     }
 
-    var data = {};
-    ['_honey','Jméno rodiče','email','Telefon','Bydliště'].forEach(function(k){
+    // Past na roboty: pole, které je úplně skryté, takže ho prohlížeč nepředvyplní.
+    var past = formular.querySelector('[name="web_firmy"]');
+    var data = {_honey: past ? past.value : ''};
+    ['Jméno rodiče','email','Telefon','Bydliště'].forEach(function(k){
       var el = formular.querySelector('[name="' + k + '"]');
       data[k] = el ? el.value : '';
     });
@@ -309,6 +311,7 @@
 
     tlacitko.disabled = true;
     tlacitko.textContent = 'Odesílám…';
+    $('odesilam').classList.add('ukazat');
 
     Promise.all(bloky.map(function(blok){
         var f = blok.querySelector('[data-k="karticka"]').files[0];
@@ -332,6 +335,7 @@
           ' Když to nepůjde ani napodruhé, napište nám na florbalkurim@gmail.com.';
         tlacitko.disabled = false;
         tlacitko.textContent = 'Odeslat přihlášku';
+        $('odesilam').classList.remove('ukazat');
       });
   });
 })();

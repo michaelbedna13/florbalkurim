@@ -182,7 +182,7 @@
     </template>
 
     <form class="formular formular-karta" id="prihlaska" action="#" method="POST" novalidate>
-      <input type="text" name="_honey" class="past" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="past" aria-hidden="true"><label>Toto pole nevyplňujte <input type="text" name="web_firmy" tabindex="-1" autocomplete="off"></label></div>
 
       <fieldset>
         <legend><span class="krok">1</span>Rodič</legend>
@@ -270,6 +270,7 @@
       <div class="odeslat">
         <button class="tlacitko" type="submit">Odeslat přihlášku</button>
         <p class="napoveda">Pole označená <span class="povinne">*</span> jsou povinná.</p>
+        <p class="odesilam" id="odesilam" role="status">Ukládáme přihlášku a posíláme potvrzení, obvykle to trvá pár vteřin. Stránku prosím nezavírejte.</p>
       </div>
     </form>
 

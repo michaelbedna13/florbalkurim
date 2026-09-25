@@ -59,8 +59,11 @@ function doPost(e) {
   try {
     var d = JSON.parse(e.postData.contents);
 
-    // pole, které člověk nevidí; vyplní ho jen robot
-    if (d._honey) return odpoved({ ok: true });
+    // Pole, které člověk nevidí, vyplní většinou jen robot. Přihlášku ale
+    // nezahazuji, jen ji označím. Radši spam v tabulce než ztracené dítě.
+    var podezrela = !!String(d._honey || '').trim();
+    if (podezrela) console.warn('Vyplněné skryté pole: ' + d._honey);
+    delete d._honey;
 
     if (new Date() > NASTAVENI.kemp.uzaverka) {
       return odpoved({ ok: false, chyba: 'Přihlášky jsou už uzavřené.' });
@@ -70,7 +73,8 @@ function doPost(e) {
     // (údaje přímo v přihlášce) funguje dál.
     // Čas odeslání bere server Googlu, ne prohlížeč rodiče. Je to záznam,
     // na který se dá spolehnout i jako na doklad.
-    d['Odesláno'] = Utilities.formatDate(new Date(), 'Europe/Prague', 'd. M. yyyy H:mm:ss');
+    var ted = new Date();
+    d['Odesláno'] = Utilities.formatDate(ted, 'Europe/Prague', 'd. M. yyyy H:mm:ss');
 
     var deti = Array.isArray(d.deti) && d.deti.length ? d.deti : [d];
     var zaznamy = deti.map(function (dite) {
@@ -100,11 +104,15 @@ function doPost(e) {
         z['Kartička pojišťovny'] = slozka().createFile(
           Utilities.newBlob(Utilities.base64Decode(z.karticka.data), z.karticka.typ, nazev + koncovka)).getUrl();
       }
-      list.appendRow(SLOUPCE.map(function (sl) { return bezVzorce(z[sl]); }));
+      list.appendRow(SLOUPCE.map(function (sl) {
+        if (sl === 'Odesláno') return ted;
+        if (sl === 'Datum narození') return naDatum(z[sl]);
+        return bezVzorce(z[sl]);
+      }));
     });
     zamek.releaseLock();
 
-    posliVedoucimu(zaznamy);
+    posliVedoucimu(zaznamy, podezrela);
     posliRodici(zaznamy);
 
     return odpoved({ ok: true, deti: zaznamy.length });
@@ -131,11 +139,13 @@ function odpoved(obj) {
    Tabulka a Disk
    ============================================================ */
 
+var _sesit = null;
 function sesit() {
-  if (NASTAVENI.tabulka) return SpreadsheetApp.openById(NASTAVENI.tabulka);
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  if (!ss) throw new Error('Skript neví, kam zapisovat. Vyplň nahoře v NASTAVENI řádek tabulka.');
-  return ss;
+  if (_sesit) return _sesit;   // otevřít jen jednou za běh, každé otevření stojí čas
+  _sesit = NASTAVENI.tabulka ? SpreadsheetApp.openById(NASTAVENI.tabulka)
+                             : SpreadsheetApp.getActiveSpreadsheet();
+  if (!_sesit) throw new Error('Skript neví, kam zapisovat. Vyplň nahoře v NASTAVENI řádek tabulka.');
+  return _sesit;
 }
 
 function listPrihlasek() {
@@ -146,9 +156,28 @@ function listPrihlasek() {
     list.appendRow(SLOUPCE);
     list.getRange(1, 1, 1, SLOUPCE.length)
       .setFontWeight('bold').setBackground('#0B1524').setFontColor('#FFFFFF');
-    list.setFrozenRows(1);
+    stylovat(list);
   }
   return list;
+}
+
+// Česká data a pražský čas, jinak si tabulka „3. 6.“ vyloží jako 6. března.
+// Datum narození a čas odeslání jsou skutečná data, všechno ostatní text,
+// aby si tabulka nic nevykládala po svém (telefon, jména, „ne“ a podobně).
+function pripravFormaty(ss, list) {
+  if (ss.getSpreadsheetLocale() !== 'cs_CZ') ss.setSpreadsheetLocale('cs_CZ');
+  if (ss.getSpreadsheetTimeZone() !== 'Europe/Prague') ss.setSpreadsheetTimeZone('Europe/Prague');
+  var max = list.getMaxRows();
+  SLOUPCE.forEach(function (s, i) {
+    var format = s === 'Odesláno' ? 'd. M. yyyy H:mm:ss' : s === 'Datum narození' ? 'd. M. yyyy' : '@';
+    list.getRange(2, i + 1, max - 1, 1).setNumberFormat(format);
+  });
+}
+
+// „14. 5. 2016“ na skutečné datum; když to nejde, nechá text
+function naDatum(t) {
+  var m = String(t || '').match(/^\s*(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})\s*$/);
+  return m ? new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1])) : t;
 }
 
 function slozka() {
@@ -181,7 +210,7 @@ function jmena(zaznamy) {
   return zaznamy.map(function (z) { return z['Jméno dítěte']; }).join(', ');
 }
 
-function posliVedoucimu(zaznamy) {
+function posliVedoucimu(zaznamy, podezrela) {
   var p = zaznamy[0];
   var obsah = odstavec('Přišla nová přihláška na letní kemp' +
     (zaznamy.length > 1 ? ', počet dětí: ' + zaznamy.length : '') +
@@ -200,7 +229,7 @@ function posliVedoucimu(zaznamy) {
 
   MailApp.sendEmail({
     to: NASTAVENI.upozorneni,
-    subject: 'Nová přihláška na kemp: ' + jmena(zaznamy),
+    subject: (podezrela ? '[možný spam] ' : '') + 'Nová přihláška na kemp: ' + jmena(zaznamy),
     name: NASTAVENI.odesilatel,
     replyTo: p.email,
     htmlBody: sablona('Nová přihláška na kemp', obsah)
@@ -309,20 +338,109 @@ function smazatZdravotniUdajePoKempu() {
   console.log('Zdravotní údaje a kartičky jsou smazané.');
 }
 
+/* ============================================================
+   Vzhled tabulky
+   ============================================================ */
+
+// Kratší názvy do záhlaví. Pořadí se nemění, skript zapisuje podle SLOUPCE.
+var ZAHLAVI = {
+  'Jméno dítěte': 'Dítě', 'Datum narození': 'Narození', 'Trénink': 'Tréninky',
+  'Jméno rodiče': 'Rodič', 'email': 'E-mail', 'Alergie a zdravotní omezení': 'Alergie a omezení',
+  'Léky během kempu': 'Léky', 'Kartička pojišťovny': 'Kartička',
+  'Souhlas: zdravotní pojišťovna': 'Souhlas pojišťovna', 'Souhlas: fotografie a video': 'Souhlas foto',
+  'Souhlas: zdravotní údaje': 'Souhlas zdraví'
+};
+var SIRKY = [150, 140, 90, 290, 150, 140, 200, 120, 190, 170, 80, 95, 150, 105, 90, 95];
+
+/** Spusť jednou ručně. Nastyluje list s přihláškami v barvách klubu. */
+function nastylovatTabulku() {
+  stylovat(listPrihlasek());
+  console.log('Tabulka je nastylovaná.');
+}
+
+function stylovat(list) {
+  pripravFormaty(sesit(), list);
+  var n = SLOUPCE.length, max = list.getMaxRows();
+  var B = SpreadsheetApp.BorderStyle;
+
+  // záhlaví
+  var hlava = list.getRange(1, 1, 1, n);
+  hlava.setValues([SLOUPCE.map(function (s) { return ZAHLAVI[s] || s; })])
+    .setFontFamily('Chakra Petch').setFontWeight('bold').setFontSize(10).setFontColor('#FFFFFF')
+    .setVerticalAlignment('middle').setWrap(true)
+    .setBorder(null, null, true, null, null, null, '#7CB6E0', B.SOLID_THICK);
+  hlava.setBackground('#0B1524');
+  list.setRowHeight(1, 42);
+
+  // data
+  var data = list.getRange(2, 1, max - 1, n);
+  data.setFontFamily('Roboto').setFontSize(10).setVerticalAlignment('middle')
+    .setWrapStrategy(SpreadsheetApp.WrapStrategy.CLIP)
+    .setBorder(null, null, null, null, null, true, '#DCE6F0', B.SOLID);
+  ['Trénink', 'Alergie a zdravotní omezení', 'Léky během kempu'].forEach(function (s) {
+    list.getRange(2, SLOUPCE.indexOf(s) + 1, max - 1, 1).setWrap(true);
+  });
+  list.getRange(2, 1, max - 1, 1).setHorizontalAlignment('right');
+  list.getRange(2, 3, max - 1, 1).setHorizontalAlignment('right');
+
+  // střídavé řádky
+  list.getBandings().forEach(function (b) { b.remove(); });
+  data.applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY, false, false)
+    .setFirstRowColor('#FFFFFF').setSecondRowColor('#F4F8FC');
+
+  // šířky, zamrzlé jen záhlaví, filtr, bez mřížky
+  SIRKY.forEach(function (w, i) { list.setColumnWidth(i + 1, w); });
+  list.setFrozenRows(1);
+  list.setFrozenColumns(0);
+  // svislá linka z dřívější verze stylu pryč
+  list.getRange(1, 2, max, 1).setBorder(null, null, null, false, null, null);
+  if (list.getFilter()) list.getFilter().remove();
+  list.getRange(1, 1, max, n).createFilter();
+  list.setHiddenGridlines(true);
+  list.setTabColor('#16375C');
+
+  // zvýraznění toho, na co si dát pozor
+  function rozsah(s) { return list.getRange(2, SLOUPCE.indexOf(s) + 1, max - 1, 1); }
+  function pravidlo() { return SpreadsheetApp.newConditionalFormatRule(); }
+  var CERVENA = ['#FDECEA', '#8A1C12'], ORANZOVA = ['#FFF4DB', '#8A5A00'], SEDA = '#8A9BB0';
+  var pravidla = [];
+  [['Alergie a zdravotní omezení', 'Nemá žádné'], ['Léky během kempu', 'Neužívá žádné']].forEach(function (x) {
+    var r = rozsah(x[0]);
+    // prázdné nechat být, „nemá“ zašednout, cokoliv jiného červeně
+    pravidla.push(pravidlo().whenCellEmpty().setFontColor('#0B1524').setRanges([r]).build());
+    pravidla.push(pravidlo().whenTextEqualTo(x[1]).setFontColor(SEDA).setRanges([r]).build());
+    pravidla.push(pravidlo().whenTextEqualTo('žádné').setFontColor(SEDA).setRanges([r]).build());
+    pravidla.push(pravidlo().whenTextDoesNotContain(x[1]).setBackground(CERVENA[0])
+      .setFontColor(CERVENA[1]).setBold(true).setRanges([r]).build());
+  });
+  pravidla.push(pravidlo().whenTextEqualTo('neplavec').setBackground(ORANZOVA[0])
+    .setFontColor(ORANZOVA[1]).setBold(true).setRanges([rozsah('Plavec')]).build());
+  ['přinese na kemp', 'nepřiložena'].forEach(function (t) {
+    pravidla.push(pravidlo().whenTextEqualTo(t).setBackground(ORANZOVA[0])
+      .setFontColor(ORANZOVA[1]).setBold(true).setRanges([rozsah('Kartička pojišťovny')]).build());
+  });
+  ['Souhlas: fotografie a video', 'Souhlas: zdravotní pojišťovna', 'Souhlas: zdravotní údaje'].forEach(function (s) {
+    pravidla.push(pravidlo().whenTextEqualTo('NE').setBackground(CERVENA[0])
+      .setFontColor(CERVENA[1]).setBold(true).setRanges([rozsah(s)]).build());
+  });
+  list.setConditionalFormatRules(pravidla);
+}
+
 /**
- * Spusť jednou ručně. Zamkne list s přihláškami tak, že ho smí upravovat jen
- * tenhle klubový účet. Ostatní, se kterými tabulku sdílíte, ji jen čtou.
- * Skript zapisuje dál, běží pod stejným účtem.
+ * Spusť jednou ručně. Nastaví list s přihláškami jako chráněný záznam:
+ * při jakékoliv ruční úpravě Google ukáže varování, které je nutné potvrdit,
+ * takže nic nepřepíšeš omylem. Skript zapisuje dál bez omezení.
+ * Vlastníkovi tabulky úpravy zakázat nejde, to Google neumožňuje.
+ * Ostatním tabulku sdílej jen jako Čtenář, pak do ní nenapíšou vůbec nic.
  * Každou změnu i tak eviduje Google v historii verzí (Soubor, Historie verzí).
  */
 function zamknoutTabulku() {
   var list = listPrihlasek();
-  var ochrana = list.protect().setDescription('Přihlášky na kemp: upravovat smí jen klubový účet');
-  var ja = Session.getEffectiveUser();
-  ochrana.addEditor(ja);
-  ochrana.removeEditors(ochrana.getEditors());
-  if (ochrana.canDomainEdit()) ochrana.setDomainEdit(false);
-  console.log('List je zamčený, upravovat ho smí jen ' + ja.getEmail() + '.');
+  list.getProtections(SpreadsheetApp.ProtectionType.SHEET).forEach(function (p) { p.remove(); });
+  list.protect()
+    .setDescription('Přihlášky na kemp: záznam z formuláře, ručně neupravovat')
+    .setWarningOnly(true);
+  console.log('List je chráněný, každá ruční úprava vyžaduje potvrzení varování.');
 }
 
 /** Pro vyzkoušení e-mailů bez vyplňování formuláře. Pošle obě zprávy na adresu upozornění. */

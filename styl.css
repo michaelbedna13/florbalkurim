@@ -644,7 +644,15 @@ tr.my td{font-weight:600;color:var(--cerna)}
   margin-top:36px;padding-top:28px;border-top:2px solid var(--cerna)}
 .formular .chyba-odeslani:not(:empty) + .odeslat{margin-top:14px}
 .formular button[disabled]{opacity:.6;cursor:wait}
-.formular .past{position:absolute;left:-9999px}
+.formular .odesilam{display:none;flex-basis:100%;margin:0;font-size:14.5px;font-weight:500;color:var(--namorni)}
+.formular .odesilam.ukazat{display:block}
+.formular .odesilam.ukazat::before{content:'';display:inline-block;width:12px;height:12px;margin-right:9px;
+  border:2px solid var(--nebeska);border-top-color:var(--namorni);border-radius:50%;
+  vertical-align:-1px;animation:tocit .8s linear infinite}
+@keyframes tocit{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.formular .odesilam.ukazat::before{animation:none}}
+/* past na roboty: display:none, aby ji nevyplnilo automatické doplňování prohlížeče */
+.formular .past{display:none !important}
 
 /* karty s potvrzením a uzávěrkou leží v tmavé sekci, písmo jim nastavuji zvlášť */
 .hlaseni{display:none;scroll-margin-top:calc(var(--hlavicka-h) + 24px)}
