@@ -164,3 +164,10 @@ Po kempu se ve skriptu ručně spustí funkce smazatZdravotniUdajePoKempu.
 Pozor, časy tréninků jsou i v přihlášce (výběr „Na které tréninky chodí"
 v `kempy-a-tabory/prihlaska/index.html`). Když se změní rozvrh, oprav je
 na Tréninkách, na domovské stránce i tady.
+
+
+## Formulář Napište nám
+
+Stránka Kontakty má formulář (`kontakt.js`), který posílá zprávu stejnému Apps Scriptu
+jako přihláška. Ten ji přepošle na adresu v NASTAVENI.dotazy a odesílateli pošle kopii.
+Adresa skriptu je nahoře v `kontakt.js` i v `prihlaska.js`, při změně nasazení oprav obě.

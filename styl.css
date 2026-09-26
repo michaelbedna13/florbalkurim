@@ -696,3 +696,8 @@ tr.my td{font-weight:600;color:var(--cerna)}
 .rozcestnik span{font-size:14.5px;color:var(--text-60)}
 @media(max-width:760px){.rozcestnik{grid-template-columns:1fr 1fr}}
 @media(max-width:460px){.rozcestnik{grid-template-columns:1fr}}
+
+/* kontakty: tlačítko nahoře vede na formulář */
+.kontakt-skok{margin:24px 0 0}
+#napiste-nam{scroll-margin-top:var(--hlavicka-h)}
+#dotaz .krok{font-size:15px}

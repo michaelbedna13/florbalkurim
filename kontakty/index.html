@@ -41,8 +41,9 @@
 <section class="sekce tesna">
   <div class="obal">
     <h1>Kontakty</h1>
-    <p class="vede">Nejrychlejší cesta je zavolat přímo trenérovi kategorie.
-       Když nevíte komu, napište kterémukoliv z nás a předáme to dál.</p>
+    <p class="vede">Nejrychlejší je zavolat trenérovi kategorie. S čímkoliv dalším
+       nám napište přes formulář níž, zpráva dorazí přímo předsedovi klubu.</p>
+    <p class="kontakt-skok"><a class="tlacitko" href="#napiste-nam">Napsat zprávu</a></p>
   </div>
 </section>
 
@@ -82,6 +83,55 @@
     </div>
   </div>
 </section>
+
+<section class="sekce tmava sekce-formular" id="napiste-nam">
+  <div class="srafy tmave"></div>
+  <div class="rastr svetly"></div>
+  <div class="obal">
+
+    <div class="formular-karta hlaseni" id="dotaz-odeslan" tabindex="-1">
+      <div class="hotovo-ikona" aria-hidden="true">✓</div>
+      <h2>Zpráva je odeslaná</h2>
+      <p id="dotaz-odeslan-text">Děkujeme, odpovíme vám co nejdřív na e-mail, který jste vyplnili.</p>
+      <p class="napoveda">Kopie zprávy vám přišla e-mailem. Když ji nenajdete, mrkněte do spamu.</p>
+    </div>
+
+    <form class="formular formular-karta" id="dotaz" action="#" method="POST" novalidate>
+      <div class="past" aria-hidden="true"><label>Toto pole nevyplňujte <input type="text" name="web_firmy" tabindex="-1" autocomplete="off"></label></div>
+      <fieldset>
+        <legend><span class="krok">✉</span>Napište nám</legend>
+        <p class="napoveda siroke">Zpráva přijde Aleši Hanákovi, předsedovi klubu a trenérovi mládeže. Odpoví vám na e-mail, který vyplníte.</p>
+        <div class="pole siroke">
+          <label for="d-jmeno">Jméno a příjmení<span class="povinne" aria-hidden="true">*</span></label>
+          <input id="d-jmeno" name="jmeno" required autocomplete="name" data-chyba="Napište prosím své jméno.">
+        </div>
+        <div class="pole">
+          <label for="d-email">E-mail<span class="povinne" aria-hidden="true">*</span></label>
+          <input id="d-email" name="email" type="email" required autocomplete="email" inputmode="email"
+                 placeholder="jmeno@email.cz" pattern="[^@\s]+@[^@\s]+\.[^@\s]{2,}"
+                 data-chyba="Napište platný e-mail, jinak vám nemůžeme odpovědět.">
+        </div>
+        <div class="pole">
+          <label for="d-telefon">Telefon</label>
+          <input id="d-telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" placeholder="Nepovinné">
+        </div>
+        <div class="pole siroke">
+          <label for="d-zprava">Zpráva<span class="povinne" aria-hidden="true">*</span></label>
+          <textarea id="d-zprava" name="zprava" rows="6" required data-chyba="Napište prosím zprávu."></textarea>
+        </div>
+        <p class="napoveda siroke">Údaje použijeme jen k odpovědi, víc v <a href="../ochrana-osobnich-udaju/">zásadách ochrany osobních údajů</a>.</p>
+      </fieldset>
+      <p class="chyba-odeslani" id="dotaz-chyba" role="alert"></p>
+      <div class="odeslat">
+        <button class="tlacitko" type="submit">Odeslat zprávu</button>
+        <p class="napoveda">Pole označená <span class="povinne">*</span> jsou povinná.</p>
+        <p class="odesilam" id="dotaz-odesilam" role="status">Odesíláme zprávu, chvilku to trvá.</p>
+      </div>
+    </form>
+
+  </div>
+</section>
+
 
 <section class="sekce svetla">
   <div class="obal">
@@ -148,5 +198,6 @@
 </div>
 
 <script src="../web.js"></script>
+<script src="../kontakt.js"></script>
 </body>
 </html>

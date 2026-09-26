@@ -22,6 +22,12 @@ var NASTAVENI = {
   // kam má rodič odpovídat, když má dotaz
   odpovedi: 'florbalkurim@gmail.com',
 
+  // podpis v potvrzení pro rodiče, každý řádek zvlášť
+  podpis: ['Za trenérský tým', 'Aleš Hanák', 'předseda klubu a trenér mládeže', 'tel. 737 838 002'],
+
+  // kam chodí dotazy z formuláře Napište nám na stránce Kontakty
+  dotazy: 'alhanak@atlas.cz',
+
   list: 'Přihlášky',
   slozka: 'Kemp 2027, kartičky pojišťovny',
 
@@ -39,13 +45,13 @@ var NASTAVENI = {
 // Pořadí sloupců v tabulce. Názvy odpovídají polím ve formuláři na webu.
 var SLOUPCE = [
   'Odesláno', 'Jméno dítěte', 'Datum narození', 'Trénink', 'Bydliště',
-  'Jméno rodiče', 'email', 'Telefon',
+  'Jméno rodiče', 'Narození rodiče', 'email', 'Telefon',
   'Alergie a zdravotní omezení', 'Léky během kempu', 'Plavec', 'Odchází samo',
   'Kartička pojišťovny',
   'Souhlas: zdravotní pojišťovna', 'Souhlas: fotografie a video', 'Souhlas: zdravotní údaje'
 ];
 var POVINNE = ['Jméno dítěte', 'Datum narození', 'Trénink', 'Bydliště',
-               'Jméno rodiče', 'email', 'Telefon', 'Plavec', 'Odchází samo',
+               'Jméno rodiče', 'Narození rodiče', 'email', 'Telefon', 'Plavec', 'Odchází samo',
                'Alergie a zdravotní omezení', 'Léky během kempu', 'Souhlas: fotografie a video'];
 var ZDRAVOTNI = ['Alergie a zdravotní omezení', 'Léky během kempu'];
 
@@ -64,6 +70,8 @@ function doPost(e) {
     var podezrela = !!String(d._honey || '').trim();
     if (podezrela) console.warn('Vyplněné skryté pole: ' + d._honey);
     delete d._honey;
+
+    if (d.typ === 'dotaz') return prijmiDotaz(d);
 
     if (new Date() > NASTAVENI.kemp.uzaverka) {
       return odpoved({ ok: false, chyba: 'Přihlášky jsou už uzavřené.' });
@@ -106,7 +114,7 @@ function doPost(e) {
       }
       list.appendRow(SLOUPCE.map(function (sl) {
         if (sl === 'Odesláno') return ted;
-        if (sl === 'Datum narození') return naDatum(z[sl]);
+        if (sl === 'Datum narození' || sl === 'Narození rodiče') return naDatum(z[sl]);
         return bezVzorce(z[sl]);
       }));
     });
@@ -134,6 +142,53 @@ function odpoved(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+
+/* ============================================================
+   Dotaz z formuláře Napište nám
+   ============================================================ */
+
+function prijmiDotaz(d) {
+  var jmeno = String(d.jmeno || '').trim(), email = String(d.email || '').trim(),
+      zprava = String(d.zprava || '').trim();
+  // do předmětu začátek zprávy, ať je v přehledu pošty hned vidět, o co jde
+  var zacatek = zprava.replace(/\s+/g, ' ');
+  if (zacatek.length > 50) zacatek = zacatek.slice(0, 50).replace(/\s\S*$/, '') + '…';
+  if (!jmeno || !zprava || !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) {
+    return odpoved({ ok: false, chyba: 'Vyplňte prosím jméno, platný e-mail a zprávu.' });
+  }
+  var podezrela = !!String(d._honey || '').trim();
+  var ted = Utilities.formatDate(new Date(), 'Europe/Prague', 'd. M. yyyy H:mm');
+
+  var obsah = odstavec('Přes web přišel dotaz. Stačí odpovědět na tento e-mail, odpověď půjde přímo odesílateli.') +
+    tabulka([['Od', jmeno], ['E-mail', email], ['Telefon', d.telefon || 'neuvedl'], ['Odesláno', ted]]) +
+    mezititulek('Zpráva') +
+    '<p style="margin:0 0 20px;padding:14px 16px;border-left:4px solid #7CB6E0;background:#F1F6FB;' +
+      'font:15px/1.6 Arial,Helvetica,sans-serif;color:#0B1524">' + hlidat(zprava).replace(/\n/g, '<br>') + '</p>';
+  MailApp.sendEmail({
+    to: NASTAVENI.dotazy,
+    subject: (podezrela ? '[možný spam] ' : '') + 'Dotaz z webu od ' + jmeno + ': ' + zacatek,
+    name: 'Web Florbal Kuřim',
+    replyTo: email,
+    htmlBody: sablona('Dotaz z webu', obsah)
+  });
+
+  if (!podezrela) {
+    MailApp.sendEmail({
+      to: email,
+      subject: 'Vaše zpráva klubu Florbal Kuřim dorazila',
+      name: NASTAVENI.odesilatel,
+      replyTo: NASTAVENI.dotazy,
+      htmlBody: sablona('Zpráva dorazila',
+        odstavec('Dobrý den,') +
+        odstavec('děkujeme za zprávu, dorazila a odpovíme vám co nejdřív na tento e-mail.') +
+        mezititulek('Vaše zpráva') +
+        '<p style="margin:0 0 16px;padding:14px 16px;border-left:4px solid #7CB6E0;background:#F1F6FB;' +
+          'font:15px/1.6 Arial,Helvetica,sans-serif;color:#0B1524">' + hlidat(zprava).replace(/\n/g, '<br>') + '</p>' +
+        podpis())
+    });
+  }
+  return odpoved({ ok: true });
+}
 
 /* ============================================================
    Tabulka a Disk
@@ -169,7 +224,8 @@ function pripravFormaty(ss, list) {
   if (ss.getSpreadsheetTimeZone() !== 'Europe/Prague') ss.setSpreadsheetTimeZone('Europe/Prague');
   var max = list.getMaxRows();
   SLOUPCE.forEach(function (s, i) {
-    var format = s === 'Odesláno' ? 'd. M. yyyy H:mm:ss' : s === 'Datum narození' ? 'd. M. yyyy' : '@';
+    var format = s === 'Odesláno' ? 'd. M. yyyy H:mm:ss'
+      : (s === 'Datum narození' || s === 'Narození rodiče') ? 'd. M. yyyy' : '@';
     list.getRange(2, i + 1, max - 1, 1).setNumberFormat(format);
   });
 }
@@ -196,10 +252,46 @@ function bezVzorce(v) {
    E-maily
    ============================================================ */
 
-var POLE_RODIC = ['Jméno rodiče', 'email', 'Telefon', 'Bydliště', 'Odesláno'];
+var POLE_RODIC = ['Jméno rodiče', 'Narození rodiče', 'email', 'Telefon', 'Bydliště', 'Odesláno'];
 var POLE_DITE = ['Datum narození', 'Trénink', 'Alergie a zdravotní omezení', 'Léky během kempu',
                  'Plavec', 'Odchází samo'];
 var POLE_SOUHLASY = ['Souhlas: zdravotní pojišťovna', 'Souhlas: fotografie a video', 'Souhlas: zdravotní údaje'];
+
+// Podpis pod potvrzením pro rodiče, podle NASTAVENI.podpis
+function podpis() {
+  var r = NASTAVENI.podpis || ['Florbal Kuřim'];
+  return '<p style="margin:22px 0 16px;font:15px/1.6 Arial,Helvetica,sans-serif;color:#16375C">' +
+    r.map(function (radek, i) {
+      return i === 1 ? '<b style="color:#0B1524;font-size:16px">' + hlidat(radek) + '</b>' : hlidat(radek);
+    }).join('<br>') + '</p>';
+}
+
+// E-maily všech přihlášených rodičů bez opakování, v pořadí přihlášek
+function emailyRodicu() {
+  var list = listPrihlasek(), n = list.getLastRow();
+  if (n < 2) return [];
+  var sl = SLOUPCE.indexOf('email') + 1, videne = {}, ven = [];
+  list.getRange(2, sl, n - 1, 1).getValues().forEach(function (r) {
+    var e = String(r[0] || '').replace(/^'/, '').trim().toLowerCase();
+    if (e && !videne[e]) { videne[e] = true; ven.push(e); }
+  });
+  return ven;
+}
+
+// Tlačítko na e-mail všem rodičům ze svého programu a seznam adres ke zkopírování
+function blokRodice() {
+  var e = emailyRodicu();
+  if (!e.length) return '';
+  var odkaz = 'mailto:?bcc=' + e.map(encodeURIComponent).join(',') +
+    '&subject=' + encodeURIComponent('Letní kemp Florbal Kuřim');
+  return mezititulek('Napsat všem přihlášeným rodičům (' + e.length + ')') +
+    odstavec('<a href="' + odkaz + '" style="display:inline-block;padding:11px 18px;background:#0B1524;' +
+      'color:#FFFFFF;text-decoration:none;font-weight:bold">Napsat e-mail všem rodičům</a>') +
+    odstavec('<span style="font-size:13px;color:#5B6B7F">Tlačítko otevře nový e-mail se všemi rodiči ve skryté kopii. ' +
+      'Kdyby se neotevřel, zkopírujte adresy níž do pole Skrytá kopie (Bcc).</span>') +
+    '<p style="margin:0 0 16px;padding:10px 12px;background:#F1F6FB;font:13px/1.6 monospace;color:#0B1524;' +
+      'word-break:break-all">' + hlidat(e.join(', ')) + '</p>';
+}
 
 function mezititulek(text) {
   return '<h2 style="margin:26px 0 10px;font:bold 15px/1.3 Arial,Helvetica,sans-serif;' +
@@ -226,6 +318,7 @@ function posliVedoucimu(zaznamy, podezrela) {
   obsah += mezititulek('Souhlasy') + tabulka(POLE_SOUHLASY.map(function (s) { return [nazevPole(s), p[s] || '']; }));
   obsah += odstavec('<a href="' + sesit().getUrl() +
     '" style="color:#16375C;font-weight:bold">Otevřít tabulku přihlášek</a>');
+  obsah += blokRodice();
 
   MailApp.sendEmail({
     to: NASTAVENI.upozorneni,
@@ -257,7 +350,7 @@ function posliRodici(zaznamy) {
     odstavec('<b>Kemp proběhne ' + k.termin + ', ' + k.cas + '.</b><br>Cena ' + k.cena +
              (zaznamy.length > 1 ? ' za každé dítě.' : '.')) +
     odstavec('Kdyby bylo v přihlášce něco špatně, stačí odpovědět na tento e-mail.') +
-    odstavec('Florbal Kuřim');
+    podpis();
 
   MailApp.sendEmail({
     to: p.email,
@@ -350,7 +443,7 @@ var ZAHLAVI = {
   'Souhlas: zdravotní pojišťovna': 'Souhlas pojišťovna', 'Souhlas: fotografie a video': 'Souhlas foto',
   'Souhlas: zdravotní údaje': 'Souhlas zdraví'
 };
-var SIRKY = [150, 140, 90, 290, 150, 140, 200, 120, 190, 170, 80, 95, 150, 105, 90, 95];
+var SIRKY = [150, 140, 90, 290, 150, 140, 95, 200, 120, 190, 170, 80, 95, 150, 105, 90, 95];
 
 /** Spusť jednou ručně. Nastyluje list s přihláškami v barvách klubu. */
 function nastylovatTabulku() {
@@ -380,8 +473,9 @@ function stylovat(list) {
   ['Trénink', 'Alergie a zdravotní omezení', 'Léky během kempu'].forEach(function (s) {
     list.getRange(2, SLOUPCE.indexOf(s) + 1, max - 1, 1).setWrap(true);
   });
-  list.getRange(2, 1, max - 1, 1).setHorizontalAlignment('right');
-  list.getRange(2, 3, max - 1, 1).setHorizontalAlignment('right');
+  ['Odesláno', 'Datum narození', 'Narození rodiče'].forEach(function (s) {
+    list.getRange(2, SLOUPCE.indexOf(s) + 1, max - 1, 1).setHorizontalAlignment('right');
+  });
 
   // střídavé řádky
   list.getBandings().forEach(function (b) { b.remove(); });
@@ -443,10 +537,19 @@ function zamknoutTabulku() {
   console.log('List je chráněný, každá ruční úprava vyžaduje potvrzení varování.');
 }
 
+/** Pošle zkušební dotaz jako z formuláře Napište nám, na adresu upozornění. */
+function zkusitDotaz() {
+  var puvodni = NASTAVENI.dotazy;
+  NASTAVENI.dotazy = NASTAVENI.upozorneni;
+  prijmiDotaz({ jmeno: 'Petra Zkušební', email: NASTAVENI.upozorneni, telefon: '777 123 456',
+                zprava: 'Dobrý den,\nmůže na kemp i sourozenec, který ještě nechodí na tréninky?' });
+  NASTAVENI.dotazy = puvodni;
+}
+
 /** Pro vyzkoušení e-mailů bez vyplňování formuláře. Pošle obě zprávy na adresu upozornění. */
 function zkusitEmaily() {
   var rodic = {
-    'Jméno rodiče': 'Petra Zkušební', email: NASTAVENI.upozorneni, 'Telefon': '777 123 456',
+    'Jméno rodiče': 'Petra Zkušební', 'Narození rodiče': '8. 4. 1985', email: NASTAVENI.upozorneni, 'Telefon': '777 123 456',
     'Bydliště': 'Tyršova 1, Kuřim', 'Odesláno': 'zkouška',
     'Souhlas: zdravotní pojišťovna': 'ANO', 'Souhlas: fotografie a video': 'ANO', 'Souhlas: zdravotní údaje': 'ANO'
   };

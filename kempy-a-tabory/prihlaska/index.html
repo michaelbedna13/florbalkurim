@@ -191,6 +191,14 @@
           <input id="f-rodic" name="Jméno rodiče" required autocomplete="name"
                  data-chyba="Napište své jméno a příjmení.">
         </div>
+        <div class="pole siroke">
+          <span class="popisek" id="p-rodic-narozeni">Datum narození<span class="povinne" aria-hidden="true">*</span></span>
+          <div class="datum" id="rodic-narozeni" role="group" aria-labelledby="p-rodic-narozeni">
+            <select data-k="den" aria-label="Den"><option value="">Den</option></select>
+            <select data-k="mesic" aria-label="Měsíc"><option value="">Měsíc</option></select>
+            <select data-k="rok" aria-label="Rok"><option value="">Rok</option></select>
+          </div>
+        </div>
         <div class="pole">
           <label for="f-email">E-mail<span class="povinne" aria-hidden="true">*</span></label>
           <input id="f-email" name="email" type="email" required autocomplete="email" inputmode="email"

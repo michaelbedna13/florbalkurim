@@ -167,6 +167,20 @@
     $('pridat-dite').style.display = bloky.length >= MAX_DETI ? 'none' : '';
   }
 
+  /* ---------- datum narození rodiče ---------- */
+  var rodicDatum = $('rodic-narozeni');
+  (function(){
+    var den = rodicDatum.querySelector('[data-k="den"]'), mesic = rodicDatum.querySelector('[data-k="mesic"]'),
+        rok = rodicDatum.querySelector('[data-k="rok"]');
+    for(var i = 1; i <= 31; i++) den.add(new Option(i + '.', i));
+    MESICE.forEach(function(m, i){ mesic.add(new Option(m, i + 1)); });
+    var r0 = ZACATEK_KEMPU.getFullYear() - 16;
+    for(var r = r0; r >= r0 - 70; r--) rok.add(new Option(r, r));
+    [den, mesic, rok].forEach(function(s){
+      s.addEventListener('change', function(){ if(datumNarozeni(rodicDatum)) vycisti(den); });
+    });
+  })();
+
   $('pridat-dite').addEventListener('click', function(){
     var blok = pridejDite();
     if(!blok) return;
@@ -190,6 +204,10 @@
     formular.querySelectorAll('[data-souhlas-volba]').forEach(function(v){
       over(v.querySelector('input'), v.querySelector('input:checked'), v.dataset.chyba);
     });
+    // datum narození rodiče
+    var rd = datumNarozeni(rodicDatum);
+    over(rodicDatum.querySelector('[data-k="den"]'), rd,
+         rd === false ? 'Takové datum neexistuje, zkontrolujte den a měsíc.' : 'Vyberte den, měsíc i rok narození.');
     // každé dítě
     deti.querySelectorAll('[data-dite]').forEach(function(blok){
       // volby nejdřív: u alergií a léků sdílí místo na hlášku s popisem,
@@ -283,6 +301,8 @@
       var el = formular.querySelector('[name="' + k + '"]');
       data[k] = el ? el.value : '';
     });
+    var rn = datumNarozeni(rodicDatum);
+    data['Narození rodiče'] = rn.getDate() + '. ' + (rn.getMonth() + 1) + '. ' + rn.getFullYear();
     formular.querySelectorAll('[data-souhlas]').forEach(function(z){
       data[z.dataset.souhlas] = z.checked ? 'ANO' : 'NE';
     });
