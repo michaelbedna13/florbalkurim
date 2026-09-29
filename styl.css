@@ -503,7 +503,7 @@ tr.my td{font-weight:600;color:var(--cerna)}
    Karta uprostřed tmavé sekce. Jednotný rytmus: popisek 8 px nad polem,
    24 px mezi poli, sekce oddělené linkou a 40 px vzduchu. */
 .sekce.tmava.sekce-formular{padding-top:clamp(40px,5vw,64px);scroll-margin-top:var(--hlavicka-h)}
-.formular-karta{background:#fff;max-width:760px;margin:0 auto;padding:clamp(24px,4.5vw,52px);
+.formular-karta{color:var(--text);background:#fff;max-width:760px;margin:0 auto;padding:clamp(24px,4.5vw,52px);
   box-shadow:0 24px 60px -30px rgba(0,0,0,.6);
   clip-path:polygon(0 0,100% 0,100% calc(100% - 26px),calc(100% - 26px) 100%,0 100%)}
 
@@ -635,6 +635,14 @@ tr.my td{font-weight:600;color:var(--cerna)}
 /* nahrání kartičky se ukáže až po volbě „nahraju teď“ */
 .formular .karticka-nahrani{display:none;flex-direction:column;gap:8px;margin-top:6px}
 .formular .karticka-nahrani.ukazat{display:flex}
+
+/* seznam nahraných stran kartičky */
+.formular .nahrane-soubory{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.formular .nahrane-soubory:empty{display:none}
+.formular .nahrane-soubory li{display:flex;align-items:center;gap:12px;padding:8px 10px;border:1.5px solid var(--linka);background:#fff}
+.formular .nahrane-soubory img,.formular .pdf-ikona{width:56px;height:40px;flex:none;object-fit:cover}
+.formular .pdf-ikona{display:grid;place-items:center;background:#B3261E;color:#fff;font:700 12px/1 var(--nadpisy);letter-spacing:.04em}
+.formular .soubor-popis{color:var(--cerna);flex:1;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* odeslání */
 .formular .chyba-odeslani{margin:36px 0 0;color:#B3261E;font-weight:600;max-width:none}

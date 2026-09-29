@@ -106,12 +106,20 @@ function doPost(e) {
       // kartička pojišťovny do soukromé složky na Disku
       // bez souboru zůstane, co poslal web, typicky „přinese na kemp“
       z['Kartička pojišťovny'] = z['Kartička pojišťovny'] || '';
-      if (z.karticka && z.karticka.data) {
+      // Strany kartičky jednoho dítěte jdou do jeho vlastní složky, v tabulce je odkaz
+      // na ni, takže se jedním kliknutím otevře přední i zadní strana.
+      var soubory = Array.isArray(z.karticky) ? z.karticky : (z.karticka && z.karticka.data ? [z.karticka] : []);
+      soubory = soubory.filter(function (f) { return f && f.data; });
+      if (soubory.length) {
         var nazev = (z['Jméno dítěte'] + ' ' + (z['Datum narození'] || '')).replace(/[^\wÀ-ž .-]/g, '').trim();
-        var koncovka = /pdf/i.test(z.karticka.typ) ? '.pdf' : '.jpg';
-        z['Kartička pojišťovny'] = slozka().createFile(
-          Utilities.newBlob(Utilities.base64Decode(z.karticka.data), z.karticka.typ, nazev + koncovka)).getUrl();
+        var sl = slozka().createFolder(nazev + ' (' + Utilities.formatDate(ted, 'Europe/Prague', 'd. M. H.mm') + ')');
+        soubory.forEach(function (f, i) {
+          var koncovka = /pdf/i.test(f.typ) ? '.pdf' : '.jpg';
+          sl.createFile(Utilities.newBlob(Utilities.base64Decode(f.data), f.typ, 'strana ' + (i + 1) + koncovka));
+        });
+        z['Kartička pojišťovny'] = sl.getUrl();
       }
+      delete z.karticky; delete z.karticka;
       list.appendRow(SLOUPCE.map(function (sl) {
         if (sl === 'Odesláno') return ted;
         if (sl === 'Datum narození' || sl === 'Narození rodiče') return naDatum(z[sl]);
@@ -122,6 +130,7 @@ function doPost(e) {
 
     posliVedoucimu(zaznamy, podezrela);
     posliRodici(zaznamy);
+    try { aktualizovatRodice(); } catch (x) { console.warn('List Rodiče se nepodařilo aktualizovat: ' + x); }
 
     return odpoved({ ok: true, deti: zaznamy.length });
   } catch (err) {
@@ -278,19 +287,32 @@ function emailyRodicu() {
   return ven;
 }
 
-// Tlačítko na e-mail všem rodičům ze svého programu a seznam adres ke zkopírování
-function blokRodice() {
-  var e = emailyRodicu();
-  if (!e.length) return '';
-  var odkaz = 'mailto:?bcc=' + e.map(encodeURIComponent).join(',') +
-    '&subject=' + encodeURIComponent('Letní kemp Florbal Kuřim');
-  return mezititulek('Napsat všem přihlášeným rodičům (' + e.length + ')') +
-    odstavec('<a href="' + odkaz + '" style="display:inline-block;padding:11px 18px;background:#0B1524;' +
-      'color:#FFFFFF;text-decoration:none;font-weight:bold">Napsat e-mail všem rodičům</a>') +
-    odstavec('<span style="font-size:13px;color:#5B6B7F">Tlačítko otevře nový e-mail se všemi rodiči ve skryté kopii. ' +
-      'Kdyby se neotevřel, zkopírujte adresy níž do pole Skrytá kopie (Bcc).</span>') +
-    '<p style="margin:0 0 16px;padding:10px 12px;background:#F1F6FB;font:13px/1.6 monospace;color:#0B1524;' +
-      'word-break:break-all">' + hlidat(e.join(', ')) + '</p>';
+// List „Rodiče“ v tabulce: tlačítko na e-mail všem rodičům a seznam adres.
+// Je jen v tabulce, kam mají přístup pořadatelé, nikdy v e-mailu, který jde rodičům.
+function aktualizovatRodice() {
+  var ss = sesit(), e = emailyRodicu();
+  var list = ss.getSheetByName('Rodiče');
+  if (!list) {
+    list = ss.insertSheet('Rodiče');
+    list.setColumnWidth(1, 720);
+    list.setHiddenGridlines(true);
+    list.setTabColor('#16375C');
+  }
+  list.clear();
+  var odkaz = 'mailto:?bcc=' + e.join(',') + '&subject=' + encodeURIComponent('Letní kemp Florbal Kuřim');
+  list.getRange('A1').setValue('E-maily přihlášených rodičů: ' + e.length)
+    .setFontFamily('Chakra Petch').setFontWeight('bold').setFontSize(14).setFontColor('#0B1524');
+  list.getRange('A3').setRichTextValue(SpreadsheetApp.newRichTextValue()
+    .setText('✉  Napsat e-mail všem rodičům').setLinkUrl(odkaz).build())
+    .setFontWeight('bold').setFontSize(12);
+  list.getRange('A4').setValue('Otevře nový e-mail, všichni rodiče jsou ve skryté kopii a navzájem se nevidí. ' +
+    'Když se e-mail neotevře, zkopírujte adresy níž do pole Skrytá kopie (Bcc).')
+    .setFontColor('#5B6B7F').setWrap(true);
+  list.getRange('A6').setValue(e.join(', ')).setWrap(true).setFontFamily('Roboto Mono').setFontSize(10)
+    .setBackground('#F1F6FB');
+  list.getRange('A8').setValue('Aktualizováno ' +
+    Utilities.formatDate(new Date(), 'Europe/Prague', 'd. M. yyyy H:mm') + ' po poslední přihlášce.')
+    .setFontColor('#8A9BB0').setFontSize(9);
 }
 
 function mezititulek(text) {
@@ -312,13 +334,14 @@ function posliVedoucimu(zaznamy, podezrela) {
     var radky = POLE_DITE.map(function (s) { return [nazevPole(s), z[s] || '']; });
     var k = z['Kartička pojišťovny'] || '';
     radky.push(['Kartička pojišťovny', /^https?:/.test(k)
-      ? '<a href="' + k + '" style="color:#16375C">otevřít na Disku</a>' : (k || 'nepřiložena')]);
+      ? '<a href="' + k + '" style="color:#16375C">otevřít složku na Disku</a>' : (k || 'nepřiložena')]);
     obsah += mezititulek((zaznamy.length > 1 ? 'Dítě ' + (i + 1) + ': ' : 'Dítě: ') + z['Jméno dítěte']) + tabulka(radky);
   });
   obsah += mezititulek('Souhlasy') + tabulka(POLE_SOUHLASY.map(function (s) { return [nazevPole(s), p[s] || '']; }));
-  obsah += odstavec('<a href="' + sesit().getUrl() +
-    '" style="color:#16375C;font-weight:bold">Otevřít tabulku přihlášek</a>');
-  obsah += blokRodice();
+  // Na tenhle e-mail se odpovídá přímo rodiči a odpověď často obsahuje celý původní text.
+  // Proto tu není odkaz na tabulku ani seznam ostatních rodičů, jen údaje této přihlášky.
+  obsah += odstavec('<span style="font-size:13px;color:#5B6B7F">Všechny přihlášky najdete v tabulce ' +
+    'přihlášek, e-mail všem rodičům pošlete z jejího listu Rodiče.</span>');
 
   MailApp.sendEmail({
     to: NASTAVENI.upozorneni,

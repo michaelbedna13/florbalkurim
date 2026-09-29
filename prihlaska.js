@@ -14,6 +14,7 @@
   var VEK = [6, 13];
   var MAX_DETI = 5;
   var MAX_SOUBOR = 5 * 1024 * 1024;
+  var MAX_SOUBORU = 4;   // souborů kartičky na jedno dítě
   var MESICE = ['leden','únor','březen','duben','květen','červen','červenec',
                 'srpen','září','říjen','listopad','prosinec'];
   var $ = function(id){ return document.getElementById(id); };
@@ -125,28 +126,42 @@
       });
     });
 
-    // kartička: náhled a odebrání
-    var karticka = blok.querySelector('[data-k="karticka"]'), nahrano = blok.querySelector('[data-nahrano]'),
-        nahled = blok.querySelector('[data-nahled]');
-    function ukazKarticku(){
-      var f = karticka.files[0];
-      if(nahled.getAttribute('src')) URL.revokeObjectURL(nahled.src);
-      if(!f){ nahrano.classList.remove('ukazat'); nahled.removeAttribute('src'); return; }
-      blok.querySelector('[data-nazev]').textContent = f.name;
-      if(/^image\//.test(f.type)){ nahled.src = URL.createObjectURL(f); nahled.style.display = ''; }
-      else { nahled.removeAttribute('src'); nahled.style.display = 'none'; }
-      nahrano.classList.add('ukazat');
-      vycisti(karticka);
+    // kartička: víc souborů (přední a zadní strana), každý výběr se přidá do seznamu
+    var karticka = blok.querySelector('[data-k="karticka"]'), seznam = blok.querySelector('[data-seznam]');
+    blok.soubory = [];
+    function velikost(b){ return b > 1048576 ? (b / 1048576).toFixed(1).replace('.', ',') + ' MB' : Math.round(b / 1024) + ' kB'; }
+    function vykresli(){
+      seznam.innerHTML = '';
+      blok.soubory.forEach(function(f, i){
+        var li = document.createElement('li');
+        var nahled = document.createElement(/^image\//.test(f.type) ? 'img' : 'span');
+        if(nahled.tagName === 'IMG'){ nahled.src = URL.createObjectURL(f); nahled.alt = ''; }
+        else { nahled.className = 'pdf-ikona'; nahled.textContent = 'PDF'; }
+        var popis = document.createElement('span');
+        popis.className = 'soubor-popis';
+        popis.textContent = 'Strana ' + (i + 1) + ': ' + f.name + ' (' + velikost(f.size) + ')';
+        var pryc = document.createElement('button');
+        pryc.type = 'button'; pryc.className = 'odebrat'; pryc.textContent = 'Odebrat';
+        pryc.addEventListener('click', function(){ blok.soubory.splice(i, 1); vykresli(); });
+        li.append(nahled, popis, pryc);
+        seznam.appendChild(li);
+      });
+      blok.querySelector('[data-nahrat-titulek]').textContent =
+        blok.soubory.length ? 'Přidat další stranu' : 'Vyfotit nebo nahrát kartičku';
+      if(blok.soubory.length) vycisti(karticka);
     }
-    karticka.addEventListener('change', ukazKarticku);
+    karticka.addEventListener('change', function(){
+      Array.prototype.forEach.call(karticka.files, function(f){
+        if(blok.soubory.length < MAX_SOUBORU) blok.soubory.push(f);
+      });
+      karticka.value = '';   // další výběr se přidá, nenahradí
+      vykresli();
+    });
     var kartVolba = blok.querySelector('[data-karticka-volba]'), kartNahrani = blok.querySelector('.karticka-nahrani');
     kartVolba.addEventListener('change', function(){
       var ted = kartVolba.querySelector('input:checked').value === 'ano';
       kartNahrani.classList.toggle('ukazat', ted);
-      if(!ted){ karticka.value = ''; ukazKarticku(); vycisti(karticka); }
-    });
-    blok.querySelector('[data-odebrat-karticku]').addEventListener('click', function(){
-      karticka.value = ''; ukazKarticku();
+      if(!ted){ blok.soubory = []; vykresli(); vycisti(karticka); }
     });
 
     blok.querySelector('[data-odebrat]').addEventListener('click', function(){
@@ -222,11 +237,13 @@
       over(den, d, d === false ? 'Takové datum neexistuje, zkontrolujte den a měsíc.' : 'Vyberte den, měsíc i rok narození.');
       var prvni = blok.querySelector('.treninky-volby input');
       over(prvni, vybraneTreninky(blok).length, blok.querySelector('.treninky-volby').dataset.chyba);
-      var k = blok.querySelector('[data-k="karticka"]'), f = k.files[0];
+      var k = blok.querySelector('[data-k="karticka"]');
       var ted = blok.querySelector('[data-karticka-volba] input:checked');
       if(ted && ted.value === 'ano'){
-        over(k, f && (/^image\//.test(f.type) || f.size <= MAX_SOUBOR),
-             f ? 'Soubor je moc velký, nejvýš 5 MB.' : 'Přiložte fotku nebo sken kartičky, nebo zvolte, že ji přinesete.');
+        var velky = blok.soubory.filter(function(f){ return !/^image\//.test(f.type) && f.size > MAX_SOUBOR; })[0];
+        over(k, blok.soubory.length && !velky,
+             velky ? 'Soubor ' + velky.name + ' je moc velký, nejvýš 5 MB.'
+                   : 'Přiložte fotku nebo sken kartičky, nebo zvolte, že ji přinesete.');
       }
     });
     return chyby;
@@ -334,11 +351,10 @@
     $('odesilam').classList.add('ukazat');
 
     Promise.all(bloky.map(function(blok){
-        var f = blok.querySelector('[data-k="karticka"]').files[0];
-        return f ? nactiSoubor(f) : null;
+        return Promise.all((blok.soubory || []).map(nactiSoubor));
       }))
       .then(function(soubory){
-        soubory.forEach(function(s, i){ if(s) seznam[i].karticka = s; });
+        soubory.forEach(function(s, i){ if(s.length) seznam[i].karticky = s; });
         data.deti = seznam;
         // obyčejný text jako typ obsahu, jinak by prohlížeč před odesláním posílal zbytečný dotaz navíc
         return fetch(SKRIPT, {method: 'POST', body: JSON.stringify(data)});

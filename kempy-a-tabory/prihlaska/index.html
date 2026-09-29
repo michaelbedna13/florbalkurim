@@ -165,16 +165,12 @@
               <label><input type="radio" name="karticka-__N__" value="ne"><span>Přinesu na kemp</span></label>
             </div>
             <div class="karticka-nahrani">
+              <ul class="nahrane-soubory" data-seznam></ul>
               <label class="nahrat" for="d__N__-karticka">
-                <input id="d__N__-karticka" data-k="karticka" type="file" accept="image/*,.pdf">
+                <input id="d__N__-karticka" data-k="karticka" type="file" accept="image/*,.pdf,application/pdf" multiple>
                 <span class="nahrat-ikona" aria-hidden="true">+</span>
-                <span class="nahrat-text"><b>Vyfotit nebo nahrát kartičku</b><small>fotka z mobilu nebo PDF</small></span>
+                <span class="nahrat-text"><b data-nahrat-titulek>Vyfotit nebo nahrát kartičku</b><small>přední i zadní stranu, fotky nebo PDF, můžete přidávat postupně</small></span>
               </label>
-              <div class="nahrano" data-nahrano>
-                <img alt="" data-nahled>
-                <span data-nazev></span>
-                <button type="button" class="odebrat" data-odebrat-karticku>Odebrat</button>
-              </div>
             </div>
           </div>
         </div>
