@@ -11,6 +11,9 @@ Poznámky ke stránkám OFL, ať se v tom příště hned vyznáš:
  * V kalendáři má každý turnaj odkaz s atributem title ve tvaru
    "Mladší žáci · Západ · Pořadatel · Hala". Z něj se bere pořadatel a hala,
    datum z textu odkazu ve výpisu.
+ * Na stránce jsou i odkazy na turnaje jiných kategorií a divizí (stejná
+   ID se objevovala u žáků i dorostu), ty title nemají. Bere se proto jen
+   turnaj, který má title, tedy je opravdu v mřížce kalendáře divize.
  * Tabulka divize se objeví až po prvním turnaji. Názvy sloupců neznám,
    tak se převezmou tak, jak je liga vypíše, a web je jen zobrazí.
  * Kuřim tam vystupuje jako "Orel Kuřim".
@@ -76,8 +79,10 @@ def turnaje(html):
     for z in data.values():
         if "datum" not in z:
             continue
-        z.setdefault("poradatel", "")
-        z.setdefault("hala", "")
+        # bez title to není turnaj naší divize, ale odkaz odjinud ze stránky
+        if "poradatel" not in z:
+            print(f"   přeskakuji turnaj {z['id']} ({z['datum']}), není v kalendáři divize")
+            continue
         z["v_kurimi"] = NAS_TYM in z["hala"]
         z["poradame"] = NAS_TYM in z["poradatel"]
         z["odkaz"] = f"{ZAKLAD}?r=site%2Ftournamentdetail&id={z['id']}"
