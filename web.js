@@ -222,12 +222,14 @@ document.querySelectorAll('img[data-misto]').forEach(function(o){
           return;
         }
 
-        // turnaje
-        if(!k.turnaje || !k.turnaje.length){
+        // turnaje; bez pořadatele to není turnaj naší divize, ale odkaz
+        // odjinud ze stránky ligy, takže ho nezobrazím
+        var seznam = (k.turnaje || []).filter(function(t){ return t.poradatel; });
+        if(!seznam.length){
           hlaska(turnaje, 'Další turnaje zatím nejsou vypsané.', 3);
         } else {
           turnaje.innerHTML = '';
-          k.turnaje.forEach(function(t){
+          seznam.forEach(function(t){
             var r = turnaje.insertRow();
             if(t.v_kurimi) r.className = 'my';
             var d = bunka(r, '');

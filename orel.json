@@ -5,33 +5,6 @@
    "nazev": "Mladší žáci",
    "turnaje": [
     {
-     "id": "866",
-     "datum": "2026-10-11",
-     "poradatel": "",
-     "hala": "",
-     "v_kurimi": false,
-     "poradame": false,
-     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=866"
-    },
-    {
-     "id": "845",
-     "datum": "2026-10-11",
-     "poradatel": "",
-     "hala": "",
-     "v_kurimi": false,
-     "poradame": false,
-     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=845"
-    },
-    {
-     "id": "838",
-     "datum": "2026-10-11",
-     "poradatel": "",
-     "hala": "",
-     "v_kurimi": false,
-     "poradame": false,
-     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=838"
-    },
-    {
      "id": "824",
      "datum": "2026-10-17",
      "poradatel": "FBO Orel Boskovice",
@@ -211,33 +184,6 @@
    "nazev": "Dorostenci",
    "turnaje": [
     {
-     "id": "866",
-     "datum": "2026-10-11",
-     "poradatel": "",
-     "hala": "",
-     "v_kurimi": false,
-     "poradame": false,
-     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=866"
-    },
-    {
-     "id": "845",
-     "datum": "2026-10-11",
-     "poradatel": "",
-     "hala": "",
-     "v_kurimi": false,
-     "poradame": false,
-     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=845"
-    },
-    {
-     "id": "838",
-     "datum": "2026-10-11",
-     "poradatel": "",
-     "hala": "",
-     "v_kurimi": false,
-     "poradame": false,
-     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=838"
-    },
-    {
      "id": "856",
      "datum": "2026-10-17",
      "poradatel": "Orel Nové Město na Moravě",
@@ -245,15 +191,6 @@
      "v_kurimi": false,
      "poradame": false,
      "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=856"
-    },
-    {
-     "id": "824",
-     "datum": "2026-10-17",
-     "poradatel": "",
-     "hala": "",
-     "v_kurimi": false,
-     "poradame": false,
-     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=824"
     },
     {
      "id": "857",
