@@ -31,9 +31,14 @@ ZAKLAD = "https://www.orelskafl.cz/web/index.php"
 VYSTUP = "orel.json"
 NAS_TYM = "Kuřim"
 
+# "volno" jsou ID turnajů divize, kde Kuřim nehraje (má volno). Liga je
+# vypisuje stejně jako ostatní, tak je tu vyřazuju ručně. ID je v odkazu
+# na detail turnaje (…tournamentdetail&id=829).
 KATEGORIE = [
-    {"klic": "mladsi-zaci", "nazev": "Mladší žáci", "category": 3, "division": 3},
-    {"klic": "dorostenci",  "nazev": "Dorostenci",  "category": 5, "division": 3},
+    {"klic": "mladsi-zaci", "nazev": "Mladší žáci", "category": 3, "division": 3,
+     "volno": {"829"}},  # 20. 3. 2027, NMnM
+    {"klic": "dorostenci",  "nazev": "Dorostenci",  "category": 5, "division": 3,
+     "volno": set()},
 ]
 
 HLAVICKA = {"User-Agent": "FlorbalKurim-klubovy-web/1.0 (interni pouziti)"}
@@ -130,6 +135,10 @@ def main():
         html, url_kalendar = stahni({"r": "site/calendar",
                                      "f_category": k["category"], "f_division": k["division"]})
         seznam = turnaje(html)
+        for z in seznam:
+            if z["id"] in k["volno"]:
+                print(f"   přeskakuji turnaj {z['id']} ({z['datum']}), Kuřim má volno")
+        seznam = [z for z in seznam if z["id"] not in k["volno"]]
         print(f"   turnajů před námi: {len(seznam)}")
         for z in seznam:
             doma = "  (v Kuřimi)" if z["v_kurimi"] else ""
