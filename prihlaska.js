@@ -68,6 +68,10 @@
     var t = blok.querySelector('textarea[data-k="' + pole + '"]');
     return v && v.value === 'ano' ? t.value.trim() : t.dataset.ne;
   }
+  function velikostTricka(blok){
+    var v = blok.querySelector('[data-k="Velikost trička"] input:checked').value;
+    return v === 'jiná' ? blok.querySelector('[data-k="Jiná velikost trička"]').value.trim() : v;
+  }
   function vybraneTreninky(blok){
     return Array.prototype.map.call(blok.querySelectorAll('.treninky-volby input:checked'),
       function(i){ return i.value; });
@@ -124,6 +128,17 @@
         if(ma) setTimeout(function(){ text.focus(); }, 50);
         else { text.value = ''; }
       });
+    });
+
+    // velikost trička: u „jiná“ ji rodič napíše sám
+    var velikosti = blok.querySelector('.velikosti'),
+        jinaVelikost = blok.querySelector('[data-k="Jiná velikost trička"]');
+    velikosti.addEventListener('change', function(){
+      var jina = velikosti.querySelector('input:checked').value === 'jiná';
+      jinaVelikost.classList.toggle('ukazat', jina);
+      jinaVelikost.required = jina;
+      if(jina) setTimeout(function(){ jinaVelikost.focus(); }, 50);
+      else { jinaVelikost.value = ''; vycisti(jinaVelikost); }
     });
 
     // kartička: víc souborů (přední a zadní strana), každý výběr se přidá do seznamu
@@ -341,6 +356,7 @@
         'Léky během kempu': hodnotaVolby(blok, 'Léky během kempu'),
         'Plavec': blok.querySelector('[data-k="Plavec"] input:checked').value,
         'Odchází samo': blok.querySelector('[data-k="Odchází samo"] input:checked').value,
+        'Velikost trička': velikostTricka(blok),
         'Kartička pojišťovny': blok.querySelector('[data-karticka-volba] input:checked').value === 'ano'
           ? '' : 'přinese na kemp'
       };
