@@ -43,12 +43,14 @@ var NASTAVENI = {
 };
 
 // Pořadí sloupců v tabulce. Názvy odpovídají polím ve formuláři na webu.
+// Nový sloupec patří vždycky na konec, jinak by se rozjely už zapsané přihlášky.
 var SLOUPCE = [
   'Odesláno', 'Jméno dítěte', 'Datum narození', 'Trénink', 'Bydliště',
   'Jméno rodiče', 'Narození rodiče', 'email', 'Telefon',
   'Alergie a zdravotní omezení', 'Léky během kempu', 'Plavec', 'Odchází samo',
   'Kartička pojišťovny',
-  'Souhlas: zdravotní pojišťovna', 'Souhlas: fotografie a video', 'Souhlas: zdravotní údaje'
+  'Souhlas: zdravotní pojišťovna', 'Souhlas: fotografie a video', 'Souhlas: zdravotní údaje',
+  'Velikost trička'
 ];
 var POVINNE = ['Jméno dítěte', 'Datum narození', 'Trénink', 'Bydliště',
                'Jméno rodiče', 'Narození rodiče', 'email', 'Telefon', 'Plavec', 'Odchází samo',
@@ -221,6 +223,19 @@ function listPrihlasek() {
     list.getRange(1, 1, 1, SLOUPCE.length)
       .setFontWeight('bold').setBackground('#0B1524').setFontColor('#FFFFFF');
     stylovat(list);
+  } else {
+    // Sloupce přidané až po spuštění přihlášek (třeba Velikost trička) dostanou
+    // záhlaví samy. Prázdnou buňku jen doplním, cizí nadpis nepřepisuju.
+    if (list.getMaxColumns() < SLOUPCE.length) {
+      list.insertColumnsAfter(list.getMaxColumns(), SLOUPCE.length - list.getMaxColumns());
+    }
+    var hlava = list.getRange(1, 1, 1, SLOUPCE.length).getValues()[0];
+    SLOUPCE.forEach(function (s, i) {
+      if (String(hlava[i]).trim()) return;
+      list.getRange(1, i + 1).setValue(ZAHLAVI[s] || s);
+      list.getRange(1, 1).copyFormatToRange(list, i + 1, i + 1, 1, 1);
+      list.getRange(2, i + 1, list.getMaxRows() - 1, 1).setNumberFormat('@');
+    });
   }
   return list;
 }
@@ -263,7 +278,7 @@ function bezVzorce(v) {
 
 var POLE_RODIC = ['Jméno rodiče', 'Narození rodiče', 'email', 'Telefon', 'Bydliště', 'Odesláno'];
 var POLE_DITE = ['Datum narození', 'Trénink', 'Alergie a zdravotní omezení', 'Léky během kempu',
-                 'Plavec', 'Odchází samo'];
+                 'Plavec', 'Odchází samo', 'Velikost trička'];
 var POLE_SOUHLASY = ['Souhlas: zdravotní pojišťovna', 'Souhlas: fotografie a video', 'Souhlas: zdravotní údaje'];
 
 // Podpis pod potvrzením pro rodiče, podle NASTAVENI.podpis
@@ -363,7 +378,8 @@ function posliRodici(zaznamy) {
     obsah += mezititulek(zaznamy.length > 1 ? 'Dítě ' + (i + 1) : 'Dítě') + tabulka([
       ['Jméno', z['Jméno dítěte']],
       ['Datum narození', z['Datum narození']],
-      ['Trénink', z['Trénink']]
+      ['Trénink', z['Trénink']],
+      ['Velikost trička', z['Velikost trička'] || '']
     ]);
   });
   obsah += tabulka([
@@ -464,9 +480,9 @@ var ZAHLAVI = {
   'Jméno rodiče': 'Rodič', 'email': 'E-mail', 'Alergie a zdravotní omezení': 'Alergie a omezení',
   'Léky během kempu': 'Léky', 'Kartička pojišťovny': 'Kartička',
   'Souhlas: zdravotní pojišťovna': 'Souhlas pojišťovna', 'Souhlas: fotografie a video': 'Souhlas foto',
-  'Souhlas: zdravotní údaje': 'Souhlas zdraví'
+  'Souhlas: zdravotní údaje': 'Souhlas zdraví', 'Velikost trička': 'Tričko'
 };
-var SIRKY = [150, 140, 90, 290, 150, 140, 95, 200, 120, 190, 170, 80, 95, 150, 105, 90, 95];
+var SIRKY = [150, 140, 90, 290, 150, 140, 95, 200, 120, 190, 170, 80, 95, 150, 105, 90, 95, 70];
 
 /** Spusť jednou ručně. Nastyluje list s přihláškami v barvách klubu. */
 function nastylovatTabulku() {
@@ -579,10 +595,12 @@ function zkusitEmaily() {
   var deti = [
     { 'Jméno dítěte': 'Jan Zkušební', 'Datum narození': '14. 5. 2016',
       'Trénink': 'Mladší žáci, pátek 16:30–17:30, SH Kuřim', 'Alergie a zdravotní omezení': 'pyl',
-      'Léky během kempu': 'Neužívá žádné', 'Plavec': 'plavec', 'Odchází samo': 'ne', 'Kartička pojišťovny': '' },
+      'Léky během kempu': 'Neužívá žádné', 'Plavec': 'plavec', 'Odchází samo': 'ne', 'Velikost trička': '146',
+      'Kartička pojišťovny': '' },
     { 'Jméno dítěte': 'Eva Zkušební', 'Datum narození': '3. 2. 2019',
       'Trénink': 'Přípravka a elévové, pátek 15:30–16:30, SH Kuřim', 'Alergie a zdravotní omezení': 'Nemá žádné',
-      'Léky během kempu': 'Neužívá žádné', 'Plavec': 'neplavec', 'Odchází samo': 'ne', 'Kartička pojišťovny': '' }
+      'Léky během kempu': 'Neužívá žádné', 'Plavec': 'neplavec', 'Odchází samo': 'ne', 'Velikost trička': '122',
+      'Kartička pojišťovny': '' }
   ];
   var zaznamy = deti.map(function (d) {
     var z = {}; Object.keys(rodic).forEach(function (k) { z[k] = rodic[k]; });

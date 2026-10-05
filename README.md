@@ -161,6 +161,12 @@ Adresa skriptu je jediný řádek nahoře v `prihlaska.js` (proměnná SKRIPT).
 Kam chodí upozornění, se mění nahoře ve skriptu v NASTAVENI.upozorneni.
 Po kempu se ve skriptu ručně spustí funkce smazatZdravotniUdajePoKempu.
 
+Velikosti trička jsou v přihlášce (výběr „Velikost trička“). Když se změní
+dodavatel triček, oprav nabídku tam. Nový sloupec v tabulce přihlášek patří
+v `SLOUPCE` ve skriptu vždycky na konec, jinak by se rozjely už zapsané řádky.
+Po každé změně `apps-script/Kod.gs` je potřeba kód zkopírovat do Apps Scriptu
+a nasadit novou verzi.
+
 Pozor, časy tréninků jsou i v přihlášce (výběr „Na které tréninky chodí"
 v `kempy-a-tabory/prihlaska/index.html`). Když se změní rozvrh, oprav je
 na Tréninkách, na domovské stránce i tady.

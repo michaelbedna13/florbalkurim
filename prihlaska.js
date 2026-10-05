@@ -341,6 +341,7 @@
         'Léky během kempu': hodnotaVolby(blok, 'Léky během kempu'),
         'Plavec': blok.querySelector('[data-k="Plavec"] input:checked').value,
         'Odchází samo': blok.querySelector('[data-k="Odchází samo"] input:checked').value,
+        'Velikost trička': blok.querySelector('[data-k="Velikost trička"] input:checked').value,
         'Kartička pojišťovny': blok.querySelector('[data-karticka-volba] input:checked').value === 'ano'
           ? '' : 'přinese na kemp'
       };
