@@ -1,18 +1,9 @@
 {
- "aktualizovano": "2026-10-17T09:58+01:00",
+ "aktualizovano": "2026-10-17T23:04+01:00",
  "kategorie": {
   "mladsi-zaci": {
    "nazev": "Mladší žáci",
    "turnaje": [
-    {
-     "id": "824",
-     "datum": "2026-10-17",
-     "poradatel": "FBO Orel Boskovice",
-     "hala": "SH Svitávka",
-     "v_kurimi": false,
-     "poradame": false,
-     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=824"
-    },
     {
      "id": "825",
      "datum": "2026-11-14",
@@ -77,57 +68,70 @@
      [
       "1.",
       "Orel Nové Město na Moravě",
-      "3",
-      "1",
-      "1",
-      "0",
-      "0",
-      "0",
-      "20",
+      "6",
       "2",
+      "2",
+      "0",
+      "0",
+      "0",
+      "34",
+      "3",
       ""
      ],
      [
       "2.",
       "FBO Orel Boskovice",
-      "3",
-      "1",
-      "1",
+      "6",
+      "2",
+      "2",
       "0",
       "0",
       "0",
-      "14",
-      "3",
+      "24",
+      "8",
       ""
      ],
      [
       "3.",
-      "Orel Bořitov",
+      "TJ Sokol Adamov",
+      "3",
+      "2",
+      "1",
       "0",
       "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
+      "1",
+      "8",
+      "25",
       ""
      ],
      [
       "4.",
-      "Orel Brno-Bohunice",
+      "Orel Kuřim",
+      "2",
+      "2",
       "0",
+      "1",
       "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
+      "1",
+      "6",
+      "16",
       ""
      ],
      [
       "5.",
+      "Orel Bořitov",
+      "1",
+      "2",
+      "0",
+      "0",
+      "1",
+      "1",
+      "7",
+      "13",
+      ""
+     ],
+     [
+      "6.",
       "Orel Brno-Řečkovice",
       "0",
       "0",
@@ -140,33 +144,20 @@
       ""
      ],
      [
-      "6.",
-      "Orel Kuřim",
-      "0",
-      "1",
-      "0",
-      "0",
-      "0",
-      "1",
-      "3",
-      "14",
-      ""
-     ],
-     [
       "7.",
-      "TJ Sokol Adamov",
+      "Orel Brno-Bohunice",
       "0",
-      "1",
-      "0",
-      "0",
-      "0",
-      "1",
       "2",
+      "0",
+      "0",
+      "0",
+      "2",
+      "6",
       "20",
       ""
      ]
     ],
-    "nas": 5
+    "nas": 3
    },
    "odkaz_kalendar": "https://www.orelskafl.cz/web/index.php?r=site%2Fcalendar&f_category=3&f_division=3",
    "odkaz_tabulka": "https://www.orelskafl.cz/web/index.php?r=site%2Fseason-table&category_id=3&division_id=3"
@@ -174,15 +165,6 @@
   "dorostenci": {
    "nazev": "Dorostenci",
    "turnaje": [
-    {
-     "id": "856",
-     "datum": "2026-10-17",
-     "poradatel": "Orel Nové Město na Moravě",
-     "hala": "SH NMnM",
-     "v_kurimi": false,
-     "poradame": false,
-     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=856"
-    },
     {
      "id": "857",
      "datum": "2026-12-12",
@@ -238,18 +220,44 @@
      [
       "1.",
       "FBO Orel Boskovice",
+      "6",
+      "2",
+      "2",
+      "0",
+      "0",
+      "0",
+      "11",
+      "8",
+      ""
+     ],
+     [
+      "2.",
+      "TJ Sokol Střelice",
       "3",
       "1",
       "1",
       "0",
       "0",
       "0",
+      "7",
       "6",
-      "5",
       ""
      ],
      [
-      "2.",
+      "3.",
+      "Orel Kuřim",
+      "3",
+      "2",
+      "1",
+      "0",
+      "0",
+      "1",
+      "7",
+      "6",
+      ""
+     ],
+     [
+      "4.",
       "Orel Blansko",
       "0",
       "0",
@@ -262,59 +270,33 @@
       ""
      ],
      [
-      "3.",
-      "TJ Sokol Střelice",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      ""
-     ],
-     [
-      "4.",
+      "5.",
       "Orel Nové Město na Moravě",
       "0",
+      "1",
       "0",
       "0",
       "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      ""
-     ],
-     [
-      "5.",
-      "Orel Bořitov",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
+      "1",
+      "6",
+      "7",
       ""
      ],
      [
       "6.",
-      "Orel Kuřim",
+      "Orel Bořitov",
       "0",
-      "1",
+      "2",
       "0",
       "0",
       "0",
-      "1",
-      "5",
-      "6",
+      "2",
+      "3",
+      "7",
       ""
      ]
     ],
-    "nas": 5
+    "nas": 2
    },
    "odkaz_kalendar": "https://www.orelskafl.cz/web/index.php?r=site%2Fcalendar&f_category=5&f_division=3",
    "odkaz_tabulka": "https://www.orelskafl.cz/web/index.php?r=site%2Fseason-table&category_id=5&division_id=3"
