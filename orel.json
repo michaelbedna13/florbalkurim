@@ -1,5 +1,5 @@
 {
- "aktualizovano": "2026-10-18T23:18+01:00",
+ "aktualizovano": "2026-10-19T11:27+01:00",
  "kategorie": {
   "mladsi-zaci": {
    "nazev": "Mladší žáci",
@@ -219,6 +219,19 @@
     "radky": [
      [
       "1.",
+      "TJ Sokol Střelice",
+      "6",
+      "2",
+      "2",
+      "0",
+      "0",
+      "0",
+      "12",
+      "6",
+      ""
+     ],
+     [
+      "2.",
       "FBO Orel Boskovice",
       "6",
       "2",
@@ -231,20 +244,20 @@
       ""
      ],
      [
-      "2.",
-      "TJ Sokol Střelice",
+      "3.",
+      "Orel Nové Město na Moravě",
       "3",
+      "2",
       "1",
+      "0",
+      "0",
       "1",
-      "0",
-      "0",
-      "0",
+      "11",
       "7",
-      "6",
       ""
      ],
      [
-      "3.",
+      "4.",
       "Orel Kuřim",
       "3",
       "2",
@@ -257,33 +270,7 @@
       ""
      ],
      [
-      "4.",
-      "Orel Blansko",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      ""
-     ],
-     [
       "5.",
-      "Orel Nové Město na Moravě",
-      "0",
-      "1",
-      "0",
-      "0",
-      "0",
-      "1",
-      "6",
-      "7",
-      ""
-     ],
-     [
-      "6.",
       "Orel Bořitov",
       "0",
       "2",
@@ -294,9 +281,22 @@
       "3",
       "7",
       ""
+     ],
+     [
+      "6.",
+      "Orel Blansko",
+      "0",
+      "2",
+      "0",
+      "0",
+      "0",
+      "2",
+      "0",
+      "10",
+      ""
      ]
     ],
-    "nas": 2
+    "nas": 3
    },
    "odkaz_kalendar": "https://www.orelskafl.cz/web/index.php?r=site%2Fcalendar&f_category=5&f_division=3",
    "odkaz_tabulka": "https://www.orelskafl.cz/web/index.php?r=site%2Fseason-table&category_id=5&division_id=3"
