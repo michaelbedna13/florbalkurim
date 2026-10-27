@@ -10,23 +10,25 @@
  * nasadit novou verzi (Nasadit, Spravovat nasazení, upravit, Nová verze).
  */
 
+// E-mailové adresy jsou psané jako 'jmeno' + '@' + 'domena.cz'. Kód je veřejně
+// na GitHubu a roboti, kteří sbírají adresy na spam, je takhle nepoznají.
 var NASTAVENI = {
   // ID Google tabulky, kam se přihlášky zapisují. Je v adrese tabulky mezi /d/ a /edit.
   // Když skript otevřeš přímo z tabulky (Rozšíření, Apps Script), může zůstat prázdné.
   tabulka: '',
 
   // kam chodí upozornění o nové přihlášce, víc adres odděl čárkou
-  upozorneni: 'florbalkurim@gmail.com',
+  upozorneni: 'florbalkurim' + '@' + 'gmail.com',
   // jméno odesílatele v e-mailech
   odesilatel: 'Florbal Kuřim',
   // kam má rodič odpovídat, když má dotaz
-  odpovedi: 'florbalkurim@gmail.com',
+  odpovedi: 'florbalkurim' + '@' + 'gmail.com',
 
   // podpis v potvrzení pro rodiče, každý řádek zvlášť
   podpis: ['Za trenérský tým', 'Aleš Hanák', 'předseda klubu a trenér mládeže', 'tel. 737 838 002'],
 
   // kam chodí dotazy z formuláře Napište nám na stránce Kontakty
-  dotazy: 'alhanak@atlas.cz',
+  dotazy: 'alhanak' + '@' + 'atlas.cz',
 
   list: 'Přihlášky',
   // sem se zapisují zprávy z Napište nám, které skript vyhodnotil jako spam

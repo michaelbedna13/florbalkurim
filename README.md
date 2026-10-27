@@ -153,7 +153,7 @@ z nejnovějšího alba. Dokud robot nic nestáhne, ukazuje karusel g1 až g3.
 ## Přihláška na kemp
 
 Formulář `kempy-a-tabory/prihlaska/` odesílá data skriptu v Google Apps Script
-na účtu florbalkurim@gmail.com. Kód skriptu je pro přehled v `apps-script/Kod.gs`,
+na účtu florbalkurim (Gmail). Kód skriptu je pro přehled v `apps-script/Kod.gs`,
 běží ale v Googlu, ne tady. Skript přihlášku zapíše do Google tabulky, kartičku
 uloží do soukromé složky na Disku a pošle e-mail vedoucímu kempu a potvrzení rodiči.
 
