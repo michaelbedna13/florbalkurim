@@ -54,6 +54,17 @@ document.querySelectorAll('img[data-misto]').forEach(function(o){
   });
 })();
 
+/* ---------- e-mailové adresy ----------
+   Adresy nejsou v HTML celé, aby je nesbírali roboti na spam.
+   Odkaz <a data-ucet="alhanak" data-domena="atlas.cz"> se složí až tady. */
+(function(){
+  document.querySelectorAll('a[data-ucet]').forEach(function(a){
+    var adresa = a.dataset.ucet + '@' + a.dataset.domena;
+    a.href = 'mailto:' + adresa;
+    a.textContent = adresa;
+  });
+})();
+
 /* ---------- tabulky na stránce Muži ----------
    Data píše dvakrát denně robot v repozitáři appky, tenhle web si je
    jen stahuje. Jeden zdroj pravdy, žádná druhá kopie stahovačů. */

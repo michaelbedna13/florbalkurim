@@ -386,7 +386,7 @@
       .catch(function(err){
         var zprava = typeof err === 'string' ? err : 'Přihlášku se nepodařilo odeslat';
         chybaOdeslani.textContent = zprava.replace(/[.\s]*$/, '.') +
-          ' Když to nepůjde ani napodruhé, napište nám na florbalkurim@gmail.com.';
+          ' Když to nepůjde ani napodruhé, napište nám na florbalkurim' + '@' + 'gmail.com.';
         tlacitko.disabled = false;
         tlacitko.textContent = 'Odeslat přihlášku';
         $('odesilam').classList.remove('ukazat');
