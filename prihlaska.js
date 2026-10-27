@@ -8,6 +8,8 @@
 
   var formular = document.getElementById('prihlaska');
   if(!formular) return;
+  // jak dlouho trvalo vyplnění, roboti odesílají hned (kontrola proti spamu)
+  var otevreno = Date.now();
 
   var UZAVERKA = new Date('2027-02-28T23:59:59+01:00');
   var ZACATEK_KEMPU = new Date('2027-07-26T08:00:00+02:00');
@@ -328,7 +330,7 @@
 
     // Past na roboty: pole, které je úplně skryté, takže ho prohlížeč nepředvyplní.
     var past = formular.querySelector('[name="web_firmy"]');
-    var data = {_honey: past ? past.value : ''};
+    var data = {_honey: past ? past.value : '', _cas: Date.now() - otevreno};
     ['Jméno rodiče','email','Telefon','Bydliště'].forEach(function(k){
       var el = formular.querySelector('[name="' + k + '"]');
       data[k] = el ? el.value : '';

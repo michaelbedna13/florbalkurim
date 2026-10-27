@@ -167,6 +167,14 @@ v `SLOUPCE` ve skriptu vždycky na konec, jinak by se rozjely už zapsané řád
 Po každé změně `apps-script/Kod.gs` je potřeba kód zkopírovat do Apps Scriptu
 a nasadit novou verzi.
 
+Ochrana proti spamu je ve skriptu (funkce hodnotitSpam) a platí pro přihlášku
+i Napište nám. Body dostane zpráva za vyplněné skryté pole, odeslání do pár
+sekund od otevření stránky, odkazy, cizí písmo, reklamní slova, angličtinu
+a moc zpráv za hodinu. Jasný spam z Napište nám se nikam neposílá, jen se
+zapíše do listu Spam v tabulce přihlášek. Podezřelá zpráva přijde s
+„[možný spam]“ v předmětu. Přihláška se uloží vždycky, u jasného spamu jen
+neodejde potvrzení rodiči. Ukázky se dají vyzkoušet funkcí zkusitSpam.
+
 Pozor, časy tréninků jsou i v přihlášce (výběr „Na které tréninky chodí"
 v `kempy-a-tabory/prihlaska/index.html`). Když se změní rozvrh, oprav je
 na Tréninkách, na domovské stránce i tady.

@@ -29,6 +29,9 @@ var NASTAVENI = {
   dotazy: 'alhanak@atlas.cz',
 
   list: 'Přihlášky',
+  // sem se zapisují zprávy z Napište nám, které skript vyhodnotil jako spam
+  // a nikam je neposlal, ať se dají zkontrolovat
+  listSpam: 'Spam',
   slozka: 'Kemp 2027, kartičky pojišťovny',
 
   kemp: {
@@ -67,13 +70,14 @@ function doPost(e) {
   try {
     var d = JSON.parse(e.postData.contents);
 
-    // Pole, které člověk nevidí, vyplní většinou jen robot. Přihlášku ale
-    // nezahazuji, jen ji označím. Radši spam v tabulce než ztracené dítě.
-    var podezrela = !!String(d._honey || '').trim();
-    if (podezrela) console.warn('Vyplněné skryté pole: ' + d._honey);
-    delete d._honey;
-
     if (d.typ === 'dotaz') return prijmiDotaz(d);
+
+    // Přihlášku, která vypadá jako spam, nezahazuji, jen ji označím.
+    // Radši spam v tabulce než ztracené dítě. Potvrzení ale neodejde,
+    // aby se přes formulář nedalo posílat e-maily cizím lidem.
+    var spam = hodnotitSpam(d, 15000, textyPrihlasky(d), 'prihlaska', String(d.email || ''));
+    if (spam.skore) console.warn('Podezřelá přihláška: ' + spam.duvody.join(', '));
+    delete d._honey; delete d._cas;
 
     if (new Date() > NASTAVENI.kemp.uzaverka) {
       return odpoved({ ok: false, chyba: 'Přihlášky jsou už uzavřené.' });
@@ -130,8 +134,8 @@ function doPost(e) {
     });
     zamek.releaseLock();
 
-    posliVedoucimu(zaznamy, podezrela);
-    posliRodici(zaznamy);
+    posliVedoucimu(zaznamy, spam);
+    if (spam.skore < 2) posliRodici(zaznamy);
     try { aktualizovatRodice(); } catch (x) { console.warn('List Rodiče se nepodařilo aktualizovat: ' + x); }
 
     return odpoved({ ok: true, deti: zaznamy.length });
@@ -167,10 +171,19 @@ function prijmiDotaz(d) {
   if (!jmeno || !zprava || !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) {
     return odpoved({ ok: false, chyba: 'Vyplňte prosím jméno, platný e-mail a zprávu.' });
   }
-  var podezrela = !!String(d._honey || '').trim();
   var ted = Utilities.formatDate(new Date(), 'Europe/Prague', 'd. M. yyyy H:mm');
 
-  var obsah = odstavec('Přes web přišel dotaz. Stačí odpovědět na tento e-mail, odpověď půjde přímo odesílateli.') +
+  // Jasný spam se nikam neposílá, jen zapíše do listu Spam. Robotovi
+  // se tváříme, že zpráva prošla, ať nezkouší jiné varianty.
+  var spam = hodnotitSpam(d, 3000, [jmeno, email, d.telefon, zprava], 'dotaz', email);
+  if (spam.skore >= 2) {
+    zapsatSpam('Napište nám', spam.duvody, jmeno, email, zprava);
+    return odpoved({ ok: true });
+  }
+  var podezrela = spam.skore > 0;   // projde, ale s upozorněním
+
+  var obsah = (podezrela ? upozorneniNaSpam(spam.duvody) : '') +
+    odstavec('Přes web přišel dotaz. Stačí odpovědět na tento e-mail, odpověď půjde přímo odesílateli.') +
     tabulka([['Od', jmeno], ['E-mail', email], ['Telefon', d.telefon || 'neuvedl'], ['Odesláno', ted]]) +
     mezititulek('Zpráva') +
     '<p style="margin:0 0 20px;padding:14px 16px;border-left:4px solid #7CB6E0;background:#F1F6FB;' +
@@ -183,22 +196,126 @@ function prijmiDotaz(d) {
     htmlBody: sablona('Dotaz z webu', obsah)
   });
 
-  if (!podezrela) {
-    MailApp.sendEmail({
-      to: email,
-      subject: 'Vaše zpráva klubu Florbal Kuřim dorazila',
-      name: NASTAVENI.odesilatel,
-      replyTo: NASTAVENI.dotazy,
-      htmlBody: sablona('Zpráva dorazila',
-        odstavec('Dobrý den,') +
-        odstavec('děkujeme za zprávu, dorazila a odpovíme vám co nejdřív na tento e-mail.') +
-        mezititulek('Vaše zpráva') +
-        '<p style="margin:0 0 16px;padding:14px 16px;border-left:4px solid #7CB6E0;background:#F1F6FB;' +
-          'font:15px/1.6 Arial,Helvetica,sans-serif;color:#0B1524">' + hlidat(zprava).replace(/\n/g, '<br>') + '</p>' +
-        podpis())
-    });
-  }
+  // Potvrzení je bez textu zprávy. Jinak by přes formulář šlo z klubové
+  // adresy rozesílat cokoliv na cizí adresy.
+  MailApp.sendEmail({
+    to: email,
+    subject: 'Vaše zpráva klubu Florbal Kuřim dorazila',
+    name: NASTAVENI.odesilatel,
+    replyTo: NASTAVENI.dotazy,
+    htmlBody: sablona('Zpráva dorazila',
+      odstavec('Dobrý den,') +
+      odstavec('děkujeme za zprávu, dorazila a odpovíme vám co nejdřív na tento e-mail.') +
+      podpis())
+  });
   return odpoved({ ok: true });
+}
+
+/* ============================================================
+   Ochrana proti spamu
+   ============================================================ */
+
+// Slova z typického reklamního spamu. Jedno slovo je jen podezření.
+var SPAM_SLOVA = /\b(seo|backlinks?|bitcoin|crypto|casino|viagra|cialis|porn|forex|loan|ranking|traffic|guest post|marketing|leads)\b/gi;
+var ANGLICTINA = /\b(the|and|your|you|we|our|for|with|this|website|business|please)\b/gi;
+
+/**
+ * Ohodnotí zprávu. Vrátí { skore, duvody }.
+ * skore 0 je v pořádku, 1 je podezřelé (projde, ale s upozorněním a bez
+ * potvrzení odesílateli), 2 a víc je jasný spam.
+ * minCas je nejkratší čas v ms, za který člověk formulář reálně vyplní.
+ */
+function hodnotitSpam(d, minCas, texty, druh, email) {
+  var skore = 0, duvody = [];
+  function pridej(body, duvod) { skore += body; duvody.push(duvod); }
+
+  // pole, které člověk nevidí, vyplní jen robot
+  if (String(d._honey || '').trim()) pridej(2, 'vyplněné skryté pole');
+
+  // čas od otevření stránky do odeslání, měří ho web
+  var cas = Number(d._cas);
+  if (!cas) pridej(1, 'neodesláno z formuláře na webu');
+  else if (cas < minCas) pridej(2, 'vyplněno za ' + (cas / 1000).toFixed(1).replace('.', ',') + ' s');
+
+  var text = texty.map(function (t) { return String(t || ''); }).join('\n');
+  var odkazy = (text.match(/https?:\/\/|www\.|\[url|<a\s/gi) || []).length;
+  if (odkazy >= 2) pridej(2, 'odkazy ve zprávě: ' + odkazy);
+  else if (odkazy === 1) pridej(1, 'odkaz ve zprávě');
+  if (/[\u0400-\u04FF\u0600-\u06FF\u0E00-\u0E7F\u3040-\u30FF\u4E00-\u9FFF\uAC00-\uD7AF]/.test(text)) {
+    pridej(2, 'cizí písmo (azbuka, čínština a podobně)');
+  }
+  var slova = text.match(SPAM_SLOVA) || [];
+  if (slova.length) pridej(Math.min(2, slova.length), 'reklamní slova: ' + slova.slice(0, 4).join(', ').toLowerCase());
+  if ((text.match(ANGLICTINA) || []).length >= 5) pridej(1, 'text v angličtině');
+
+  // příliš mnoho zpráv za sebou: z jedné adresy nebo celkem
+  var limity = druh === 'dotaz' ? [3, 15] : [5, 30];
+  if (prilisCasto(druh + ':' + String(email).toLowerCase(), limity[0])) {
+    pridej(2, 'víc než ' + limity[0] + ' zprávy z jedné adresy za hodinu');
+  }
+  if (prilisCasto(druh + ':vse', limity[1])) pridej(1, 'víc než ' + limity[1] + ' zpráv za hodinu');
+
+  return { skore: skore, duvody: duvody };
+}
+
+// Počítadlo odeslání za poslední hodinu, drží ho Google v mezipaměti skriptu
+function prilisCasto(klic, max) {
+  var c = CacheService.getScriptCache();
+  klic = Utilities.base64EncodeWebSafe(klic).slice(0, 200);
+  var n = Number(c.get(klic) || 0) + 1;
+  c.put(klic, String(n), 3600);
+  return n > max;
+}
+
+// Všechny texty z přihlášky, které vyplňuje člověk
+function textyPrihlasky(d) {
+  var t = [d['Jméno rodiče'], d.email, d['Telefon'], d['Bydliště']];
+  (Array.isArray(d.deti) ? d.deti : [d]).forEach(function (dite) {
+    t.push(dite['Jméno dítěte'], dite['Alergie a zdravotní omezení'], dite['Léky během kempu'], dite['Velikost trička']);
+  });
+  return t;
+}
+
+// Zápis zachyceného spamu do listu Spam. Drží se jen posledních 500 řádků.
+function zapsatSpam(formular, duvody, jmeno, email, zprava) {
+  try {
+    var ss = sesit(), list = ss.getSheetByName(NASTAVENI.listSpam);
+    if (!list) {
+      list = ss.insertSheet(NASTAVENI.listSpam);
+      list.appendRow(['Přijato', 'Formulář', 'Proč spam', 'Jméno', 'E-mail', 'Zpráva']);
+      list.getRange(1, 1, 1, 6).setFontWeight('bold').setBackground('#0B1524').setFontColor('#FFFFFF');
+      list.setFrozenRows(1);
+      [140, 110, 260, 150, 200, 500].forEach(function (w, i) { list.setColumnWidth(i + 1, w); });
+      list.setTabColor('#8A9BB0');
+    }
+    list.appendRow([new Date(), formular, duvody.join(', '), bezVzorce(jmeno), bezVzorce(email),
+                    bezVzorce(String(zprava || '').slice(0, 2000))]);
+    if (list.getLastRow() > 600) list.deleteRows(2, list.getLastRow() - 501);
+  } catch (x) {
+    console.warn('Spam se nepodařilo zapsat: ' + x);
+  }
+}
+
+// Žlutý rámeček na začátku e-mailu, proč zpráva vypadá podezřele
+function upozorneniNaSpam(duvody) {
+  return '<p style="margin:0 0 20px;padding:12px 16px;border-left:4px solid #E0A100;background:#FFF4DB;' +
+    'font:14px/1.5 Arial,Helvetica,sans-serif;color:#8A5A00"><b>Možný spam.</b> ' +
+    hlidat(duvody.join(', ')) + '.</p>';
+}
+
+/** Vyzkouší hodnocení spamu na pár ukázkách, výsledek je v protokolu provádění. */
+function zkusitSpam() {
+  [
+    ['běžný dotaz', { _cas: 45000 }, ['Jana', 'Dobrý den, může na trénink přijít i šestiletý syn?']],
+    ['robot rychle', { _cas: 800 }, ['Jana', 'Dobrý den']],
+    ['skryté pole', { _cas: 45000, _honey: 'firma.cz' }, ['Jana', 'Dobrý den']],
+    ['reklama', { _cas: 45000 }, ['Mike', 'We can boost your website ranking and traffic, visit http://x.com and www.y.com']],
+    ['azbuka', { _cas: 45000 }, ['Иван', 'Привет']],
+    ['bez webu', {}, ['Jana', 'Dobrý den']]
+  ].forEach(function (u) {
+    var v = hodnotitSpam(u[1], 3000, u[2], 'zkouska', 'zkouska-' + Math.random());
+    console.log(u[0] + ': skóre ' + v.skore + (v.duvody.length ? ' (' + v.duvody.join(', ') + ')' : ''));
+  });
 }
 
 /* ============================================================
@@ -339,9 +456,13 @@ function jmena(zaznamy) {
   return zaznamy.map(function (z) { return z['Jméno dítěte']; }).join(', ');
 }
 
-function posliVedoucimu(zaznamy, podezrela) {
-  var p = zaznamy[0];
-  var obsah = odstavec('Přišla nová přihláška na letní kemp' +
+// spam je výsledek hodnotitSpam, u zkoušky může chybět
+function posliVedoucimu(zaznamy, spam) {
+  var p = zaznamy[0], podezrela = spam && spam.skore > 0;
+  var obsah = (podezrela ? upozorneniNaSpam(spam.duvody) : '') +
+    (spam && spam.skore >= 2 ? odstavec('Rodiči proto neodešlo potvrzení. ' +
+      'Když je přihláška pravá, potvrďte ji prosím ručně.') : '') +
+    odstavec('Přišla nová přihláška na letní kemp' +
     (zaznamy.length > 1 ? ', počet dětí: ' + zaznamy.length : '') +
     '. Na rodiče stačí odpovědět na tento e-mail.');
   obsah += mezititulek('Rodič') + tabulka(POLE_RODIC.map(function (s) { return [nazevPole(s), p[s] || '']; }));

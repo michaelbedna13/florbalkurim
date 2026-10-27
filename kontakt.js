@@ -7,6 +7,8 @@
 
   var f = document.getElementById('dotaz');
   if(!f) return;
+  // jak dlouho trvalo vyplnění, roboti odesílají hned (kontrola proti spamu)
+  var otevreno = Date.now();
   var $ = function(id){ return document.getElementById(id); };
   var chyba = $('dotaz-chyba'), tl = f.querySelector('button[type="submit"]');
 
@@ -40,6 +42,7 @@
     var data = {
       typ: 'dotaz',
       _honey: f.querySelector('[name="web_firmy"]').value,
+      _cas: Date.now() - otevreno,
       jmeno: $('d-jmeno').value.trim(), email: $('d-email').value.trim(),
       telefon: $('d-telefon').value.trim(), zprava: $('d-zprava').value.trim()
     };
