@@ -1,18 +1,9 @@
 {
- "aktualizovano": "2026-11-14T12:53+01:00",
+ "aktualizovano": "2026-11-15T00:45+01:00",
  "kategorie": {
   "mladsi-zaci": {
    "nazev": "Mladší žáci",
    "turnaje": [
-    {
-     "id": "825",
-     "datum": "2026-11-14",
-     "poradatel": "Orel Brno-Řečkovice",
-     "hala": "SH Kuřim",
-     "v_kurimi": true,
-     "poradame": false,
-     "odkaz": "https://www.orelskafl.cz/web/index.php?r=site%2Ftournamentdetail&id=825"
-    },
     {
      "id": "826",
      "datum": "2026-12-13",
@@ -67,58 +58,71 @@
     "radky": [
      [
       "1.",
-      "Orel Nové Město na Moravě",
-      "6",
-      "2",
-      "2",
+      "FBO Orel Boskovice",
+      "12",
+      "4",
+      "4",
       "0",
       "0",
       "0",
-      "34",
-      "3",
+      "51",
+      "12",
       ""
      ],
      [
       "2.",
-      "FBO Orel Boskovice",
-      "6",
-      "2",
-      "2",
+      "Orel Nové Město na Moravě",
+      "9",
+      "4",
+      "3",
       "0",
       "0",
-      "0",
-      "24",
-      "8",
+      "1",
+      "45",
+      "18",
       ""
      ],
      [
       "3.",
-      "TJ Sokol Adamov",
-      "3",
+      "Orel Brno-Řečkovice",
+      "6",
       "2",
-      "1",
+      "2",
       "0",
       "0",
-      "1",
-      "8",
-      "25",
+      "0",
+      "30",
+      "2",
       ""
      ],
      [
       "4.",
-      "Orel Kuřim",
-      "2",
-      "2",
-      "0",
+      "TJ Sokol Adamov",
+      "3",
+      "4",
       "1",
       "0",
-      "1",
-      "6",
-      "16",
+      "0",
+      "3",
+      "9",
+      "57",
       ""
      ],
      [
       "5.",
+      "Orel Kuřim",
+      "2",
+      "4",
+      "0",
+      "1",
+      "0",
+      "3",
+      "13",
+      "39",
+      ""
+     ],
+     [
+      "6.",
       "Orel Bořitov",
       "1",
       "2",
@@ -128,19 +132,6 @@
       "1",
       "7",
       "13",
-      ""
-     ],
-     [
-      "6.",
-      "Orel Brno-Řečkovice",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
       ""
      ],
      [
@@ -157,7 +148,7 @@
       ""
      ]
     ],
-    "nas": 3
+    "nas": 4
    },
    "odkaz_kalendar": "https://www.orelskafl.cz/web/index.php?r=site%2Fcalendar&f_category=3&f_division=3",
    "odkaz_tabulka": "https://www.orelskafl.cz/web/index.php?r=site%2Fseason-table&category_id=3&division_id=3"
